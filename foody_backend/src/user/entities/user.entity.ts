@@ -1,10 +1,9 @@
 import { OneToMany, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { UserRoleEnum } from '../enums/user-role.enum';
 import { Exclude } from 'class-transformer';
-import { BaseEntity } from 'src/common/base.entity';
+import { UserRoleEnum } from '../enums/user-role.enum';
 
 @Entity('user')
-export class UserEntity extends BaseEntity{
+export class UserEntity {
 
   @PrimaryGeneratedColumn()
   id: number;

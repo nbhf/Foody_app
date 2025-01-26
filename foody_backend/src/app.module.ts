@@ -14,6 +14,10 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import appConfig from './config/app.config';
 import { AdminEntity } from './admin/entities/admin.entity';
+import { AdminModule } from './admin/admin.module';
+import { UserModule } from './user/user.module';
+import { RecipeModule } from './recipe/recipe.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
