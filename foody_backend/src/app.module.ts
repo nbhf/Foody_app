@@ -13,6 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 dotenv.config();
 import appConfig from './config/app.config';
+import { AdminEntity } from './admin/entities/admin.entity';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import appConfig from './config/app.config';
       password:  process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      entities: ["dist/**/*.entity{.ts,.js}"],
+      entities: [AdminEntity],
       synchronize: true,
     }),
     AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule],
