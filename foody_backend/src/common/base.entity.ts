@@ -1,6 +1,11 @@
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
-export class TimestampEntites {
+export class BaseEntity {
+  
+  @PrimaryGeneratedColumn()
+  public id: number;
+
   @CreateDateColumn(
     {
       update: false

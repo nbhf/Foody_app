@@ -1,10 +1,10 @@
 import { OneToMany, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRoleEnum } from '../enums/user-role.enum';
 import { Exclude } from 'class-transformer';
-import { TimestampEntites } from 'src/common/timestamp.entites.';
+import { BaseEntity } from 'src/common/base.entity';
 
 @Entity('user')
-export class UserEntity extends TimestampEntites{
+export class UserEntity extends BaseEntity{
 
   @PrimaryGeneratedColumn()
   id: number;
