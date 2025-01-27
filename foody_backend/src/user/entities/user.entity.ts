@@ -1,9 +1,11 @@
-import { OneToMany, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { UserRoleEnum } from '../enums/user-role.enum';
+import { Admin } from "src/admin/entities/admin.entity";
+
 
 @Entity('user')
-export class UserEntity {
+export class User {
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -33,6 +35,12 @@ export class UserEntity {
     default: UserRoleEnum.USER
   })
   role: string;
+
+  @ManyToOne(() => Admin, admin => admin.deletedUsers, { nullable: true })
+  deletedBy: Admin | null;
+
+  @Column({ nullable: true })
+  deletedAt: Date | null;
 
 
 }
