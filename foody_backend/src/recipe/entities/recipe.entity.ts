@@ -3,7 +3,7 @@ import { Admin } from "src/admin/entities/admin.entity";
 
 export class Recipe {
     @PrimaryGeneratedColumn()
-    id: string;
+    id: Number;
 
     @Column({
         unique: true
