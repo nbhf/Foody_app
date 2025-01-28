@@ -2,6 +2,7 @@ import { Recipe } from "src/recipe/entities/recipe.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "src/user/entities/user.entity";
 import { UserRoleEnum } from "src/user/enums/user-role.enum";
+import { Exclude } from "class-transformer";
 
 @Entity('admin')
 export class Admin {
