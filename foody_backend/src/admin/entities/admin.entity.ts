@@ -15,6 +15,10 @@ export class Admin {
     })
     username: string
 
+      @Column()
+      @Exclude()//exclure lors de la transformation d'un objet en JSON ou lors de la désérialisation sécurité
+      password: string;
+
     @Column({
         type: 'enum',
         enum: UserRoleEnum,
