@@ -16,6 +16,9 @@ export class Recipe {
 
     @Column("simple-array")
     instructions: string[];
+
+    @Column({ type: 'boolean', default: false })
+    isValidated: boolean;
     
     //rest of columns....
 

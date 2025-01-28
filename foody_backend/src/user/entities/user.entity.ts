@@ -25,9 +25,9 @@ export class User {
   @Exclude()//exclure lors de la transformation d'un objet en JSON ou lors de la désérialisation sécurité
   password: string;
 
-  @Column()
-  @Exclude()
-  salt: string;
+  //@Column()
+  //@Exclude()
+  //salt: string;
 
   @Column({
     type: 'enum',

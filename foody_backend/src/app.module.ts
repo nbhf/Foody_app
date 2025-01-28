@@ -14,6 +14,7 @@ import { Admin } from './admin/entities/admin.entity';
 import * as dotenv from 'dotenv';
 import { User } from './user/entities/user.entity';
 import { Recipe } from './recipe/entities/recipe.entity';
+import appConfig from './config/app.config';
 dotenv.config();
 
 
@@ -21,7 +22,7 @@ dotenv.config();
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      //load: [appConfig],
+      load: [appConfig],
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
