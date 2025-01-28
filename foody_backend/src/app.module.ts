@@ -8,16 +8,14 @@ import { RecipeModule } from './recipe/recipe.module';
 import { CommonModule } from './common/common.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Admin } from './admin/entities/admin.entity';
 
 // variables de configuration
 import * as dotenv from 'dotenv';
+import { User } from './user/entities/user.entity';
+import { Recipe } from './recipe/entities/recipe.entity';
 dotenv.config();
-import appConfig from './config/app.config';
-import { AdminEntity } from './admin/entities/admin.entity';
-import { AdminModule } from './admin/admin.module';
-import { UserModule } from './user/user.module';
-import { RecipeModule } from './recipe/recipe.module';
-import { AdminModule } from './admin/admin.module';
+
 
 @Module({
   imports: [
@@ -33,7 +31,7 @@ import { AdminModule } from './admin/admin.module';
       password:  process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      entities: [AdminEntity],
+      entities: [Admin, User, Recipe],
       synchronize: true,
     }),
     AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule],
