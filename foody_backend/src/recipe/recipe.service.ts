@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { Recipe } from './entities/recipe.entity';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { RecipeStatus } from './enums/recipe.enum';
 
 @Injectable()
 export class RecipeService {
@@ -14,8 +15,7 @@ export class RecipeService {
 
   async create(createRecipeDto: CreateRecipeDto): Promise<Recipe> {
     const newRecipe = this.recipeRepository.create(createRecipeDto);
-    newRecipe.validatedBy = null;
-    newRecipe.isValidated = false;
+    newRecipe.status = RecipeStatus.ON_HOLD;
     return await this.recipeRepository.save(newRecipe);
   }
 
@@ -34,12 +34,6 @@ export class RecipeService {
 
   async remove(id: number): Promise<void> {
     await this.recipeRepository.delete(id);
-  }
-
-  async getUnvalidatedRecipes(): Promise<Recipe[]> {
-    return await this.recipeRepository.find({
-      where: { validatedBy: IsNull() }
-    });
   }
   
 }

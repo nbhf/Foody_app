@@ -9,6 +9,7 @@ import { Recipe } from './entities/recipe.entity';
   providers: [RecipeService],
   imports: [
     TypeOrmModule.forFeature([Recipe])
-  ]
+  ],
+  exports: [RecipeService]
 })
 export class RecipeModule {}

@@ -1,4 +1,3 @@
-import { Recipe } from "src/recipe/entities/recipe.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "src/user/entities/user.entity";
 import { UserRoleEnum } from "src/user/enums/user-role.enum";
@@ -29,8 +28,8 @@ export class Admin extends TimestampEntites{
       role: string;
     
     
-    @OneToMany(() => Recipe, recipe => recipe.validatedBy)
-    validatedRecipes: Recipe[];
+    //@OneToMany(() => Recipe, recipe => (recipe.status = RecipeStatus.VALIDATED))
+    //validatedRecipes: Recipe[];
 
     @OneToMany(() => User, user => user.deletedBy)
     deletedUsers: User[];
