@@ -3,9 +3,9 @@ import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { RecipeService } from 'src/recipe/recipe.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/Guards/jwt-auth.guard';
 import { UserRoleEnum } from 'src/user/enums/user-role.enum';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { RolesGuard } from 'src/auth/Guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 
 
