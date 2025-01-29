@@ -44,12 +44,7 @@ export class UserService {
 
     return this.userRepository.save(user);
   }
-// Récupère tous les utilisateurs en excluant les champs sensibles
-  async findAll(): Promise<User[]> {
-    return this.userRepository.find({
-      select: ['id', 'username', 'email', 'role'],
-    });
-  }
+
 // Récupère un utilisateur par son ID
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
