@@ -13,78 +13,68 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  // Crée un nouvel utilisateur avec vérifications
+  // Crée un nouvel utilisateur avec validation et hachage du mot de passe
   async create(createUserDto: CreateUserDto): Promise<User> {
-    await this.checkEmailUniqueness(createUserDto.email); // Vérifier si l'email est unique
-    const hashedPassword = await this.hashPassword(createUserDto.password); // Hacher le mot de passe
+    await this.checkEmailUniqueness(createUserDto.email);
+    const hashedPassword = await this.hashPassword(createUserDto.password);
 
     const newUser = this.userRepository.create({
       ...createUserDto,
-      password: hashedPassword.hash,
-      salt: hashedPassword.salt,
+      password: hashedPassword,
     });
 
-    return await this.userRepository.save(newUser);
+    return this.userRepository.save(newUser);
   }
-
-  // Met à jour un utilisateur existant avec vérifications
+// Met à jour un utilisateur existant avec validation
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
-
+// Vérification et mise à jour de l'email
     if (updateUserDto.email && updateUserDto.email !== user.email) {
       await this.checkEmailUniqueness(updateUserDto.email);
       user.email = updateUserDto.email;
     }
-
+ // Mise à jour du mot de passe avec hachage si fourni
     if (updateUserDto.password) {
-      const hashedPassword = await this.hashPassword(updateUserDto.password);
-      user.password = hashedPassword.hash;
-      user.salt = hashedPassword.salt;
+      user.password = await this.hashPassword(updateUserDto.password);
     }
 
     if (updateUserDto.username) {
       user.username = updateUserDto.username;
     }
 
-    return await this.userRepository.save(user);
+    return this.userRepository.save(user);
   }
-
-  // Récupère tous les utilisateurs
+// Récupère tous les utilisateurs en excluant les champs sensibles
   async findAll(): Promise<User[]> {
-    return await this.userRepository.find({
-      select: ['id', 'username', 'email', 'role'], // Exclure les champs sensibles
+    return this.userRepository.find({
+      select: ['id', 'username', 'email', 'role'],
     });
   }
-
-  // Récupère un utilisateur par ID
+// Récupère un utilisateur par son ID
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
-      select: ['id', 'username', 'email', 'role'], // Exclure les champs sensibles
+      select: ['id', 'username', 'email', 'role'],
     });
 
     if (!user) throw new NotFoundException(`Utilisateur avec l'ID ${id} introuvable.`);
     return user;
   }
-
-  // Supprime un utilisateur par ID
+ // Supprime un utilisateur par ID
   async delete(id: number): Promise<void> {
     const user = await this.findOne(id);
     await this.userRepository.remove(user);
   }
-
-  // Vérifie si un email est unique
+ // Vérifie si un email est unique
   private async checkEmailUniqueness(email: string): Promise<void> {
     const existingUser = await this.userRepository.findOne({ where: { email } });
     if (existingUser) {
       throw new ConflictException('Cet email est déjà utilisé.');
     }
   }
-
-  // Hache un mot de passe avec bcrypt
-  private async hashPassword(password: string): Promise<{ hash: string; salt: string }> {
-    const salt = await bcrypt.genSalt();
-    const hash = await bcrypt.hash(password, salt);
-    return { hash, salt };
+// Hache un mot de passe avec bcryptjs
+  private async hashPassword(password: string): Promise<string> {
+    const salt = await bcrypt.genSalt(10);
+    return bcrypt.hash(password, salt);
   }
 }
