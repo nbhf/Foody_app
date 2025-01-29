@@ -2,9 +2,10 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "src/user/entities/user.entity";
 import { UserRoleEnum } from "src/user/enums/user-role.enum";
 import { Exclude } from "class-transformer";
+import { TimestampEntites } from "src/common/timestamp.entites.";
 
 @Entity('admin')
-export class Admin {
+export class Admin extends TimestampEntites{
 
     @PrimaryGeneratedColumn()
     id: number;
