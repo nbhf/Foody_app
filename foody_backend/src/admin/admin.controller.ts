@@ -38,12 +38,13 @@ export class AdminController {
 
 
   @Post('validate-recipe/:id')
-  async validateRecipe(
-    @Param('id') id: number,
-  ) {
-   // Assuming the admin ID is available in the request
-    return this.adminService.validateRecipe(id);
-  }
+async validateRecipe(
+  @Param('id') id: number, // Recipe ID
+) {
+  // Since we know it's an admin, we can directly call the service
+  return this.adminService.validateRecipe(id);
+}
+
 
   @Post('refuse-recipe/:id')
   async refuseRecipe(
