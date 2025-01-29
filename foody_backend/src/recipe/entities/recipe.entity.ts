@@ -2,8 +2,9 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } f
 import { Admin } from "src/admin/entities/admin.entity";
 import { RecipeStatus, RecipeType } from "../enums/recipe.enum";
 import { User } from "src/user/entities/user.entity";
+import { TimestampEntites } from "src/common/timestamp.entites.";
 @Entity('recipe')
-export class Recipe {
+export class Recipe extends TimestampEntites{
     @PrimaryGeneratedColumn()
     id: Number;
 
