@@ -27,13 +27,13 @@ export class AuthService {
         try {
           await this.userRepository.save(user);
         } catch (e) {
-          console.error("🔥 Erreur détectée :", e); // 👈 Ajoute ceci pour voir l'erreur exacte
+          console.error(" Erreur détectée :", e); //pour voir l'erreur exacte
   
           if (e instanceof QueryFailedError && e.message.includes("Duplicate")) {
               throw new ConflictException(`Le username ou l'email est déjà utilisé`);
           }
           
-          throw new Error(`Erreur technique: ${e.message}`); // 👈 Retourne le vrai message d'erreur
+          throw new Error(`Erreur technique: ${e.message}`); // le vrai message d'erreur
       }
         return {
             id: user.id,
