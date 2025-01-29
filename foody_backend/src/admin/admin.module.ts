@@ -6,13 +6,19 @@ import { Recipe } from 'src/recipe/entities/recipe.entity';
 import { User } from 'src/user/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { RecipeService } from 'src/recipe/recipe.service';
+import { RecipeModule } from 'src/recipe/recipe.module';
 
 @Module({
   controllers: [AdminController],
-  providers: [AdminService],
+  providers: [AdminService,
+              RecipeService
+  ],
   imports: [
     TypeOrmModule.forFeature([Admin,Recipe,User]),
     ConfigModule.forRoot({isGlobal: true,}),
+    RecipeModule
+    
   ]
 })
 export class AdminModule {}

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Admin } from "src/admin/entities/admin.entity";
 import { RecipeStatus, RecipeType } from "../enums/recipe.enum";
 import { User } from "src/user/entities/user.entity";
@@ -36,7 +36,8 @@ export class Recipe {
     @Column({ type: 'boolean', default: false })
     isValidated: boolean;
     
-    //rest of columns....
+    @CreateDateColumn()
+    validatedAt: Date;
 
     @ManyToOne(() => Admin, admin => admin.validatedRecipes)
     validatedBy: Admin;
