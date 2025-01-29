@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -13,18 +13,8 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  // Crée un nouvel utilisateur avec validation et hachage du mot de passe
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    await this.checkEmailUniqueness(createUserDto.email);
-    const hashedPassword = await this.hashPassword(createUserDto.password);
 
-    const newUser = this.userRepository.create({
-      ...createUserDto,
-      password: hashedPassword,
-    });
-
-    return this.userRepository.save(newUser);
-  }
+  
 // Met à jour un utilisateur existant avec validation
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
@@ -35,7 +25,8 @@ export class UserService {
     }
  // Mise à jour du mot de passe avec hachage si fourni
     if (updateUserDto.password) {
-      user.password = await this.hashPassword(updateUserDto.password);
+              user.salt = await bcrypt.genSalt();
+              user.password = await bcrypt.hash(user.password, user.salt);
     }
 
     if (updateUserDto.username) {
@@ -44,12 +35,8 @@ export class UserService {
 
     return this.userRepository.save(user);
   }
-// Récupère tous les utilisateurs en excluant les champs sensibles
-  async findAll(): Promise<User[]> {
-    return this.userRepository.find({
-      select: ['id', 'username', 'email', 'role'],
-    });
-  }
+
+
 // Récupère un utilisateur par son ID
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
@@ -60,6 +47,7 @@ export class UserService {
     if (!user) throw new NotFoundException(`Utilisateur avec l'ID ${id} introuvable.`);
     return user;
   }
+
  // Supprime un utilisateur par ID
   async delete(id: number): Promise<void> {
     const user = await this.findOne(id);
@@ -72,9 +60,5 @@ export class UserService {
       throw new ConflictException('Cet email est déjà utilisé.');
     }
   }
-// Hache un mot de passe avec bcryptjs
-  private async hashPassword(password: string): Promise<string> {
-    const salt = await bcrypt.genSalt(10);
-    return bcrypt.hash(password, salt);
-  }
+
 }
