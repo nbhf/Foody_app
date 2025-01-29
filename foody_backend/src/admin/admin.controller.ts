@@ -1,11 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { RecipeService } from 'src/recipe/recipe.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UserRoleEnum } from 'src/user/enums/user-role.enum';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
 
 
 @Controller('admin')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRoleEnum.ADMIN)
 export class AdminController {
   constructor(private readonly adminService: AdminService,
               private readonly recipeService: RecipeService
@@ -38,10 +44,9 @@ export class AdminController {
 
 
   @Post('validate-recipe/:id')
-async validateRecipe(
+  async validateRecipe(
   @Param('id') id: number, // Recipe ID
 ) {
-  // Since we know it's an admin, we can directly call the service
   return this.adminService.validateRecipe(id);
 }
 
@@ -50,7 +55,6 @@ async validateRecipe(
   async refuseRecipe(
     @Param('id') id: number,
   ) {
-   // Assuming the admin ID is available in the request
     return this.adminService.refuseRecipe(id);
   }
 }
