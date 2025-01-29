@@ -19,7 +19,6 @@ dotenv.config();
         expiresIn: 3600
       } }),
   ],
-  providers: [AuthService],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],
