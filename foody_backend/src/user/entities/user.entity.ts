@@ -38,7 +38,8 @@ export class User extends TimestampEntites {
   })
   role: string;
 
-  @Column()
+
+  @Column({ nullable: true })
   imgUrl: string;
 
   @ManyToOne(() => Admin, admin => admin.deletedUsers, { nullable: true })
