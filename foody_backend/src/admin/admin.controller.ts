@@ -44,4 +44,17 @@ export class AdminController {
     const adminId = req.user.id; // Assuming the admin ID is available in the request
     return this.adminService.validateRecipe(id, adminId);
   }
+
+  @Post('not-validate-recipe/:id')
+    async notValidateRecipe(
+      @Param('id') id: number,
+      @Req() req
+    ) {
+      const adminId = req.user.id; // Assuming the admin ID is available in the request
+      return this.adminService.notValidateRecipe(id, adminId);
+    }
 }
+
+    
+    
+  

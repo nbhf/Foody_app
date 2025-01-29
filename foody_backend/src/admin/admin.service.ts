@@ -53,5 +53,21 @@ export class AdminService {
     return await this.recipeRepository.save(recipe);
   }
 
+  async notValidateRecipe(recipeId: number, adminId: number): Promise<Recipe> {
+    const recipe = await this.recipeRepository.findOne({
+      where: { id: recipeId }
+    });
+    
+    if (!recipe) {
+      throw new NotFoundException('Recipe not found');
+    }
+  
+    recipe.isValidated = false;
+    recipe.validatedAt = new Date();
+    recipe.validatedBy = { id: adminId } as Admin; // Set the admin ID directly
+  
+    return await this.recipeRepository.save(recipe);
+  }
+
   
 }
