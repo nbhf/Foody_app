@@ -33,7 +33,7 @@ dotenv.config();
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       entities: [Admin, User, Recipe],
-      synchronize: true,
+   
     }),
     AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule],
   controllers: [AppController],
