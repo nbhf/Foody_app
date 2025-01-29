@@ -31,16 +31,12 @@ export class Recipe {
         default: RecipeStatus.ON_HOLD 
     })
     status: RecipeStatus;
-
-
-    @Column({ type: 'boolean', default: false })
-    isValidated: boolean;
     
     @CreateDateColumn()
     validatedAt: Date;
 
-    @ManyToOne(() => Admin, admin => admin.validatedRecipes)
-    validatedBy: Admin;
+    //@ManyToOne(() => Admin, admin => admin.validatedRecipes)
+    //validatedBy: Admin;
 
     @ManyToOne(() => User, user => user.createdRecipes) // Assurez-vous que l'entité User a une relation `createdRecipes`
     createdBy: User;

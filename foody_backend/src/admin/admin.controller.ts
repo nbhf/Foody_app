@@ -39,20 +39,19 @@ export class AdminController {
 
   @Post('validate-recipe/:id')
   async validateRecipe(
-    @Param('id') id: number,@Req()  req
+    @Param('id') id: number,
   ) {
-    const adminId = req.user.id; // Assuming the admin ID is available in the request
-    return this.adminService.validateRecipe(id, adminId);
+   // Assuming the admin ID is available in the request
+    return this.adminService.validateRecipe(id);
   }
 
-  @Post('not-validate-recipe/:id')
-    async notValidateRecipe(
-      @Param('id') id: number,
-      @Req() req
-    ) {
-      const adminId = req.user.id; // Assuming the admin ID is available in the request
-      return this.adminService.notValidateRecipe(id, adminId);
-    }
+  @Post('refuse-recipe/:id')
+  async refuseRecipe(
+    @Param('id') id: number,
+  ) {
+   // Assuming the admin ID is available in the request
+    return this.adminService.refuseRecipe(id);
+  }
 }
 
     
