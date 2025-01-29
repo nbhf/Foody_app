@@ -2,7 +2,7 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { UserSubscribeDto } from './dto/signup-credentials.dto';
 import { User } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { LoginCredentialsDto } from './dto/login-credentials.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -27,8 +27,14 @@ export class AuthService {
         try {
           await this.userRepository.save(user);
         } catch (e) {
-          throw new ConflictException(`Le username et le email doivent être unique`);
-        }
+          console.error("🔥 Erreur détectée :", e); // 👈 Ajoute ceci pour voir l'erreur exacte
+  
+          if (e instanceof QueryFailedError && e.message.includes("Duplicate")) {
+              throw new ConflictException(`Le username ou l'email est déjà utilisé`);
+          }
+          
+          throw new Error(`Erreur technique: ${e.message}`); // 👈 Retourne le vrai message d'erreur
+      }
         return {
             id: user.id,
             username: user.username,

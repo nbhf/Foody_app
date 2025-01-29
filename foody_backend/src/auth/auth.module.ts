@@ -14,7 +14,7 @@ dotenv.config();
     UserModule, // Importe UserModule pour accéder à l'entité User
     PassportModule.register({defaultStrategy: 'jwt'}),
     JwtModule.register({
-      secret: process.env.SECRET, //defin in .env SECRET
+      secret: process.env.JWT_SECRET, //defin in .env SECRET
       signOptions: {
         expiresIn: 3600
       } }),
