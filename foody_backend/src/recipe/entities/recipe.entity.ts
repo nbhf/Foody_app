@@ -1,8 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Admin } from "src/admin/entities/admin.entity";
+import { TimestampEntites } from "src/common/timestamp.entites.";
 
 @Entity('recipe')
-export class Recipe {
+export class Recipe extends TimestampEntites{
     @PrimaryGeneratedColumn()
     id: Number;
 
