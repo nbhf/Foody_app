@@ -14,7 +14,10 @@ import { Admin } from './admin/entities/admin.entity';
 import * as dotenv from 'dotenv';
 import { User } from './user/entities/user.entity';
 import { Recipe } from './recipe/entities/recipe.entity';
+import { Comment } from './comment/entities/comment.entity';
+
 import appConfig from './config/app.config';
+import { CommentModule } from './comment/comment.module';
 dotenv.config();
 
 
@@ -32,10 +35,10 @@ dotenv.config();
       password:  process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      entities: [Admin, User, Recipe],
+      entities: [Admin, User, Recipe , Comment],
       synchronize: true,
     }),
-    AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule],
+    AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule,CommentModule],
   controllers: [AppController],
   providers: [AppService],
 })

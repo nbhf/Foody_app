@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Admin } from "src/admin/entities/admin.entity";
-import { RecipeStatus, RecipeType } from "../enums/recipe.enum";
+import {  RecipeType } from "../enums/recipe.enum";
 import { User } from "src/user/entities/user.entity";
 @Entity('recipe')
 export class Recipe {
@@ -25,18 +25,17 @@ export class Recipe {
     })
     category: RecipeType;
 
-    @Column({
-        type: 'enum',
-        enum: RecipeStatus,
-        default: RecipeStatus.ON_HOLD 
-    })
-    status: RecipeStatus;
-
 
     @Column({ type: 'boolean', default: false })
     isValidated: boolean;
     
+    @Column({nullable:true})
+    imageurl: string;
+
+    @Column({nullable:true})
+    description: string;
     //rest of columns....
+
 
     @ManyToOne(() => Admin, admin => admin.validatedRecipes)
     validatedBy: Admin;

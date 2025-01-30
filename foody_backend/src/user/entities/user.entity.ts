@@ -3,7 +3,7 @@ import { Exclude } from 'class-transformer';
 import { UserRoleEnum } from '../enums/user-role.enum';
 import { Admin } from "src/admin/entities/admin.entity";
 import { Recipe } from 'src/recipe/entities/recipe.entity';
-
+import { Comment } from 'src/comment/entities/comment.entity';
 
 @Entity('user')
 export class User {
@@ -51,5 +51,8 @@ export class User {
    
   @OneToMany(() => Recipe, recipe => recipe.createdBy)
   createdRecipes: Recipe[];
+
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[];
 
 }
