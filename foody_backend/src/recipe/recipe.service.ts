@@ -1,12 +1,11 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Recipe } from './entities/recipe.entity';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { RecipeStatus } from './enums/recipe.enum';
 import { UserService } from 'src/user/user.service';
-
 
 @Injectable()
 export class RecipeService {
@@ -17,31 +16,83 @@ export class RecipeService {
   ) {}
 
   async create(createRecipeDto: CreateRecipeDto, user): Promise<Recipe> {
-    const newRecipe = this.recipeRepository.create(createRecipeDto);
-    newRecipe.status = RecipeStatus.ON_HOLD;
-    newRecipe.createdBy= user;
-    return await this.recipeRepository.save(newRecipe);
+    try {
+      const newRecipe = this.recipeRepository.create(createRecipeDto);
+      newRecipe.status = RecipeStatus.ON_HOLD;
+      newRecipe.createdBy = user;
+      return await this.recipeRepository.save(newRecipe);
+    } catch (error) {
+      console.error('Error creating recipe:', error.message);
+      throw new InternalServerErrorException('Failed to create recipe');
+    }
   }
 
-  async findAll(): Promise<Recipe[]> {
-    return await this.recipeRepository.find();
+  async findValidated(): Promise<Recipe[]> {
+    try {
+      return await this.recipeRepository.find({
+        where: { status: RecipeStatus.VALIDATED }, 
+        relations: ['createdBy'], 
+      });
+    } catch (error) {
+      console.error('Error fetching validated recipes:', error.message);
+      throw error;
+    }
+  }
+
+  async findAll(user): Promise<Recipe[]> {
+    try { 
+        if (this.userService.isAdmin(user)) {
+          return await this.recipeRepository.find({ relations: ['createdBy']});
+        } else {
+          throw new UnauthorizedException('Access denied');
+        }
+  
+    } catch (error) {
+      console.error('Error fetching recipes:', error.message);
+      throw error;
+    }
   }
 
   async findOne(id: number): Promise<Recipe> {
-    return await this.recipeRepository.findOneBy({ id });
+    try {
+      const recipe = await this.recipeRepository.findOne({where: {id},relations:['createdBy']});
+      if (!recipe) {
+        throw new NotFoundException(`Recipe with ID ${id} not found`);
+      }
+      return recipe;
+    } catch (error) {
+      console.error(`Error fetching recipe with ID ${id}:`, error.message);
+      throw error;
+    }
   }
 
   async update(id: number, updateRecipeDto: UpdateRecipeDto, user): Promise<Recipe> {
-    if (this.userService.isOwnerOrAdmin(updateRecipeDto,user))
-      {await this.recipeRepository.update(id, updateRecipeDto);
-      return await this.recipeRepository.findOneBy({ id });}
-    else
-      new UnauthorizedException('');
+    try {
+      const recipe = await this.findOne(id);
+      if (!this.userService.isOwnerOrAdmin(recipe, user)) {
+        throw new UnauthorizedException('You do not have permission to update this recipe');
+      }
+
+      await this.recipeRepository.update(id, updateRecipeDto);
+      return await this.findOne(id);
+    } catch (error) {
+      console.error(`Error updating recipe with ID ${id}:`, error.message);
+      throw error;
+    }
   }
 
   async remove(id: number, user): Promise<void> {
-    if (this.userService.isOwnerOrAdmin(id,user))
+    try {
+      const recipe = await this.recipeRepository.findOne({where: {id},relations:['createdBy']});
+      if (!this.userService.isOwnerOrAdmin(recipe, user)) {
+        throw new UnauthorizedException('You do not have permission to delete this recipe');
+      }
+
       await this.recipeRepository.delete(id);
+      console.log("recipe deleted successfully !!");
+    } catch (error) {
+      console.error(`Error deleting recipe with ID ${id}:`, error.message);
+      throw error;
+    }
   }
-  
 }

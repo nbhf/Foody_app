@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Admin } from "src/admin/entities/admin.entity";
 import { RecipeStatus, RecipeType } from "../enums/recipe.enum";
 import { User } from "src/user/entities/user.entity";
@@ -37,7 +37,8 @@ export class Recipe extends TimestampEntites{
     @CreateDateColumn()
     validatedAt: Date;
 
-    @ManyToMany(() => User, user => user.createdRecipes) 
+    @ManyToOne(() => User, (user) => user.createdRecipes)
+    @JoinColumn({ name: 'createdById' }) // This defines the foreign key
     createdBy: User;
 
     @ManyToMany(() => User, user => user.savedRecipes) 

@@ -2,7 +2,6 @@ import { Injectable, NotFoundException, ConflictException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserRoleEnum } from './enums/user-role.enum';
@@ -63,6 +62,10 @@ export class UserService {
   }
 
   isOwnerOrAdmin(objet, user) {
-    return user.role === UserRoleEnum.ADMIN || (objet.user && objet.createdBy.id === user.id);
+    return user.role === UserRoleEnum.ADMIN || (objet.createdBy && objet.createdBy.id === user.id);
+  }
+
+  isAdmin (user){
+    return user.role === UserRoleEnum.ADMIN
   }
 }

@@ -4,9 +4,8 @@ import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from 'src/decorators/user.decorator';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { UserRoleEnum } from 'src/user/enums/user-role.enum';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Recipe } from './entities/recipe.entity';
+
 
 @Controller('recipe')
 export class RecipeController {
@@ -18,11 +17,15 @@ export class RecipeController {
     return this.recipeService.create(createRecipeDto,user);
   }
 
+  @Get('validated')
+  async getValidatedRecipes(): Promise<Recipe[]> {
+    return this.recipeService.findValidated();
+  }
+
   @Get()
   @UseGuards(JwtAuthGuard)
-  @Roles(UserRoleEnum.ADMIN)
-  findAll() {
-    return this.recipeService.findAll();
+  findAll(@User() user) {
+    return this.recipeService.findAll(user);
   }
 
   @Get(':id')
