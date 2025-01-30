@@ -5,6 +5,7 @@ import { Admin } from './entities/admin.entity';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
+import { RecipeStatus } from 'src/recipe/enums/recipe.enum';
 
 @Injectable()
 export class AdminService {
@@ -37,22 +38,36 @@ export class AdminService {
     await this.adminRepository.delete(id);
   }
 
-  async validateRecipe(recipeId: number, adminId: number): Promise<Recipe> {
+  async validateRecipe(recipeId: number): Promise<Recipe> {
     const recipe = await this.recipeRepository.findOne({
-      where: {
-          id: recipeId
-      }});
-    const admin = await this.adminRepository.findOne({
-      where: {
-          id: adminId
-      }});
+      where: { id: recipeId }
+    });
     
-    if (!recipe || !admin) {
-      throw new NotFoundException('Recipe or Admin not found');
+    if (!recipe) {
+      throw new NotFoundException('Recipe not found');
     }
   
-    recipe.validatedBy = admin;
-    recipe.isValidated = true;
+    recipe.status = RecipeStatus.VALIDATED;
+    recipe.validatedAt = new Date();
+  
     return await this.recipeRepository.save(recipe);
   }
+
+  async refuseRecipe(recipeId: number): Promise<Recipe> {
+    const recipe = await this.recipeRepository.findOne({
+      where: { id: recipeId }
+    });
+    
+    if (!recipe) {
+      throw new NotFoundException('Recipe not found');
+    }
+  
+    recipe.status = RecipeStatus.REFUSED;
+    recipe.validatedAt = new Date();
+    
+  
+    return await this.recipeRepository.save(recipe);
+  }
+
+  
 }

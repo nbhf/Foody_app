@@ -11,7 +11,7 @@ export class AuthController {
   ) {
   }
 
-    @Post()
+    @Post('signup')
     register(
       @Body() userData: UserSubscribeDto
     ) {

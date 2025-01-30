@@ -5,6 +5,7 @@ export enum RecipeType {
 }
 
 export enum RecipeStatus {
-    APPROVED = 'approved',
-    ON_HOLD = 'on_hold'
+    VALIDATED = 'Validated',
+    ON_HOLD = 'on_hold',
+    REFUSED = 'Refused'
 }

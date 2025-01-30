@@ -3,15 +3,24 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import * as dotenv from 'dotenv';
+import { JwtStrategy } from './strategy/passport-jwt.strategy';
 
 
+dotenv.config();
 @Module({
   imports: [
     UserModule, // Importe UserModule pour accéder à l'entité User
     PassportModule.register({defaultStrategy: 'jwt'}),
-
+    JwtModule.register({
+      secret: process.env.JWT_SECRET, //defin in .env SECRET
+      signOptions: {
+        expiresIn: 3600
+      } }),
   ],
-  providers: [AuthService],
   controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}
