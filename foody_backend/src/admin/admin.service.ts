@@ -1,11 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { Admin } from './entities/admin.entity';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
 import { RecipeStatus } from 'src/recipe/enums/recipe.enum';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AdminService {
@@ -13,13 +16,36 @@ export class AdminService {
     @InjectRepository(Admin)
     private readonly adminRepository: Repository<Admin>,
     @InjectRepository(Recipe)
-    private readonly recipeRepository: Repository<Recipe>
+    private readonly recipeRepository: Repository<Recipe>,
+    //@InjectRepository(User) private repository: Repository<User>
   ) {}
 
-  async create(createAdminDto: CreateAdminDto): Promise<Admin> {
-    const newAdmin = this.adminRepository.create(createAdminDto);
-    return await this.adminRepository.save(newAdmin);
-  }
+  async create(createAdminDto: CreateAdminDto): Promise<Partial<Admin>> {
+    const admin = this.adminRepository.create({
+      ...createAdminDto
+    });
+    admin.salt = await bcrypt.genSalt();
+    admin.password = await bcrypt.hash(admin.password, admin.salt);
+     try {
+              await this.adminRepository.save(admin);
+            } catch (e) {
+              console.error(" Erreur détectée :", e); //pour voir l'erreur exacte
+      
+              if (e instanceof QueryFailedError && e.message.includes("Duplicate")) {
+                  throw new ConflictException(`Le username ou l'email est déjà utilisé`);
+              }
+              
+              throw new Error(`Erreur technique: ${e.message}`); // le vrai message d'erreur
+          }
+    return {
+        id: admin.id,
+        username: admin.username,
+        email: admin.email,
+        role: admin.role
+      };
+
+          }
+  
 
   async findAll(): Promise<Admin[]> {
     return await this.adminRepository.find();

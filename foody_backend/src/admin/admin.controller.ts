@@ -10,8 +10,8 @@ import { Roles } from 'src/decorators/roles.decorator';
 
 
 @Controller('admin')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRoleEnum.ADMIN)
+//@UseGuards(JwtAuthGuard, RolesGuard)
+//@Roles(UserRoleEnum.ADMIN)
 export class AdminController {
   constructor(private readonly adminService: AdminService,
               private readonly recipeService: RecipeService

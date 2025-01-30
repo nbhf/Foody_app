@@ -16,17 +16,26 @@ export class Admin extends TimestampEntites{
     })
     username: string
 
-      @Column()
-      @Exclude()//exclure lors de la transformation d'un objet en JSON ou lors de la désérialisation sécurité
-      password: string;
 
     @Column({
-        type: 'enum',
-        enum: UserRoleEnum,
-        default: UserRoleEnum.ADMIN
-      })
-      role: string;
+    unique: true
+    })
+    email:string
+
+    @Column()
+    @Exclude()//exclure lors de la transformation d'un objet en JSON ou lors de la désérialisation sécurité
+    password: string;
+
+    @Column({
+      type: 'enum',
+      enum: UserRoleEnum,
+      default: UserRoleEnum.ADMIN
+    })
+    role: string;
     
+    @Column()
+    @Exclude()
+    salt: string;
     
     //@OneToMany(() => Recipe, recipe => (recipe.status = RecipeStatus.VALIDATED))
     //validatedRecipes: Recipe[];
