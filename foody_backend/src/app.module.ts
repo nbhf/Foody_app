@@ -35,8 +35,10 @@ dotenv.config();
       password:  process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      entities: [Admin, User, Recipe , Comment],
+      entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
+      
+   
     }),
     AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule,CommentModule],
   controllers: [AppController],

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Comment } from '../comment/comment.service';
+import { AuthService } from '../auth/auth.service';
+import { CommentService } from '../comment/comment.service';
 
 @Component({
   selector: 'app-recipe-details',
@@ -8,24 +9,37 @@ import { Comment } from '../comment/comment.service';
   styleUrls: ['./recipe-details.component.css']
 })
 export class RecipeDetailsComponent implements OnInit {
+  isAuthenticated: boolean = false;
 
-  comment: Comment = {
-    id: 0,
-    content: '',
-    authorId: 1 ,
-    createdAt: new Date()
-  };
+ comment:string='';
+  constructor(private commentService:CommentService , private authService: AuthService
+  ) { }
 
-  constructor(private http: HttpClient) { }
+  ngOnInit(): void {
+    this.checkAuthentication();
 
-  ngOnInit(): void {}
+  }
 
-  onSubmit() {
-    this.http.post('http://localhost:3000/comments', this.comment).subscribe({
-      next: (data) => console.log('Commentaire sauvegardé avec succès'),
-      error: (error) =>{ console.error('Erreur lors de la sauvegarde : ', error);
-        alert('error saving comment')
-         }
+  // Vérifier si l'utilisateur est authentifié
+  checkAuthentication() {
+    this.isAuthenticated = !!this.authService.getToken();
+  }
+
+  saveComment() {
+    if (!this.comment.trim()) {
+      alert('Veuillez entrer un commentaire.');
+      return;
+    }
+
+    this.commentService.saveComment(this.comment).subscribe({
+      next: (response) => {
+        console.log('Commentaire sauvegardé avec succès', response);
+        alert('Commentaire sauvegardé !');
+      },
+      error: (error) => {
+        console.error('Erreur lors de la sauvegarde du commentaire', error);
+        alert('Erreur lors de la sauvegarde du commentaire.');
+      }
     });
   }
 

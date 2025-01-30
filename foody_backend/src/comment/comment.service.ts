@@ -13,9 +13,10 @@ export class CommentsService {
   ) {}
 
   // Créer un commentaire
-  async create(createCommentDto: CreateCommentDto): Promise<Comment> {
-    const comment = this.commentsRepository.create(createCommentDto);
-    return this.commentsRepository.save(comment);
+  async create(createCommentDto: CreateCommentDto,user): Promise<Comment> {
+    const newComment = this.commentsRepository.create(createCommentDto);
+    newComment.author =user;
+    return this.commentsRepository.save(newComment);
   }
 
   // Récupérer tous les commentaires

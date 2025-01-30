@@ -5,18 +5,10 @@
     </div>
   
     <!-- Partie droite : Commentaires -->
-    <div class="comments-section">
-      <app-comment></app-comment>
-   
-      <form (ngSubmit)="onSubmit()">
+    <div class="comment-box">
+      <textarea [(ngModel)]="comment" placeholder="Écrivez votre commentaire ici..."></textarea>
+      <button (click)="saveComment()">Envoyer</button>
+    </div>
     
-        <br>
-        <label>Commentaire :</label>
-        <textarea [(ngModel)]="comment.content" name="content" required></textarea>
-      
-        <br>
-      
-        <button type="submit">Soumettre</button>
-      </form>
       
   

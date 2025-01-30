@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 export interface Comment {
   id: number;
   content: string;
@@ -14,8 +15,7 @@ export interface Comment {
 })
 export class CommentService {
   private apiUrl = 'http://localhost:3000/comments';
-
-  constructor(private http: HttpClient ) {}
+  constructor(private http: HttpClient, private authService:AuthService) {}
 
   
   getComments(): Observable<Comment[]> {
@@ -23,8 +23,21 @@ export class CommentService {
   }
  
    
+  // Fonction pour sauvegarder un commentaire
+  saveComment(commentaire: string): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+      throw new Error('Token non trouvé');
+    }
 
-  saveComment(comment: { content: string, user: string, date: string }): Observable<any> {
-    return this.http.post(this.apiUrl, comment);
+    // Ajouter le token dans l'en-tête de la requête
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    const payload = {
+      content: commentaire
+    };
+
+    return this.http.post<any>(this.apiUrl, payload, { headers });
   }
+ 
 }

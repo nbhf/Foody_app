@@ -1,15 +1,6 @@
 
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
-export class UserSubscribeDto {
+export class UserSubscribeDto extends CreateUserDto {
 
-  @IsNotEmpty()
-  username: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  @IsNotEmpty()
-  password: string;
 }
