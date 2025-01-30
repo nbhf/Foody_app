@@ -6,9 +6,5 @@ export class CreateCommentDto {
   @IsNotEmpty()
   content: string;
 
-  @IsNotEmpty()
-  @IsInt()
-  authorId: number; // ID de l'utilisateur qui écrit le commentaire
-
   
 }

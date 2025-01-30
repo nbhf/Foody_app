@@ -5,8 +5,9 @@ import { Comment } from './entities/comment.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Comment])],  // Correctement importé
+  imports: [TypeOrmModule.forFeature([Comment])],  
   controllers: [CommentsController],
-  providers: [CommentsService]
+  providers: [CommentsService],
+  exports:[TypeOrmModule]
 })
 export class CommentModule {}

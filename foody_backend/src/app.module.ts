@@ -18,6 +18,7 @@ import { Comment } from './comment/entities/comment.entity';
 
 import appConfig from './config/app.config';
 import { CommentModule } from './comment/comment.module';
+import { DatabaseSeederService } from './common/database-seeder.service';
 dotenv.config();
 
 
@@ -37,11 +38,11 @@ dotenv.config();
       autoLoadEntities: true,
       entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
-      
-   
     }),
+
     AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule,CommentModule],
+    
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,DatabaseSeederService],
 })
 export class AppModule {}
