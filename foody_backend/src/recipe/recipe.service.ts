@@ -13,9 +13,10 @@ export class RecipeService {
     private readonly recipeRepository: Repository<Recipe>,
   ) {}
 
-  async create(createRecipeDto: CreateRecipeDto): Promise<Recipe> {
+  async create(createRecipeDto: CreateRecipeDto, user): Promise<Recipe> {
     const newRecipe = this.recipeRepository.create(createRecipeDto);
     newRecipe.status = RecipeStatus.ON_HOLD;
+    newRecipe.createdBy= user;
     return await this.recipeRepository.save(newRecipe);
   }
 

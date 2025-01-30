@@ -13,7 +13,6 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-
   
 // Met à jour un utilisateur existant avec validation
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
@@ -53,6 +52,7 @@ export class UserService {
     const user = await this.findOne(id);
     await this.userRepository.remove(user);
   }
+
  // Vérifie si un email est unique
   private async checkEmailUniqueness(email: string): Promise<void> {
     const existingUser = await this.userRepository.findOne({ where: { email } });
