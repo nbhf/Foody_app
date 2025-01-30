@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { UserRoleEnum } from '../enums/user-role.enum';
 import { Admin } from "src/admin/entities/admin.entity";
 import { TimestampEntites } from 'src/common/timestamp.entites.';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
+import { RecipeStatus } from 'src/recipe/enums/recipe.enum';
 
 
 @Entity('user')
@@ -41,13 +42,10 @@ export class User extends TimestampEntites {
 
   @Column({ nullable: true })
   imgUrl: string;
-
-  @ManyToOne(() => Admin, admin => admin.deletedUsers, { nullable: true })
-  deletedBy: Admin | null;
-
    
   @OneToMany(() => Recipe, recipe => recipe.createdBy)
   createdRecipes: Recipe[];
 
-
+  @ManyToMany(() => Recipe, recipe => recipe.savedBy)
+  savedRecipes: Recipe[];
 }

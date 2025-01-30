@@ -10,7 +10,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 
 
 @Controller('admin')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(RolesGuard)
 @Roles(UserRoleEnum.ADMIN)
 export class AdminController {
   constructor(private readonly adminService: AdminService,
@@ -47,6 +47,7 @@ export class AdminController {
   async validateRecipe(
   @Param('id') id: number, // Recipe ID
 ) {
+  console.log("gets into methos");
   return this.adminService.validateRecipe(id);
 }
 
