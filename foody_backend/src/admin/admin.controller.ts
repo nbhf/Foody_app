@@ -10,39 +10,49 @@ import { Roles } from 'src/decorators/roles.decorator';
 
 
 @Controller('admin')
-@UseGuards(RolesGuard)
-@Roles(UserRoleEnum.ADMIN)
+
 export class AdminController {
   constructor(private readonly adminService: AdminService,
               private readonly recipeService: RecipeService
   ) {}
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Post()
   create(@Body() createAdminDto: CreateAdminDto) {
     return this.adminService.create(createAdminDto);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Get()
   findAll() {
     return this.adminService.findAll();
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.adminService.findOne(+id);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
     return this.adminService.update(+id, updateAdminDto);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.adminService.remove(+id);
   }
 
-
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Post('validate-recipe/:id')
   async validateRecipe(
   @Param('id') id: number, // Recipe ID
@@ -51,7 +61,8 @@ export class AdminController {
   return this.adminService.validateRecipe(id);
 }
 
-
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Post('refuse-recipe/:id')
   async refuseRecipe(
     @Param('id') id: number,
