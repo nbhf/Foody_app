@@ -4,8 +4,7 @@ import { UserRoleEnum } from '../enums/user-role.enum';
 import { Admin } from "src/admin/entities/admin.entity";
 import { TimestampEntites } from 'src/common/timestamp.entites.';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
-import { RecipeStatus } from 'src/recipe/enums/recipe.enum';
-
+import { Comment } from 'src/comment/entities/comment.entity';
 
 @Entity('user')
 export class User extends TimestampEntites {
@@ -48,4 +47,7 @@ export class User extends TimestampEntites {
 
   @ManyToMany(() => Recipe, recipe => recipe.savedBy)
   savedRecipes: Recipe[];
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[];
+
 }

@@ -1,0 +1,26 @@
+.comment {
+    padding: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .user {
+    font-weight: bold;
+    margin-right: 8px;
+  }
+  
+  .content {
+    flex: 1;
+    color: #555;
+  }
+  
+  .date {
+    font-size: 0.8em;
+    color: gray;
+    margin-left: 8px;
+    white-space: nowrap;
+  }
+  
