@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Admin } from "src/admin/entities/admin.entity";
-import { RecipeStatus, RecipeType } from "../enums/recipe.enum";
+import {  RecipeType } from "../enums/recipe.enum";
 import { User } from "src/user/entities/user.entity";
 import { TimestampEntites } from "src/common/timestamp.entites.";
 
