@@ -33,13 +33,13 @@ export class RecipeController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  update(@Param('id') id: string, @Body() updateRecipeDto: UpdateRecipeDto) {
-    return this.recipeService.update(+id, updateRecipeDto);
+  update(@Param('id') id: string, @Body() updateRecipeDto: UpdateRecipeDto, @User() user) {
+    return this.recipeService.update(+id, updateRecipeDto,user);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  remove(@Param('id') id: string) {
-    return this.recipeService.remove(+id);
+  remove(@Param('id') id: string, @User() user) {
+    return this.recipeService.remove(+id,user);
   }
 }

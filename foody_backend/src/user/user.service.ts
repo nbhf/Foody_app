@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { UserRoleEnum } from './enums/user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -61,4 +62,7 @@ export class UserService {
     }
   }
 
+  isOwnerOrAdmin(objet, user) {
+    return user.role === UserRoleEnum.ADMIN || (objet.user && objet.createdBy.id === user.id);
+  }
 }
