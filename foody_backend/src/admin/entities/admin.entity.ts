@@ -3,6 +3,8 @@ import { User } from "src/user/entities/user.entity";
 import { UserRoleEnum } from "src/user/enums/user-role.enum";
 import { Exclude } from "class-transformer";
 import { TimestampEntites } from "src/common/timestamp.entites.";
+import { Recipe } from "src/recipe/entities/recipe.entity";
+import { RecipeStatus } from "src/recipe/enums/recipe.enum";
 
 @Entity('admin')
 export class Admin extends TimestampEntites{
@@ -36,11 +38,5 @@ export class Admin extends TimestampEntites{
     @Column()
     @Exclude()
     salt: string;
-    
-    //@OneToMany(() => Recipe, recipe => (recipe.status = RecipeStatus.VALIDATED))
-    //validatedRecipes: Recipe[];
-
-    @OneToMany(() => User, user => user.deletedBy)
-    deletedUsers: User[];
 
 }
