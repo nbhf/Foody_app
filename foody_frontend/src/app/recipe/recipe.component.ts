@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { AllRecipeService } from '../allrecipes/allrecipes.service';
 
 @Component({
   selector: 'app-recipe',
@@ -11,22 +13,25 @@ export class RecipeComponent implements OnInit {
   loading: boolean = true;  // Indicateur pour savoir si les données sont en train de se charger
   error: string = '';  // Message d'erreur en cas de problème
 
-  constructor(private http: HttpClient ) { }
+
+  constructor(
+    private route: ActivatedRoute,
+    private recipeService: AllRecipeService
+  ) {}
 
   ngOnInit(): void {
-    // Effectuer la requête HTTP pour récupérer la recette avec l'ID 3
-    this.http.get('http://localhost:3000/recipe/3')
-    .subscribe({
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.recipeService.getRecipeById(id).subscribe({
       next: (data) => {
-        this.recipe = data;  // Stocker les données récupérées
-        this.loading = false;  // Mettre à jour l'état de chargement
+        this.recipe = data;
+        this.loading = false;
       },
-      error: (error) => {
-        this.error = 'Failed to load recipe';  // Afficher un message en cas d'erreur
-        this.loading = false;  // Terminer le chargement
+      error: () => {
+        this.error = 'Failed to load recipe';
+        this.loading = false;
       }
     });
-  
   }
 
   saveRecipe() {

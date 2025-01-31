@@ -5,7 +5,7 @@
       <h3>{{ recipe.name }}</h3>
       <p>{{ recipe.category}}</p>
       <p>{{ recipe.description }}</p>
-      <button >Détails</button>
+      <button (click)="viewDetails(recipe.id)" >Details</button>
     </div>
 </div>
   
