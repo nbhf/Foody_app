@@ -17,17 +17,19 @@ export class AllrecipesComponent implements OnInit {
 
   ngOnInit() {
     // Immediately fetch the data when the component is loaded
-    this.recipeService.getRecipes().subscribe(
-      (data) => this.recipes = data,
-      (error) => console.error('Erreur lors de la récupération des recettes', error)
-    );
+    this.recipeService.getRecipes().subscribe({
+      next: (data) => this.recipes = data,
+      error: (error) => console.error('Error fetching recipes', error),
+      complete: () => console.log('Request completed')
+    });
+    
 
-    // Start polling after the initial fetch
     interval(this.pollInterval)
-      .pipe(switchMap(() => this.recipeService.getRecipes())) 
-      .subscribe(
-        (data) => this.recipes = data,
-        (error) => console.error('Erreur lors de la récupération des recettes', error)
-      );
+    .pipe(switchMap(() => this.recipeService.getRecipes()))
+    .subscribe({
+      next: (data) => this.recipes = data,
+      error: (error) => console.error('Erreur lors de la récupération des recettes', error)
+    });
+  
   }
 }
