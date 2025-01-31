@@ -34,6 +34,7 @@ dotenv.config();
       autoLoadEntities: true,
       entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
+      logging: true,
       
    
     }),

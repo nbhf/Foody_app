@@ -22,6 +22,7 @@ export class AuthService {
         const user = this.userRepository.create({
           ...userData
         });
+
         user.salt = await bcrypt.genSalt();
         user.password = await bcrypt.hash(user.password, user.salt);
         try {
@@ -60,6 +61,7 @@ export class AuthService {
         if (!user)
           throw new NotFoundException('username ou password erronée');
         // Si oui je vérifie est ce que le mot est correct ou pas
+
         const hashedPassword = await bcrypt.hash(password, user.salt);
         if (hashedPassword === user.password) {
 
