@@ -12,7 +12,7 @@ import { CommentComponent } from './comment/comment.component';
 import { CommentService } from './comment/comment.service';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
+import { SignupComponent } from './auth/signup/signup.component';
 @NgModule({
   declarations: [
     AppComponent,
