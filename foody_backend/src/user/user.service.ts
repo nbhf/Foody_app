@@ -2,9 +2,9 @@ import { Injectable, NotFoundException, ConflictException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { UserRoleEnum } from './enums/user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -12,7 +12,6 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-
 
   
 // Met à jour un utilisateur existant avec validation
@@ -53,6 +52,7 @@ export class UserService {
     const user = await this.findOne(id);
     await this.userRepository.remove(user);
   }
+
  // Vérifie si un email est unique
   private async checkEmailUniqueness(email: string): Promise<void> {
     const existingUser = await this.userRepository.findOne({ where: { email } });
@@ -61,4 +61,11 @@ export class UserService {
     }
   }
 
+  isOwnerOrAdmin(objet, user) {
+    return user.role === UserRoleEnum.ADMIN || (objet.createdBy && objet.createdBy.id === user.id);
+  }
+
+  isAdmin (user){
+    return user.role === UserRoleEnum.ADMIN
+  }
 }

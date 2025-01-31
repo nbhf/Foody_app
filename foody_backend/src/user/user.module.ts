@@ -9,6 +9,6 @@ import { UserController } from './user.controller';
   imports: [TypeOrmModule.forFeature([User])], // Enregistre l'entité avec TypeORM
   providers: [UserService],
   controllers: [UserController],
-  exports: [TypeOrmModule], // Exporte l'entité pour que d'autres modules puissent l'utiliser
+  exports: [TypeOrmModule, UserService], // Exporte l'entité pour que d'autres modules puissent l'utiliser
 })
 export class UserModule {}

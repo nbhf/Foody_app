@@ -21,7 +21,7 @@ export class CommentsService {
 
   // Récupérer tous les commentaires
   async findAll(): Promise<Comment[]> {
-    return this.commentsRepository.find();
+    return this.commentsRepository.find({ relations: ['author'], });
   }
 
   // Récupérer un commentaire par ID

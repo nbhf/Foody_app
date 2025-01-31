@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Admin } from "src/admin/entities/admin.entity";
 import {  RecipeStatus, RecipeType } from "../enums/recipe.enum";
 import { User } from "src/user/entities/user.entity";
@@ -27,19 +27,6 @@ export class Recipe extends TimestampEntites{
     })
     category: RecipeType;
 
-    
-    @Column({ type: 'boolean', default: false })
-    isValidated: boolean;
-    
-    @Column({nullable:true})
-    imageurl: string;
-
-    @Column({nullable:true})
-    description: string;
-    //rest of columns....
-
-
-    
     @Column({
         type: 'enum',
         enum: RecipeStatus,
@@ -49,11 +36,9 @@ export class Recipe extends TimestampEntites{
     
     @CreateDateColumn()
     validatedAt: Date;
-   
-    @ManyToOne(() => Admin, admin => admin.validatedRecipes)
-    validatedBy: Admin;
 
-    @ManyToMany(() => User, user => user.createdRecipes) 
+    @ManyToOne(() => User, (user) => user.createdRecipes)
+    @JoinColumn({ name: 'createdById' }) // This defines the foreign key
     createdBy: User;
 
     @ManyToMany(() => User, user => user.savedRecipes) 
