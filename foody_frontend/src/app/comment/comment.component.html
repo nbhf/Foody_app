@@ -1,6 +1,20 @@
-<!-- <div *ngFor="let comment of comments" class="comment">
-    <p class="user"><strong>{{ comment.authorID }}</strong></p>
-    <p class="content">{{ comment.content }}</p>
-    <p class="date">{{ comment.createdAt | date:'short' }}</p>
+<div *ngIf="loading" class="loading">
+  <p>comment loading!...</p>
+</div>
+
+<div *ngIf="error" class="error">
+  <p>{{ error }}</p>
+</div>
+
+<div *ngIf="!loading && comments.length > 0">
+  <div *ngFor="let comment of comments" class="comment-card">
+    <p><strong>{{ comment.author.username }}</strong></p>
+    <p>{{ comment.content }}</p>
+    <button (click)="reportComment(comment.id)" class="report-btn">Report</button>
   </div>
-   -->
+</div>
+
+<div *ngIf="!loading && comments.length === 0">
+  <p>no comment founded</p>
+</div>
+

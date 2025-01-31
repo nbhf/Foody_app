@@ -8,11 +8,11 @@
         type="text" 
         name="username" 
         [(ngModel)]="formData.username" 
-        placeholder="Nom d'utilisateur" 
+        placeholder="Username" 
         required 
         #username="ngModel">
       <div *ngIf="username.touched && username.invalid" class="error-message">
-        <div *ngIf="username.errors?.['required']">Le nom d'utilisateur est requis.</div>
+        <div *ngIf="username.errors?.['required']">Username is required</div>
       </div>
     </div>
 
@@ -22,15 +22,15 @@
         type="password" 
         name="password" 
         [(ngModel)]="formData.password" 
-        placeholder="Mot de passe" 
+        placeholder="Password" 
         required 
         #password="ngModel">
       <div *ngIf="password.touched && password.invalid" class="error-message">
-        <div *ngIf="password.errors?.['required']">Le mot de passe est requis.</div>
+        <div *ngIf="password.errors?.['required']">Password is required.</div>
       </div>
     </div>
 
     <!-- Bouton de connexion -->
-    <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+    <button type="submit" [disabled]="loginForm.invalid">Log in</button>
   </form>
 </div>

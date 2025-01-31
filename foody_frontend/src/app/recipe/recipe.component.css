@@ -52,3 +52,10 @@
     background-color: #218838;
   }
   
+  .recipe-image {
+    width:300px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  

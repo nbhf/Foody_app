@@ -1,8 +1,9 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Admin } from "src/admin/entities/admin.entity";
 import {  RecipeStatus, RecipeType } from "../enums/recipe.enum";
 import { User } from "src/user/entities/user.entity";
 import { TimestampEntites } from "src/common/timestamp.entites.";
+
 @Entity('recipe')
 export class Recipe extends TimestampEntites{
     @PrimaryGeneratedColumn()
@@ -26,7 +27,7 @@ export class Recipe extends TimestampEntites{
     })
     category: RecipeType;
 
-
+    
     @Column({ type: 'boolean', default: false })
     isValidated: boolean;
     
@@ -38,8 +39,7 @@ export class Recipe extends TimestampEntites{
     //rest of columns....
 
 
-    @ManyToOne(() => Admin, admin => admin.validatedRecipes)
-    validatedBy: Admin;
+    
     @Column({
         type: 'enum',
         enum: RecipeStatus,
@@ -49,11 +49,13 @@ export class Recipe extends TimestampEntites{
     
     @CreateDateColumn()
     validatedAt: Date;
+   
+    @ManyToOne(() => Admin, admin => admin.validatedRecipes)
+    validatedBy: Admin;
 
-    //@ManyToOne(() => Admin, admin => admin.validatedRecipes)
-    //validatedBy: Admin;
-
-    @ManyToOne(() => User, user => user.createdRecipes) // Assurez-vous que l'entité User a une relation `createdRecipes`
+    @ManyToMany(() => User, user => user.createdRecipes) 
     createdBy: User;
-    
+
+    @ManyToMany(() => User, user => user.savedRecipes) 
+    savedBy: User;
 }

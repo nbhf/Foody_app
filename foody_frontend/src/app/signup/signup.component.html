@@ -1,0 +1,42 @@
+<div class="signup-container">
+    <h2>Inscription</h2>
+  
+    <form [formGroup]="signupForm" (ngSubmit)="signup()">
+      <div>
+        <label>Nom d'utilisateur</label>
+        <input type="text" formControlName="username" placeholder="Entrez votre nom">
+        <p *ngIf="signupForm.controls['username'].invalid && signupForm.controls['username'].touched">
+          Nom d'utilisateur requis
+        </p>
+      </div>
+  
+      <div>
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="Entrez votre email">
+        <p *ngIf="signupForm.controls['email'].invalid && signupForm.controls['email'].touched">
+          Email invalide
+        </p>
+      </div>
+  
+      <div>
+        <label>Mot de passe</label>
+        <input type="password" formControlName="password" placeholder="Entrez votre mot de passe">
+        <p *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].touched">
+          Mot de passe requis (min 6 caractères)
+        </p>
+      </div>
+  
+      <div>
+        <label>Confirmez le mot de passe</label>
+        <input type="password" formControlName="confirmPassword" placeholder="Confirmez votre mot de passe">
+        <p *ngIf="signupForm.hasError('mismatch') && signupForm.controls['confirmPassword'].touched">
+          Les mots de passe ne correspondent pas
+        </p>
+      </div>
+  
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  
+      <button type="submit" [disabled]="signupForm.invalid">S'inscrire</button>
+    </form>
+  </div>
+  
