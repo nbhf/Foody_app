@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
   <div class="container-fluid">
     <button
       class="navbar-toggler"
@@ -15,13 +15,16 @@
     <div class="collapse navbar-collapse" id="navbarToggler">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active" aria-current="page">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Recipes</a>
+          <a class="nav-link" routerLink="/recipes" routerLinkActive="active">Recipes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Post Recipe</a>
+          <a class="nav-link" routerLink="/recipe-details" routerLinkActive="active">Recipe Details</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/post-recipe" routerLinkActive="active">Post Recipe</a>
         </li>
       </ul>
       
@@ -58,8 +61,8 @@
           <!-- Added dropdown-menu-end to align to the right -->
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Login</a></li>
-            <li><a class="dropdown-item" href="#">Signup</a></li>
+            <li><a class="dropdown-item" routerLink="/login" routerLinkActive="active">Login</a></li>
+            <li><a class="dropdown-item" routerLink="/signup" routerLinkActive="active">Signup</a></li>
             <li><a class="dropdown-item" href="#">Logout</a></li>
           </ul>
         </li>
