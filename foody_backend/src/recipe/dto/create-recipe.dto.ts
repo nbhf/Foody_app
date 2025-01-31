@@ -1,7 +1,7 @@
 // src/recipe/dto/create-recipe.dto.ts
 import { IsEnum, IsNotEmpty, IsArray, IsString, IsNumber, IsOptional } from 'class-validator';
 import { RecipeType, RecipeStatus } from '../enums/recipe.enum';
-import { ERROR_MESSAGES } from '../error_message';
+import { ERROR_MESSAGES } from '../../common/error_message';
 
 export class CreateRecipeDto {
     @IsNotEmpty({ message: ERROR_MESSAGES.RECIPE.NAME_REQUIRED })

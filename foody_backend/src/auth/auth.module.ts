@@ -6,12 +6,15 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 import { JwtStrategy } from './strategy/passport-jwt.strategy';
+import { AdminModule } from 'src/admin/admin.module';
+import { Admin } from 'src/admin/entities/admin.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 
 dotenv.config();
 @Module({
   imports: [
-    UserModule, // Importe UserModule pour accéder à l'entité User
+    UserModule,   AdminModule,// Importe UserModule pour accéder à l'entité User
     PassportModule.register({defaultStrategy: 'jwt'}),
     JwtModule.register({
       secret: process.env.JWT_SECRET, //defin in .env SECRET

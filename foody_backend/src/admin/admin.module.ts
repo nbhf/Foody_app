@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { RecipeService } from 'src/recipe/recipe.service';
 import { RecipeModule } from 'src/recipe/recipe.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   controllers: [AdminController],
@@ -17,8 +18,11 @@ import { RecipeModule } from 'src/recipe/recipe.module';
   imports: [
     TypeOrmModule.forFeature([Admin,Recipe,User]),
     ConfigModule.forRoot({isGlobal: true,}),
-    RecipeModule
-    
+    RecipeModule,
+    UserModule
+  ],
+  exports: [
+    TypeOrmModule
   ]
 })
 export class AdminModule {}

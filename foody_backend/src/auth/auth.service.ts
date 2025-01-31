@@ -1,12 +1,13 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UserSubscribeDto } from './dto/signup-credentials.dto';
 import { User } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFailedError, Repository } from 'typeorm';
+import {  QueryFailedError, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { LoginCredentialsDto } from './dto/login-credentials.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserRoleEnum } from 'src/user/enums/user-role.enum';
+import { Admin } from 'src/admin/entities/admin.entity';
 
 
 @Injectable()
@@ -14,7 +15,9 @@ export class AuthService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        @InjectRepository(Admin)
+        private adminRepository: Repository<Admin>
       ) {
       }
 
@@ -45,38 +48,60 @@ export class AuthService {
     
       }
 
-    async login(credentials: LoginCredentialsDto)  {
-        // Récupére le login et le mot de passe
-         const {username, password} = credentials; // On peut se logger ou via le username ou le password
-
-        // Vérifier est ce qu'il y a un user avec ce login ou ce mdp
+      async login(credentials: LoginCredentialsDto) {
+        const { username, password } = credentials;
+      
+        // Check if it's a user
         const user = await this.userRepository.createQueryBuilder("user")
-          .where("user.username = :username or user.email = :username",
-            {username}
-            )
+          .where("user.username = :username or user.email = :username", { username })
           .getOne();
-        // console.log(user);
-
-        // Si not user je déclenche une erreur
-        if (!user)
-          throw new NotFoundException('username ou password erronée');
-        // Si oui je vérifie est ce que le mot est correct ou pas
-
-        const hashedPassword = await bcrypt.hash(password, user.salt);
-        if (hashedPassword === user.password) {
-
-          const payload = {
-            id: user.id,
-            username: user.username,
-            role: user.role
-          };
-          const jwt = await this.jwtService.sign(payload);
-          return {
-            "access_token" : jwt
-          };
-        } else {
-          // Si mot de passe incorrect je déclenche une erreur
-          throw new NotFoundException('username ou password erronée');
+      
+        // Check if it's an admin
+        const admin = await this.adminRepository.createQueryBuilder("admin")
+          .where("admin.username = :username or admin.email = :username", { username })
+          .getOne();
+      
+        if (!user && !admin) {
+          throw new NotFoundException('Username or password is incorrect');
+        }
+      
+        if (user) {
+          // User login logic
+          const isUserPasswordValid = await this.verifyUserPassword(user, password);
+          if (!isUserPasswordValid) {
+            throw new UnauthorizedException('Invalid user credentials');
+          }
+          return this.generateToken(user, 'USER');
+        } else if (admin) {
+          // Admin login logic
+          const isAdminPasswordValid = await this.verifyAdminPassword(admin, password);
+          if (!isAdminPasswordValid) {
+            throw new UnauthorizedException('Invalid admin credentials');
+          }
+          return this.generateToken(admin, 'ADMIN');
         }
       }
+      
+      private async verifyUserPassword(user: User, password: string): Promise<boolean> {
+        const hashedPassword = await bcrypt.hash(password, user.salt);
+        return hashedPassword === user.password;
+      }
+      
+      private async verifyAdminPassword(admin: Admin, password: string): Promise<boolean> {
+        const hashedPassword = await bcrypt.hash(password, admin.salt);
+        return hashedPassword === admin.password;
+      }
+      
+      private async generateToken(entity: User | Admin, role: 'USER' | 'ADMIN') {
+        const payload = {
+          id: entity.id,
+          username: entity.username,
+          role: role
+        };
+        const jwt = await this.jwtService.sign(payload);
+        return {
+          "access_token": jwt
+        };
+      }
+      
 }

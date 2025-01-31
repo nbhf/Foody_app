@@ -1,0 +1,32 @@
+<div *ngIf="loading" class="loading">
+  <p>Loading...</p>  <!-- Affiche un message de chargement -->
+</div>
+
+<div *ngIf="error" class="error">
+  <p>{{ error }}</p>  <!-- Affiche un message d'erreur si la requête échoue -->
+</div>
+
+<div *ngIf="!loading && recipe" class="recipe-card">
+  <h2>{{ recipe.name }}</h2>
+  <!-- Affichage de l'image de la recette -->
+  <img  [src]="recipe.imageurl" alt="{{ recipe.name }}" class="recipe-image"/>
+
+  <p><strong>Description:</strong> {{ recipe.description }}</p>
+  <p><strong>Category:</strong> {{ recipe.category }}</p>
+
+  <div class="ingredients">
+    <h3>Ingredients:</h3>
+    <ul>
+      <li *ngFor="let ingredient of recipe.ingredients">{{ ingredient }}</li>
+    </ul>
+  </div>
+
+  <div class="instructions">
+    <h3>Instructions:</h3>
+    <ul>
+      <li *ngFor="let instruction of recipe.instructions">{{ instruction }}</li>
+    </ul>    
+  </div>
+
+  <button (click)="saveRecipe()" class="save-btn">Save</button>
+</div>

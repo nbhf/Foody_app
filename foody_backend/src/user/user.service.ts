@@ -2,8 +2,9 @@ import { Injectable, NotFoundException, ConflictException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
+import { UserRoleEnum } from './enums/user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -12,7 +13,8 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  // Met à jour un utilisateur existant avec validation
+  
+// Met à jour un utilisateur existant avec validation
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
 
@@ -53,11 +55,19 @@ export class UserService {
     await this.userRepository.remove(user);
   }
 
-  // Vérifie si un email est unique
+ // Vérifie si un email est unique
   private async checkEmailUniqueness(email: string): Promise<void> {
     const existingUser = await this.userRepository.findOne({ where: { email } });
     if (existingUser) {
       throw new ConflictException('Cet email est déjà utilisé.');
     }
+  }
+
+  isOwnerOrAdmin(objet, user) {
+    return user.role === UserRoleEnum.ADMIN || (objet.createdBy && objet.createdBy.id === user.id);
+  }
+
+  isAdmin (user){
+    return user.role === UserRoleEnum.ADMIN
   }
 }

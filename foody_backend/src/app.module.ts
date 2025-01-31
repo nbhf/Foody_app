@@ -14,7 +14,11 @@ import { Admin } from './admin/entities/admin.entity';
 import * as dotenv from 'dotenv';
 import { User } from './user/entities/user.entity';
 import { Recipe } from './recipe/entities/recipe.entity';
+
+import { Comment } from './comment/entities/comment.entity';
+
 import appConfig from './config/app.config';
+import { CommentModule } from './comment/comment.module';
 dotenv.config();
 
 
@@ -34,11 +38,8 @@ dotenv.config();
       autoLoadEntities: true,
       entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
-      logging: true,
-      
-   
     }),
-    AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule],
+    AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule,CommentModule],
   controllers: [AppController],
   providers: [AppService],
 })

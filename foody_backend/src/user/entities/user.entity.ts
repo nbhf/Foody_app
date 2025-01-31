@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { UserRoleEnum } from '../enums/user-role.enum';
 import { Admin } from "src/admin/entities/admin.entity";
-import { TimestampEntites } from 'src/common/timestamp.entites.';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
+import { TimestampEntites } from 'src/common/timestamp.entites.';
 
 
 @Entity('user')
@@ -31,6 +32,12 @@ export class User extends TimestampEntites {
   @Exclude()
   salt: string;
 
+
+  @Column({ nullable: true })
+  imgUrl: string;
+
+
+
   @Column({
     type: 'enum',
     enum: UserRoleEnum,
@@ -38,16 +45,17 @@ export class User extends TimestampEntites {
   })
   role: string;
 
+  
 
-  @Column({ nullable: true })
-  imgUrl: string;
-
-  @ManyToOne(() => Admin, admin => admin.deletedUsers, { nullable: true })
-  deletedBy: Admin | null;
-
+  
    
   @OneToMany(() => Recipe, recipe => recipe.createdBy)
   createdRecipes: Recipe[];
 
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[];
+
+  @ManyToMany(() => Recipe, recipe => recipe.savedBy)
+  savedRecipes: Recipe;
 
 }
