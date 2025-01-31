@@ -19,7 +19,7 @@ export class DatabaseSeederService {
   ) {}
 
   async seed() {
-    console.log('🚀 Starting database seeding...');
+    console.log('Starting database seeding...');
 
     // =======================  ADMIN ACCOUNTS =======================
     const adminsData = [

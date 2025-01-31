@@ -13,6 +13,9 @@ import { CommentService } from './comment/comment.service';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,14 +23,17 @@ import { SignupComponent } from './auth/signup/signup.component';
     CommentComponent,
     RecipeDetailsComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    NavbarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule ,
     FormsModule ,
-    ReactiveFormsModule  
+    ReactiveFormsModule,
+    BrowserAnimationsModule  
 
   ],
   providers: [CommentService , { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],

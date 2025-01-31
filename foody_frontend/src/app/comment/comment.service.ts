@@ -52,7 +52,7 @@ export class CommentService {
       content: commentaire
     };
 
-    return this.http.post<any>(this.apiUrl, payload, { headers });
+    return this.http.post<any>(`${this.apiUrl}/comments/`, payload, { headers });
   }
  
 }
