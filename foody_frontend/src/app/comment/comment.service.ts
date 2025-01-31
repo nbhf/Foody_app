@@ -45,14 +45,11 @@ export class CommentService {
       throw new Error('Token non trouvé');
     }
 
-    // Ajouter le token dans l'en-tête de la requête
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
     const payload = {
       content: commentaire
     };
 
-    return this.http.post<any>(`${this.apiUrl}/comments/`, payload, { headers });
+    return this.http.post<any>(`${this.apiUrl}/comments/`, payload);
   }
  
 }

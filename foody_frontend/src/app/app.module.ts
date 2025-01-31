@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'; 
 import { FormsModule , ReactiveFormsModule } from '@angular/forms';  
-import { AuthInterceptor } from './auth/auth.interceptor';
+import { authInterceptorProvider } from './auth/interceptors/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -38,7 +38,7 @@ import { HomeComponent } from './shared/components/home/home.component';
     BrowserAnimationsModule  
 
   ],
-  providers: [CommentService , { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  providers: [CommentService , authInterceptorProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

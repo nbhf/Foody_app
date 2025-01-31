@@ -3,10 +3,11 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HTTP_INTERCEPTORS
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+
 
 
 @Injectable()
@@ -29,3 +30,9 @@ export class AuthInterceptor implements HttpInterceptor {
     }
   }
 }
+
+export const authInterceptorProvider = {
+  useClass: AuthInterceptor,
+  provide: HTTP_INTERCEPTORS,
+  multi: true
+};
