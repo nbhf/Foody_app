@@ -17,6 +17,7 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './shared/components/home/home.component';
+import { AllrecipesComponent } from './allrecipes/allrecipes.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,8 @@ import { HomeComponent } from './shared/components/home/home.component';
     SignupComponent,
     NavbarComponent,
     FooterComponent,
-    HomeComponent
+    HomeComponent,
+    AllrecipesComponent
   ],
   imports: [
     BrowserModule,

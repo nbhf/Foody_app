@@ -72,29 +72,36 @@ export class DatabaseSeederService {
     const recipesData = [
       {
         name: 'Salad Recipe',
+        description: 'A fresh and healthy salad with tomatoes, cucumbers, and lettuce.',
+        imgUrl: 'https://th.bing.com/th/id/OIP.jevUF8toFBsTCfqvRcuIRQHaLH?rs=1&pid=ImgDetMain',
         ingredients: ['Lettuce', 'Tomato', 'Cucumber'],
         instructions: ['Chop lettuce', 'Chop tomato', 'Mix together'],
         category: RecipeType.LUNCH,
-        status: RecipeStatus.ON_HOLD,
+        status: RecipeStatus.VALIDATED,
         createdBy: users[0],
       },
       {
         name: 'Spaghetti Carbonara',
+        description: 'A classic Italian pasta dish with creamy sauce, eggs, and bacon.',
+        imgUrl: 'https://th.bing.com/th/id/OIP.3MJODhMHPQg6v11AKki79QHaFj?rs=1&pid=ImgDetMain',
         ingredients: ['Spaghetti', 'Eggs', 'Bacon'],
         instructions: ['Cook spaghetti', 'Mix eggs and bacon', 'Combine and serve'],
         category: RecipeType.DINNER,
-        status: RecipeStatus.ON_HOLD,
+        status: RecipeStatus.VALIDATED,
         createdBy: users[1],
       },
       {
         name: 'Grilled Chicken',
+        description: 'Juicy grilled chicken with a flavorful garlic herb marinade.',
+        imgUrl: 'https://th.bing.com/th/id/OIP.Ow_TG1jIT5O2d7nMcXm_QwHaJQ?rs=1&pid=ImgDetMain',
         ingredients: ['Chicken', 'Garlic', 'Herbs'],
         instructions: ['Marinate chicken', 'Grill until cooked', 'Serve with herbs'],
         category: RecipeType.DINNER,
-        status: RecipeStatus.ON_HOLD,
+        status: RecipeStatus.VALIDATED,
         createdBy: users[2],
       },
     ];
+
 
     for (const recipeData of recipesData) {
       let recipe = await this.recipeRepository.findOne({ where: { name: recipeData.name } });

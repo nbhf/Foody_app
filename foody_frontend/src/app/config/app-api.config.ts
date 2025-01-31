@@ -6,5 +6,6 @@ export const APP_API = {
     auth: 'http://localhost:3000/auth',
     recipe:'http://localhost:3000/recipe',
     comment:'http://localhost:3000/comments',
+    allvalidatesrecipes: 'http://localhost:3000/recipe/validated',
   
   }

@@ -20,6 +20,12 @@ export class Recipe extends TimestampEntites{
     @Column("simple-array")
     instructions: string[];
 
+    @Column({ type: 'text' })
+    description: string;  
+  
+    @Column()
+    imgUrl: string; 
+
     @Column({
         type: 'enum',
         enum: RecipeType,
