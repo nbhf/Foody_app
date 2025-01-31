@@ -41,7 +41,12 @@
         </a>
         
       </li>
-      <!-- Notification dropdown -->
+      <!-- Notification -->
+
+      <!-- Show username -->
+      <li class="nav-item" *ngIf="username">
+        <span class="nav-link fw-bold">{{ username }}</span>
+      </li>
 
       <!-- Dropdown menu for profile, login, logout, signup -->
         <li class="nav-item dropdown">
@@ -60,7 +65,7 @@
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><a class="dropdown-item" routerLink="/login" routerLinkActive="active">Login</a></li>
             <li><a class="dropdown-item" routerLink="/signup" routerLinkActive="active">Signup</a></li>
-            <li><a class="dropdown-item" href="#">Logout</a></li>
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
           </ul>
         </li>
       </ul>
