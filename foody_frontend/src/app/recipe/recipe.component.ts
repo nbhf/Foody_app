@@ -9,9 +9,9 @@ import { AllRecipeService } from '../allrecipes/allrecipes.service';
   styleUrls: ['./recipe.component.css']
 })
 export class RecipeComponent implements OnInit {
-  recipe: any;  // Déclaration pour stocker les données de la recette
-  loading: boolean = true;  // Indicateur pour savoir si les données sont en train de se charger
-  error: string = '';  // Message d'erreur en cas de problème
+  recipe: any;  
+  loading: boolean = true;  
+  error: string = '';  
 
 
   constructor(
@@ -32,6 +32,10 @@ export class RecipeComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  getUsername(): string {
+    return this.recipe?.createdBy?.username || 'Unknown User';
   }
 
   saveRecipe() {
