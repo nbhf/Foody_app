@@ -3,7 +3,7 @@ export const APP_ROUTES = {
     signup:'signup',
     login:'login',
     allrecipes:'AllRecipes',
-    recipedetails:'recipe-details',
+    recipedetails:'recipe/:id',
     postrecipe: 'recipe/add',
 
   };

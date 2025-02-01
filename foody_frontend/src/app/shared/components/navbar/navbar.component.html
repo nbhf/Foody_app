@@ -21,9 +21,6 @@
           <a class="nav-link" routerLink="/AllRecipes" routerLinkActive="active">Recipes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/recipe-details" routerLinkActive="active">Recipe Details</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" routerLink="/recipe/add" routerLinkActive="active">Post Recipe</a>
         </li>
       </ul>
@@ -39,12 +36,17 @@
           mdbDropdownToggle
           aria-expanded="false"
         >
-          <i class="fas fa-bell"></i>
+          <i class="fas fa-bell" style="font-size: 1.5rem;"></i>
           <span class="badge rounded-pill badge-notification bg-danger">1</span>
         </a>
         
       </li>
-      <!-- Notification dropdown -->
+      <!-- Notification -->
+
+      <!-- Show username -->
+      <li class="nav-item" *ngIf="username">
+        <span class="nav-link fw-bold" style="font-size: 15px;">{{ username }}</span>
+      </li>
 
       <!-- Dropdown menu for profile, login, logout, signup -->
         <li class="nav-item dropdown">
@@ -56,14 +58,14 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).webp" alt="Profile" class="rounded-circle" style="width: 30px; height: 30px;">
+            <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).webp" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px;">
           </a>
           <!-- Added dropdown-menu-end to align to the right -->
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><a class="dropdown-item" routerLink="/login" routerLinkActive="active">Login</a></li>
             <li><a class="dropdown-item" routerLink="/signup" routerLinkActive="active">Signup</a></li>
-            <li><a class="dropdown-item" href="#">Logout</a></li>
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
           </ul>
         </li>
       </ul>

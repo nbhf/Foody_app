@@ -15,4 +15,8 @@ export class AllRecipeService {
     return this.http.get<Recipe[]>(APP_API.allvalidatesrecipes);
   }
 
+  getRecipeById(id: number): Observable<Recipe> {
+    return this.http.get<Recipe>(`${APP_API.recipe}/${id}`);
+  }
+
 }
