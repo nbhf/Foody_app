@@ -25,7 +25,6 @@ export class AuthService {
         const user = this.userRepository.create({
           ...userData
         });
-
         user.salt = await bcrypt.genSalt();
         user.password = await bcrypt.hash(user.password, user.salt);
         try {

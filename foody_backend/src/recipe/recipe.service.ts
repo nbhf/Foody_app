@@ -29,10 +29,16 @@ export class RecipeService {
 
   async findValidated(): Promise<Recipe[]> {
     try {
-      return await this.recipeRepository.find({
+      const recipes = await this.recipeRepository.find({
         where: { status: RecipeStatus.VALIDATED }, 
         relations: ['createdBy'], 
       });
+
+      if (recipes.length === 0) {
+        throw new NotFoundException(`Aucune recette validee trouvée `);
+      }
+      return recipes;
+      
     } catch (error) {
       console.error('Error fetching validated recipes:', error.message);
       throw error;

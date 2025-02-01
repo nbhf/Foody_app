@@ -6,7 +6,7 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
 import { RecipeStatus } from 'src/recipe/enums/recipe.enum';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/entities/user.entity';
 
@@ -27,6 +27,7 @@ export class AdminService {
     const admin = this.adminRepository.create({
       ...createAdminDto
     });
+    const bcrypt = require('bcryptjs');
     admin.salt = await bcrypt.genSalt();
     admin.password = await bcrypt.hash(admin.password, admin.salt);
      try {

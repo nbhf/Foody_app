@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,7 +11,10 @@ export class LoginComponent {
   formData = { username: '', password: '' };
 
 
-  constructor(private authService:AuthService) {}
+  constructor(
+    private authService:AuthService,
+    private router: Router,
+    private route: ActivatedRoute) {}
 
   login() {
     if (!this.formData.username.trim() || !this.formData.password.trim()) {
@@ -26,6 +30,11 @@ export class LoginComponent {
           this.authService.setToken(token);
           console.log('Connexion réussie ! Token:', token);
           alert('Connexion réussie !');
+
+          // Récupérer le returnUrl ou rediriger vers '/'
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+          this.router.navigateByUrl(returnUrl);
+
         } else {
           console.error('Le token n\'a pas été reçu dans la réponse.');
           alert('Erreur : Le token est manquant.');
