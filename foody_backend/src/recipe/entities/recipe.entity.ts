@@ -23,7 +23,7 @@ export class Recipe extends TimestampEntites{
     @Column({ type: 'text' })
     description: string;  
   
-    @Column()
+    @Column({nullable: true })
     imgUrl: string; 
 
     @Column({

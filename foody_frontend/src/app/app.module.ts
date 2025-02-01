@@ -18,6 +18,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './shared/components/home/home.component';
 import { AllrecipesComponent } from './allrecipes/allrecipes.component';
+import { DefaultImagePipe } from './shared/pipes/default-image.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +30,8 @@ import { AllrecipesComponent } from './allrecipes/allrecipes.component';
     NavbarComponent,
     FooterComponent,
     HomeComponent,
-    AllrecipesComponent
+    AllrecipesComponent,
+    DefaultImagePipe
   ],
   imports: [
     BrowserModule,
