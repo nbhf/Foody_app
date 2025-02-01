@@ -6,9 +6,10 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
 import { RecipeStatus } from 'src/recipe/enums/recipe.enum';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/entities/user.entity';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class AdminService {
@@ -18,16 +19,14 @@ export class AdminService {
     @InjectRepository(Recipe)
     private readonly recipeRepository: Repository<Recipe>,
     //@InjectRepository(User) private repository: Repository<User>
+    private notificationService: NotificationService,
   ) {}
 
 
-
-  
   async create(createAdminDto: CreateAdminDto): Promise<Partial<Admin>> {
     const admin = this.adminRepository.create({
       ...createAdminDto
     });
-    const bcrypt = require('bcryptjs');
     admin.salt = await bcrypt.genSalt();
     admin.password = await bcrypt.hash(admin.password, admin.salt);
      try {
@@ -70,7 +69,7 @@ export class AdminService {
 
   async validateRecipe(recipeId: number): Promise<Recipe> {
     const recipe = await this.recipeRepository.findOne({
-      where: { id: recipeId }
+      where: { id: recipeId } , relations: ['createdBy']
     });
     
     if (!recipe) {
@@ -79,13 +78,16 @@ export class AdminService {
   
     recipe.status = RecipeStatus.VALIDATED;
     recipe.validatedAt = new Date();
+
+    const userId = recipe.createdBy.id;
+    await this.notificationService.createUserNotification(`Your recipe ${recipe.name} has been approved.`, userId);
   
     return await this.recipeRepository.save(recipe);
   }
 
   async refuseRecipe(recipeId: number): Promise<Recipe> {
     const recipe = await this.recipeRepository.findOne({
-      where: { id: recipeId }
+      where: { id: recipeId }, relations: ['createdBy']
     });
     
     if (!recipe) {
@@ -94,8 +96,10 @@ export class AdminService {
   
     recipe.status = RecipeStatus.REFUSED;
     recipe.validatedAt = new Date();
+
+    const userId = recipe.createdBy.id;
+    await this.notificationService.createUserNotification(`Your recipe ${recipe.name} has been refused.`, userId);
     
-  
     return await this.recipeRepository.save(recipe);
   }
 

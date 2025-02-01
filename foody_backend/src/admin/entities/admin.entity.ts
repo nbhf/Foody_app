@@ -5,6 +5,7 @@ import { Exclude } from "class-transformer";
 import { TimestampEntites } from "src/common/timestamp.entites.";
 import { Recipe } from "src/recipe/entities/recipe.entity";
 import { RecipeStatus } from "src/recipe/enums/recipe.enum";
+import { Notification } from "src/notification/entities/notification.entity";
 
 @Entity('admin')
 export class Admin extends TimestampEntites{
@@ -38,5 +39,8 @@ export class Admin extends TimestampEntites{
     @Column()
     @Exclude()
     salt: string;
+
+    @OneToMany(() => Notification, notification => notification.admin)
+    notifications: Notification[];
 
 }

@@ -6,6 +6,7 @@ import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { RecipeStatus } from './enums/recipe.enum';
 import { UserService } from 'src/user/user.service';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class RecipeService {
@@ -13,6 +14,7 @@ export class RecipeService {
     @InjectRepository(Recipe)
     private readonly recipeRepository: Repository<Recipe>,
     private userService: UserService,
+    private notificationService: NotificationService,
   ) {}
 
   async create(createRecipeDto: CreateRecipeDto, user): Promise<Recipe> {
@@ -20,6 +22,13 @@ export class RecipeService {
       const newRecipe = this.recipeRepository.create(createRecipeDto);
       newRecipe.status = RecipeStatus.ON_HOLD;
       newRecipe.createdBy = user;
+
+      const userId= user.id;
+      const adminId= 7;
+      await this.notificationService.createNotificationForAllAdmins('A new recipe has been submitted!');
+      await this.notificationService.createUserNotification('Your recipe has been submitted!', userId);
+
+
       return await this.recipeRepository.save(newRecipe);
     } catch (error) {
       console.error('Error creating recipe:', error.message);

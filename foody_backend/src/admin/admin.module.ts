@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { RecipeService } from 'src/recipe/recipe.service';
 import { RecipeModule } from 'src/recipe/recipe.module';
 import { UserModule } from 'src/user/user.module';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   controllers: [AdminController],
@@ -19,7 +20,8 @@ import { UserModule } from 'src/user/user.module';
     TypeOrmModule.forFeature([Admin,Recipe,User]),
     ConfigModule.forRoot({isGlobal: true,}),
     RecipeModule,
-    UserModule
+    UserModule,
+    NotificationModule
   ],
   exports: [
     TypeOrmModule

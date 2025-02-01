@@ -5,7 +5,7 @@ import { Admin } from "src/admin/entities/admin.entity";
 import { Recipe } from 'src/recipe/entities/recipe.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { TimestampEntites } from 'src/common/timestamp.entites.';
-
+import { Notification } from 'src/notification/entities/notification.entity';
 
 @Entity('user')
 export class User extends TimestampEntites {
@@ -57,5 +57,9 @@ export class User extends TimestampEntites {
 
   @ManyToMany(() => Recipe, recipe => recipe.savedBy)
   savedRecipes: Recipe;
+
+
+  @OneToMany(() => Notification, notification => notification.user)
+  notifications: Notification[];
 
 }
