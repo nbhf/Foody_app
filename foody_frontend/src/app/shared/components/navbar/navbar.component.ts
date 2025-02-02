@@ -19,7 +19,7 @@ export class NavbarComponent {
   ngOnInit(): void {
     this.username = this.authService.getUser(); 
     this.currentUser = this.authService.getCurrentUser(); 
-    this.isAdmin = this.currentUser.role === 'admin'; 
+    if (this.currentUser) {this.isAdmin = this.currentUser.role === 'admin'; }
 
     this.notificationService.userUnreadCount$.subscribe(count => {
       this.userUnreadCount = count;

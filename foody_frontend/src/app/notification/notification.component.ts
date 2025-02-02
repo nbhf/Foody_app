@@ -46,21 +46,21 @@ export class NotificationComponent implements OnInit {
 
   loadAdminNotifications(): void {
     this.notificationService.getAdminNotifications(this.currentUser.id).subscribe(
-      (notifications) => {
+     { next: (notifications) => {
         this.adminNotifications = notifications;
         this.unreadCount  = notifications.filter(n => !n.isRead).length;
         this.notificationService.setAdminUnreadCount(this.unreadCount ); 
       },
-      (error) => {
+      error: (error) => {
         console.error('Error loading admin notifications', error);
-      }
+      }}
     );
   }
 
   markAsRead(notification: Notification): void {
     if (!notification.isRead) {
       this.notificationService.markAsRead(notification.id).subscribe(
-        () => {
+      { next: () => {
           notification.isRead = true;
           if (this.isAdmin) {
             this.notificationService.setAdminUnreadCount(this.adminNotifications.filter(n => !n.isRead).length);
@@ -68,9 +68,9 @@ export class NotificationComponent implements OnInit {
             this.notificationService.setUserUnreadCount(this.userNotifications.filter(n => !n.isRead).length);
           }
         },
-        (error) => {
+        error:(error) => {
           console.error('Error marking notification as read:', error);
-        }
+        }}
       );
     }
   }

@@ -21,6 +21,7 @@ export class AuthService {
       if (response && response.access_token) {
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('username', username);  
+        localStorage.setItem('role',this.getCurrentUser().role );  
         console.log(this.getCurrentUser());
       }
     })
