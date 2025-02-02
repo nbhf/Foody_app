@@ -5,11 +5,11 @@ import { AuthService } from '../auth/auth.service';
 import { map } from 'rxjs/operators';
 
 export interface Comment {
-  id: number;
+  id:number;
   content: string;
-  authorId: 1;
-  createdAt: Date;
-
+  username: string;
+  report:any;
+  
 }
 
 @Injectable({
@@ -21,23 +21,22 @@ export class CommentService {
 
   
   // Récupérer tous les commentaires avec les auteurs
-  getComments(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/comments`).pipe(
-      map(comments =>
-        comments.map(comment =>
-          this.http.get<any>(`${this.apiUrl}/user/${comment.authorId}`).pipe(
-            map(user => ({ ...comment, authorName: user.username }))
-          )
-        )
-      )
+  getComments(): Observable<Comment[]> {
+   return this.http.get<any[]>(`${this.apiUrl}/comments`).pipe(
+      map(comments => comments.map(comment => ({
+        id:comment.id,
+        content: comment.content,
+        username: comment.author.username,
+        report: comment.report // Ajoute un compteur de signalement par défaut
+
+      })))
     );
   }
 
-  // Signaler un commentaire
-  reportComment(commentId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/comments/${commentId}/report`, {});
-  }
-   
+ // Signaler un commentaire
+ reportComment(commentId: number): Observable<Comment | null> {
+  return this.http.patch<Comment | null>(`${this.apiUrl}/comments/${commentId}/report`, {});
+}
   // Fonction pour sauvegarder un commentaire
   saveComment(commentaire: string): Observable<any> {
     const token = this.authService.getToken();
@@ -52,7 +51,9 @@ export class CommentService {
       content: commentaire
     };
 
-    return this.http.post<any>(this.apiUrl, payload, { headers });
+    return this.http.post<any>(`${this.apiUrl}/comments/`, payload, { headers });
   }
  
+
+  
 }

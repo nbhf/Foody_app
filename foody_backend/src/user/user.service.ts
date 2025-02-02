@@ -1,16 +1,19 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException ,ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserRoleEnum } from './enums/user-role.enum';
+import { Recipe } from 'src/recipe/entities/recipe.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Recipe)
+    private readonly recipeRepository: Repository<Recipe>,
   ) {}
 
   
@@ -68,4 +71,30 @@ export class UserService {
   isAdmin (user){
     return user.role === UserRoleEnum.ADMIN
   }
+
+  async saveRecipe(userId: number, recipeId: number): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['savedRecipes'] });
+    const recipe = await this.recipeRepository.findOne({ where: { id: recipeId } });
+
+    if (!user || !recipe) {
+      throw new Error('User or Recipe not found');
+    }
+
+    user.savedRecipes.push(recipe);
+    return this.userRepository.save(user);
+  }
+
+
+   // Récupérer les recettes sauvegardées par un utilisateur donné
+   async getSavedRecipes(userId: number): Promise<Recipe[]>{
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['savedRecipes'], // Charger la relation "savedRecipes"
+    });
+    if(!user){
+      throw new Error('Utilisateur non trouvé');
+    }
+    return  user.savedRecipes ;
+  }
+
 }

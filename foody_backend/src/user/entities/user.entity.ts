@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany,JoinTable} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { UserRoleEnum } from '../enums/user-role.enum';
 import { Admin } from "src/admin/entities/admin.entity";
@@ -43,11 +43,7 @@ export class User extends TimestampEntites {
     enum: UserRoleEnum,
     default: UserRoleEnum.USER
   })
-  role: string;
-
-  
-
-  
+  role: string;  
    
   @OneToMany(() => Recipe, recipe => recipe.createdBy)
   createdRecipes: Recipe[];
@@ -55,7 +51,10 @@ export class User extends TimestampEntites {
   @OneToMany(() => Comment, (comment) => comment.author)
   comments: Comment[];
 
-  @ManyToMany(() => Recipe, recipe => recipe.savedBy)
-  savedRecipes: Recipe;
+
+  
+  @ManyToMany(() => Recipe, (recipe) => recipe.savedBy)
+  @JoinTable({name:"user_saved_recipes"})
+  savedRecipes: Recipe[];
 
 }

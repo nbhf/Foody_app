@@ -1,5 +1,5 @@
 // src/comments/comments.controller.ts
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards,Patch } from '@nestjs/common';
 import { CommentsService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Comment } from './entities/comment.entity';
@@ -19,6 +19,7 @@ export class CommentsController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll(): Promise<Comment[]> {
     return this.commentsService.findAll();
   }
@@ -27,4 +28,14 @@ export class CommentsController {
   findOne(@Param('id') id: number): Promise<Comment> {
     return this.commentsService.findOne(id);
   }
+
+  @Patch(':id/report')
+  async reportComment(@Param('id') id: number) {
+    const updatedComment = await this.commentsService.reportComment(id);
+    if (!updatedComment) {
+      return null; // Le commentaire a été supprimé, retourner null
+    }
+    return updatedComment; // Retourner le commentaire mis à jour avec le compteur de signalements
+  }
+
 }

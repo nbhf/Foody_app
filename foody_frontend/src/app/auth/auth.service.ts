@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable} from 'rxjs';
+import { Observable, of, throwError} from 'rxjs';
 import { tap } from 'rxjs/operators'; // Importation de l'opérateur tap
+import {jwtDecode} from 'jwt-decode';  // Importation par défaut
+
+
+export interface PayloadInterface {
+  id: number;
+  role: string;
+  username: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -29,19 +37,45 @@ signup(userData: any): Observable<any> {
   return this.http.post(this.apiUrl2, userData);
 }
 
+
+getUserId(): number | null {
+  const token = this.getToken();
+  if (token) {
+    try {
+      const decodedToken: any = jwtDecode(token);  // Décodage du token
+      console.log('Decoded Token:', decodedToken); // Debugging
+      return decodedToken.id;
+    } catch (error) {
+      console.error('Erreur lors du décodage du token:', error);
+      return null;
+    }
+  }
+  return null;
+}
+
+
+
+getUser(): Observable<any> {
+  const token = localStorage.getItem('token'); 
+  if (!token) return throwError(() => new Error("No token found"));
+
+  const decodedToken: PayloadInterface = jwtDecode<PayloadInterface>(token);
+  return of(decodedToken);}
+
+
   // Fonction pour récupérer le token depuis le localStorage
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('access_token');
   }
 
   // Fonction pour stocker le token dans le localStorage
   setToken(token: string): void {
-    localStorage.setItem('authToken', token);
+    localStorage.setItem('access_token', token);
   }
 
   // Fonction pour effacer le token lors de la déconnexion
   logout(): void {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('access_token');
   }
 
   // Fonction pour vérifier si l'utilisateur est connecté

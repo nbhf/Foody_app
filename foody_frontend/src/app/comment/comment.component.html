@@ -1,20 +1,10 @@
-<div *ngIf="loading" class="loading">
-  <p>comment loading!...</p>
-</div>
+<div *ngIf="loading">Chargement des commentaires...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
 
-<div *ngIf="error" class="error">
-  <p>{{ error }}</p>
-</div>
+<div *ngFor="let comment of comments">
+  <p><strong>{{ comment.username }}</strong>:  {{ comment.content | slice:0:100 }}...</p>
+  <!-- Icône de signalement -->
+  <!-- <i class="fa fa-exclamation-triangle" (click)="reportComment(comment.id)" style="cursor: pointer;"></i> -->
+  <button  (click)="report(comment.id)">🚨 Signaler </button>
 
-<div *ngIf="!loading && comments.length > 0">
-  <div *ngFor="let comment of comments" class="comment-card">
-    <p><strong>{{ comment.author.username }}</strong></p>
-    <p>{{ comment.content }}</p>
-    <button (click)="reportComment(comment.id)" class="report-btn">Report</button>
-  </div>
 </div>
-
-<div *ngIf="!loading && comments.length === 0">
-  <p>no comment founded</p>
-</div>
-

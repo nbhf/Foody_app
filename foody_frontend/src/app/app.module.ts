@@ -13,6 +13,7 @@ import { CommentService } from './comment/comment.service';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { RecipeCreateComponent } from './recipe-create/recipe-create.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,8 @@ import { SignupComponent } from './signup/signup.component';
     CommentComponent,
     RecipeDetailsComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    RecipeCreateComponent
   ],
   imports: [
     BrowserModule,
