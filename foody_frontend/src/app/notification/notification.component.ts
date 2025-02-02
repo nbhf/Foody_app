@@ -13,6 +13,7 @@ export class NotificationComponent implements OnInit {
   adminNotifications: Notification[] = [];
   currentUser: any;
   isAdmin: boolean = false;
+ unreadCount =0;
 
   constructor(
     private notificationService: NotificationService,
@@ -34,8 +35,8 @@ export class NotificationComponent implements OnInit {
     this.notificationService.getUserNotifications(this.currentUser.id).subscribe(
       (notifications) => {
         this.userNotifications = notifications;
-        const unreadCount = notifications.filter(n => !n.isRead).length;
-        this.notificationService.setUserUnreadCount(unreadCount); // Utilisation de la méthode du service
+        this.unreadCount = notifications.filter(n => !n.isRead).length;
+        this.notificationService.setUserUnreadCount(this.unreadCount ); 
       },
       (error) => {
         console.error('Error loading user notifications', error);
@@ -47,8 +48,8 @@ export class NotificationComponent implements OnInit {
     this.notificationService.getAdminNotifications(this.currentUser.id).subscribe(
       (notifications) => {
         this.adminNotifications = notifications;
-        const unreadCount = notifications.filter(n => !n.isRead).length;
-        this.notificationService.setAdminUnreadCount(unreadCount); // Utilisation de la méthode du service
+        this.unreadCount  = notifications.filter(n => !n.isRead).length;
+        this.notificationService.setAdminUnreadCount(this.unreadCount ); 
       },
       (error) => {
         console.error('Error loading admin notifications', error);

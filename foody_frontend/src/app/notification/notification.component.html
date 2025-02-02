@@ -1,58 +1,35 @@
-
-<!-- <div class="notification-bell" (click)="fetchNotifications()">
-    🔔 <span *ngIf="unreadCount">{{ unreadCount }}</span>
-  </div>
-  
- -->
-  
-  <div *ngIf="isAdmin && adminNotifications.length">
-    <h3>Admin Notifications</h3>
-    <ul>
+<div class="notifications-container">
+  <div *ngIf="isAdmin && adminNotifications.length" class="notification-section">
+    <h3 class="section-title">Admin Notifications ({{ unreadCount }})</h3>
+    <ul class="notification-list">
       <li *ngFor="let notification of adminNotifications" 
           [ngClass]="{ 'unread': !notification.isRead }" 
-          [style.background-color]="notification.isRead ? '#d4edda' : '#f8d7da'"
-          [style.color]="notification.isRead ? '#155724' : '#721c24'"
-          [style.padding]="'10px'"
-          [style.border-bottom]="'1px solid #ddd'">
-        <p>{{ notification.message }}</p>
-        <small>{{ notification.createdAt }}</small>
-        <button (click)="markAsRead(notification)" 
-                [style.background-color]="'#007bff'" 
-                [style.color]="'white'" 
-                [style.border]="'none'" 
-                [style.padding]="'5px 10px'" 
-                [style.cursor]="'pointer'" 
-                [style.border-radius]="'3px'">
+          class="notification-item">
+        <div class="notification-content">
+          <p class="message">{{ notification.message }}</p>
+          <small class="timestamp">{{ notification.createdAt | date:'short' }}</small>
+        </div>
+        <button *ngIf="!notification.isRead" (click)="markAsRead(notification)" class="mark-read-btn">
           Mark as Read
         </button>
       </li>
     </ul>
   </div>
-  
-  <div *ngIf="!isAdmin && userNotifications.length">
-    <h3>User Notifications</h3>
-    <ul>
+
+  <div *ngIf="!isAdmin && userNotifications.length" class="notification-section">
+    <h3 class="section-title">User Notifications ({{ unreadCount }})</h3>
+    <ul class="notification-list">
       <li *ngFor="let notification of userNotifications" 
           [ngClass]="{ 'unread': !notification.isRead }" 
-          [style.background-color]="notification.isRead ? '#d4edda' : '#f8d7da'"
-          [style.color]="notification.isRead ? '#155724' : '#721c24'"
-          [style.padding]="'10px'"
-          [style.border-bottom]="'1px solid #ddd'">
-        <p>{{ notification.message }}</p>
-        <small>{{ notification.createdAt }}</small>
-        <button (click)="markAsRead(notification)" 
-                [style.background-color]="'#007bff'" 
-                [style.color]="'white'" 
-                [style.border]="'none'" 
-                [style.padding]="'5px 10px'" 
-                [style.cursor]="'pointer'" 
-                [style.border-radius]="'3px'">
+          class="notification-item">
+        <div class="notification-content">
+          <p class="message">{{ notification.message }}</p>
+          <small class="timestamp">{{ notification.createdAt | date:'short' }}</small>
+        </div>
+        <button *ngIf="!notification.isRead" (click)="markAsRead(notification)" class="mark-read-btn">
           Mark as Read
         </button>
       </li>
     </ul>
   </div>
-  
-  
-  
-  
+</div>
