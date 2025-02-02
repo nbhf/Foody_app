@@ -10,31 +10,35 @@ export interface PayloadInterface {
   role: string;
   username: string;
 }
+import { APP_API } from '../config/app-api.config';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl1 = 'http://localhost:3000/auth/login';
-  private apiUrl2 = 'http://localhost:3000/auth/signup';
+  private username: string | null = null;
 
+  constructor(private http: HttpClient, private router: Router) {}
 
-  constructor(private http: HttpClient) {}
 
  // Fonction de connexion pour envoyer les données et récupérer le token
  login(username: string, password: string): Observable<any> {
   const payload = { username, password };
-  return this.http.post<any>(this.apiUrl1, payload).pipe(
+  return this.http.post<any>(APP_API.login, payload).pipe(
     tap((response: { access_token: string }) => {
       if (response && response.access_token) {
-        localStorage.setItem('access_token', response.access_token);  // Stockez le token dans le localStorage
+        localStorage.setItem('access_token', response.access_token);
+        localStorage.setItem('username', username);  
+        localStorage.setItem('role',this.getCurrentUser().role );  
+        console.log(this.getCurrentUser());
       }
     })
   );
 }
 
 signup(userData: any): Observable<any> {
-  return this.http.post(this.apiUrl2, userData);
+  return this.http.post(APP_API.signup, userData);
 }
 
 
@@ -55,12 +59,12 @@ getUserId(): number | null {
 
 
 
-getUser(): Observable<any> {
-  const token = localStorage.getItem('token'); 
-  if (!token) return throwError(() => new Error("No token found"));
+// getUser(): Observable<any> {
+//   const token = localStorage.getItem('token'); 
+//   if (!token) return throwError(() => new Error("No token found"));
 
-  const decodedToken: PayloadInterface = jwtDecode<PayloadInterface>(token);
-  return of(decodedToken);}
+//   const decodedToken: PayloadInterface = jwtDecode<PayloadInterface>(token);
+//   return of(decodedToken);}
 
 
   // Fonction pour récupérer le token depuis le localStorage
@@ -68,18 +72,33 @@ getUser(): Observable<any> {
     return localStorage.getItem('access_token');
   }
 
-  // Fonction pour stocker le token dans le localStorage
   setToken(token: string): void {
     localStorage.setItem('access_token', token);
   }
 
-  // Fonction pour effacer le token lors de la déconnexion
-  logout(): void {
-    localStorage.removeItem('access_token');
+  getUser(): string | null {
+    return localStorage.getItem('username') || this.username;
   }
 
-  // Fonction pour vérifier si l'utilisateur est connecté
+   getCurrentUser(): any {
+    const token = this.getToken();
+    if (!token) return null; 
+    const split = token.split('.')[1];  // Le payload est la deuxième partie du JWT
+    const decoded = atob(split); // Décoder la partie en base64
+    const payload =  JSON.parse(decoded);
+    return payload; 
+  }
+
+
+  logout(): void {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
+    
+    this.router.navigate(['/']);
+  }
+
   isAuthenticated(): boolean {
-    return !!this.getToken();  // Si le token existe, l'utilisateur est authentifié
+    return !!this.getToken(); 
   }
 }

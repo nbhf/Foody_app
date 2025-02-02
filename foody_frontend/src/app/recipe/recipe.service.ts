@@ -14,7 +14,7 @@ export class RecipeService {
 
   constructor(private http: HttpClient ,private authService:AuthService) {}
 
-  createRecipe(name:string , descrip:string,ing:string ,inst:string ,category:string):Observable<any>{
+  createRecipe(name: string, descrip: string, ing: string, inst: string, category: string, imageUrl: string):Observable<any>{
     const token=this.authService.getToken();
     if(!token){
       throw new Error('Token non trouvé');
@@ -40,14 +40,17 @@ export class RecipeService {
 }
 
 saveRecipe(userId: number, recipeId: number): Observable<any> {
-  return this.http.post(`http://localhost:3000/user/${userId}/save-recipe/${recipeId}`, {});
+  return this.http.post(`http://localhost:3000/users/${userId}/save-recipe/${recipeId}`, {});
 }
 
 
 
 // Récupérer les recettes sauvegardées par l'utilisateur
 getSavedRecipes(userId: number): Observable<any> {
-  return this.http.get(`http://localhost:3000/user/${userId}/saved-recipes`);
+  return this.http.get(`http://localhost:3000/users/${userId}/saved-recipes`);
 }
+
+
+
 
 }

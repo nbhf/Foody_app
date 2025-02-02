@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable  } from '@angular/core';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { Observable  } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
-import { map } from 'rxjs/operators';
+import { map} from 'rxjs/operators';
+import { APP_API } from '../config/app-api.config';
 
 export interface Comment {
   id:number;
@@ -15,14 +16,14 @@ export interface Comment {
 @Injectable({
   providedIn: 'root'
 })
+
 export class CommentService {
-  private apiUrl = 'http://localhost:3000';
   constructor(private http: HttpClient, private authService:AuthService) {}
 
   
   // Récupérer tous les commentaires avec les auteurs
   getComments(): Observable<Comment[]> {
-   return this.http.get<any[]>(`${this.apiUrl}/comments`).pipe(
+   return this.http.get<any[]>(APP_API.comment).pipe(
       map(comments => comments.map(comment => ({
         id:comment.id,
         content: comment.content,
@@ -35,7 +36,7 @@ export class CommentService {
 
  // Signaler un commentaire
  reportComment(commentId: number): Observable<Comment | null> {
-  return this.http.patch<Comment | null>(`${this.apiUrl}/comments/${commentId}/report`, {});
+  return this.http.patch<Comment | null>(`${APP_API.comment}/${commentId}/report`, {});
 }
   // Fonction pour sauvegarder un commentaire
   saveComment(commentaire: string): Observable<any> {
@@ -51,9 +52,8 @@ export class CommentService {
       content: commentaire
     };
 
-    return this.http.post<any>(`${this.apiUrl}/comments/`, payload, { headers });
+    return this.http.post<any>(APP_API.comment, payload, { headers });
   }
- 
 
   
 }

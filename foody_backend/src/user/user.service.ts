@@ -20,15 +20,18 @@ export class UserService {
 // Met à jour un utilisateur existant avec validation
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
-// Vérification et mise à jour de l'email
+
+
+    // Vérification et mise à jour de l'email
     if (updateUserDto.email && updateUserDto.email !== user.email) {
       await this.checkEmailUniqueness(updateUserDto.email);
       user.email = updateUserDto.email;
     }
- // Mise à jour du mot de passe avec hachage si fourni
+
+    // Mise à jour du mot de passe avec hachage si fourni
     if (updateUserDto.password) {
-              user.salt = await bcrypt.genSalt();
-              user.password = await bcrypt.hash(user.password, user.salt);
+      const salt = bcrypt.genSaltSync(); // ✅ `genSaltSync` remplace `await bcrypt.genSalt()`
+      user.password = await bcrypt.hash(updateUserDto.password, salt); // ✅ Correction ici
     }
 
     if (updateUserDto.username) {
@@ -38,8 +41,7 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-
-// Récupère un utilisateur par son ID
+  // Récupère un utilisateur par son ID
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
@@ -50,7 +52,7 @@ export class UserService {
     return user;
   }
 
- // Supprime un utilisateur par ID
+  // Supprime un utilisateur par ID
   async delete(id: number): Promise<void> {
     const user = await this.findOne(id);
     await this.userRepository.remove(user);
@@ -72,6 +74,8 @@ export class UserService {
     return user.role === UserRoleEnum.ADMIN
   }
 
+
+   //sauvegarder une recette 
   async saveRecipe(userId: number, recipeId: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['savedRecipes'] });
     const recipe = await this.recipeRepository.findOne({ where: { id: recipeId } });

@@ -1,0 +1,11 @@
+<div class="recettes-container">
+    <!-- Liste des recettes -->
+    <div class="recette-card"  *ngFor="let recipe of recipes" >
+      <img [src]=" recipe.imgUrl | defaultImage:'assets/default_recipe.png'" alt="{{ recipe.name }}" class="recette-photo" />
+      <h3>{{ recipe.name }}</h3>
+      <p>{{ recipe.category}}</p>
+      <p>{{ recipe.description }}</p>
+      <button (click)="viewDetails(recipe.id)" >Details</button>
+    </div>
+</div>
+  

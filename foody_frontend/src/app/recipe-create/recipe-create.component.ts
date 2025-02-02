@@ -16,7 +16,8 @@ export class RecipeCreateComponent {
     description: '',
     ingredients: '',
     instructions: '',
-    category: 'LUNCH'
+    category: 'LUNCH',
+    imageUrl:''
   };
 
   constructor(private http: HttpClient, private recipeService: RecipeService) {}
@@ -33,7 +34,8 @@ export class RecipeCreateComponent {
       this.recipe.description,
       this.recipe.ingredients,
       this.recipe.instructions,
-      this.recipe.category
+      this.recipe.category,
+      this.recipe.imageUrl
     ).subscribe({
       next: (response) => {
         console.log('Recette créée avec succès:', response);

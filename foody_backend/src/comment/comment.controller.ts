@@ -30,6 +30,7 @@ export class CommentsController {
   }
 
   @Patch(':id/report')
+  @UseGuards(JwtAuthGuard)
   async reportComment(@Param('id') id: number) {
     const updatedComment = await this.commentsService.reportComment(id);
     if (!updatedComment) {

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RecipeService } from './recipe.service';
 import { AuthService } from '../auth/auth.service';
+import { ActivatedRoute } from '@angular/router';
+import { AllRecipeService } from '../allrecipes/allrecipes.service';
 
 @Component({
   selector: 'app-recipe',
@@ -14,38 +16,41 @@ export class RecipeComponent implements OnInit {
   error: string = '';  // Message d'erreur en cas de problème
   userId: number | null = null;  // ID de l'utilisateur connecté
   savedRecipes: any[] = [];
-  userID!:number;
-  constructor(private http: HttpClient,private recipeService: RecipeService ,private authService: AuthService ) { }
+
+
+  constructor(private recipesService: RecipeService ,private authService: AuthService ,private route: ActivatedRoute,
+    private recipeService: AllRecipeService ) { }
 
   ngOnInit(): void {
-    //Effectuer la requête HTTP pour récupérer la recette avec l'ID 3
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.recipeService.getRecipeById(id).subscribe({
+      next: (data) => {
+        this.recipe = data;
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Failed to load recipe';
+        this.loading = false;
+      }
+    });
+
     
-    this.http.get('http://localhost:3000/recipe/3')
-      .subscribe(
-        (data) => {
-          this.recipe = data;  // Stocker les données récupérées dans la variable recipe
-          this.loading = false;  // Mettre à jour l'état de chargement
-        },
-        (error) => {
-          this.error = 'Failed to load recipe';  // En cas d'erreur, afficher un message
-          this.loading = false;  // Terminer le chargement
-
-        }
-      );
-
-      const token = this.authService.getToken();
+    const token = this.authService.getToken();
     if (token) {
       const decodedToken: any = this.authService.getUserId();  // Décoder le token pour obtenir l'ID de l'utilisateur
       this.userId = decodedToken;  // Assigner l'ID utilisateur à userId
-    }  
-    
-    
+    } 
+  }
+
+  getUsername(): string {
+    return this.recipe?.createdBy?.username || 'Unknown User';
   }
 
 
   getSavedRecipes(): void {
     if (this.userId) {
-      this.recipeService.getSavedRecipes(this.userId).subscribe(
+      this.recipesService.getSavedRecipes(this.userId).subscribe(
         (recipes) => {
           this.savedRecipes = recipes;
         },
@@ -58,11 +63,11 @@ export class RecipeComponent implements OnInit {
     }
   }
 
-
   // Méthode pour sauvegarder la recette
   saveRecipe(recipeId: number): void {
-    if (this.userId ) {
-      this.recipeService.saveRecipe(this.userId, recipeId).subscribe(
+    const user : any = this.authService.getCurrentUser()
+    if (user.id ) {
+      this.recipesService.saveRecipe(user.id, recipeId).subscribe(
         (response) => {
           alert('Recipe saved successfully');
           console.log('Recette sauvegardée !', response);

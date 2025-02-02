@@ -1,8 +1,5 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { CommentService ,Comment } from './comment.service';
-import { UserService } from '../user.service';
-import { AuthService } from '../auth/auth.service';
-import { forkJoin } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 

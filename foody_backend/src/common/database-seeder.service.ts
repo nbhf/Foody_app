@@ -7,8 +7,7 @@ import { User } from 'src/user/entities/user.entity';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { UserRoleEnum } from 'src/user/enums/user-role.enum';
-import { RecipeStatus } from 'src/recipe/enums/recipe.enum';
-import { RecipeType } from 'src/recipe/enums/recipe.enum';
+import { RecipeStatus, RecipeType } from 'src/recipe/enums/recipe.enum';
 
 @Injectable()
 export class DatabaseSeederService {
@@ -20,111 +19,115 @@ export class DatabaseSeederService {
   ) {}
 
   async seed() {
-    // Générer un salt
-    const salt = await bcrypt.genSalt(10);
+    console.log('Starting database seeding...');
 
-    // Créer des admins
-    const admin1 = this.adminRepository.create({
-      username: 'admin1',
-      email: 'admin1@example.com',
-      password: await bcrypt.hash('admin123', salt),
-      role: UserRoleEnum.ADMIN,
-      salt: salt,
-    });
+    // =======================  ADMIN ACCOUNTS =======================
+    const adminsData = [
+      { username: 'admin1', email: 'admin1@example.com', password: 'admin123' },
+      { username: 'admin2', email: 'admin2@example.com', password: 'admin456' },
+      { username: 'admin3', email: 'admin3@example.com', password: 'admin789' },
+    ];
 
-    const admin2 = this.adminRepository.create({
-      username: 'admin2',
-      email: 'admin2@example.com',
-      password: await bcrypt.hash('admin456', salt),
-      role: UserRoleEnum.ADMIN,
-      salt: salt,
-    });
+    for (const adminData of adminsData) {
+      let admin = await this.adminRepository.findOne({ where: { email: adminData.email } });
+      if (!admin) {
+        const salt = await bcrypt.genSalt();
+        admin = this.adminRepository.create({
+          ...adminData,
+          password: await bcrypt.hash(adminData.password, salt),
+          role: UserRoleEnum.ADMIN,
+          salt: salt,
+        });
+        await this.adminRepository.save(admin);
+        console.log(` Admin ${admin.username} created`);
+      }
+    }
 
-    const admin3 = this.adminRepository.create({
-      username: 'admin3',
-      email: 'admin3@example.com',
-      password: await bcrypt.hash('admin789', salt),
-      role: UserRoleEnum.ADMIN,
-      salt: salt,
-    });
+    // =======================  USER ACCOUNTS =======================
+    const usersData = [
+      { username: 'user1', email: 'user1@example.com', password: 'user123' },
+      { username: 'user2', email: 'user2@example.com', password: 'user456' },
+      { username: 'user3', email: 'user3@example.com', password: 'user789' },
+    ];
 
-    await this.adminRepository.save([admin1, admin2, admin3]);
+    const users = [];
 
-    // Créer des utilisateurs
-    const user1 = this.userRepository.create({
-      username: 'user1',
-      email: 'user1@example.com',
-      password: await bcrypt.hash('user123', salt),
-      role: UserRoleEnum.USER,
-      salt: salt,
-    });
+    for (const userData of usersData) {
+      let user = await this.userRepository.findOne({ where: { email: userData.email } });
+      if (!user) {
+        const salt = await bcrypt.genSalt();
+        user = this.userRepository.create({
+          ...userData,
+          password: await bcrypt.hash(userData.password, salt),
+          role: UserRoleEnum.USER,
+          salt: salt,
+        });
+        await this.userRepository.save(user);
+        console.log(` User ${user.username} created`);
+      }
+      users.push(user);
+    }
 
-    const user2 = this.userRepository.create({
-      username: 'user2',
-      email: 'user2@example.com',
-      password: await bcrypt.hash('user456', salt),
-      role: UserRoleEnum.USER,
-      salt: salt,
-    });
+    // =======================  RECIPES =======================
+    const recipesData = [
+      {
+        name: 'Salad Recipe',
+        description: 'A fresh and healthy salad with tomatoes, cucumbers, and lettuce.',
+        imgUrl: 'https://th.bing.com/th/id/OIP.jevUF8toFBsTCfqvRcuIRQHaLH?rs=1&pid=ImgDetMain',
+        ingredients: ['Lettuce', 'Tomato', 'Cucumber'],
+        instructions: ['Chop lettuce', 'Chop tomato', 'Mix together'],
+        category: RecipeType.LUNCH,
+        status: RecipeStatus.VALIDATED,
+        createdBy: users[0],
+      },
+      {
+        name: 'Spaghetti Carbonara',
+        description: 'A classic Italian pasta dish with creamy sauce, eggs, and bacon.',
+        imgUrl: 'https://th.bing.com/th/id/OIP.3MJODhMHPQg6v11AKki79QHaFj?rs=1&pid=ImgDetMain',
+        ingredients: ['Spaghetti', 'Eggs', 'Bacon'],
+        instructions: ['Cook spaghetti', 'Mix eggs and bacon', 'Combine and serve'],
+        category: RecipeType.DINNER,
+        status: RecipeStatus.VALIDATED,
+        createdBy: users[1],
+      },
+      {
+        name: 'Grilled Chicken',
+        description: 'Juicy grilled chicken with a flavorful garlic herb marinade.',
+        imgUrl: 'https://th.bing.com/th/id/OIP.Ow_TG1jIT5O2d7nMcXm_QwHaJQ?rs=1&pid=ImgDetMain',
+        ingredients: ['Chicken', 'Garlic', 'Herbs'],
+        instructions: ['Marinate chicken', 'Grill until cooked', 'Serve with herbs'],
+        category: RecipeType.DINNER,
+        status: RecipeStatus.VALIDATED,
+        createdBy: users[2],
+      },
+    ];
 
-    const user3 = this.userRepository.create({
-      username: 'user3',
-      email: 'user3@example.com',
-      password: await bcrypt.hash('user789', salt),
-      role: UserRoleEnum.USER,
-      salt: salt,
-    });
 
-    await this.userRepository.save([user1, user2, user3]);
+    for (const recipeData of recipesData) {
+      let recipe = await this.recipeRepository.findOne({ where: { name: recipeData.name } });
+      if (!recipe) {
+        recipe = this.recipeRepository.create(recipeData);
+        await this.recipeRepository.save(recipe);
+        console.log(` Recipe "${recipe.name}" created`);
+      }
+    }
 
-    // Créer des recettes
-    const recipe1 = this.recipeRepository.create({
-      name: 'Salad Recipe',
-      ingredients: ['Lettuce', 'Tomato', 'Cucumber'],
-      instructions: ['Chop lettuce', 'Chop tomato', 'Mix together'],
-      category: RecipeType.LUNCH,
-      status: RecipeStatus.ON_HOLD,
-      createdBy: user1,
-    });
+    // =======================  COMMENTS =======================
+    const commentsData = [
+      { content: 'This recipe is amazing!', author: users[0] },
+      { content: 'I loved this dish, very tasty.', author: users[1] },
+      { content: 'The chicken was cooked perfectly!', author: users[2] },
+    ];
 
-    const recipe2 = this.recipeRepository.create({
-      name: 'Spaghetti Carbonara',
-      ingredients: ['Spaghetti', 'Eggs', 'Bacon'],
-      instructions: ['Cook spaghetti', 'Mix eggs and bacon', 'Combine and serve'],
-      category: RecipeType.DINNER,
-      status: RecipeStatus.ON_HOLD,
-      createdBy: user2,
-    });
+    for (const commentData of commentsData) {
+      let comment = await this.commentRepository.findOne({ where: { content: commentData.content } });
+      if (!comment) {
+        comment = this.commentRepository.create(commentData);
+        await this.commentRepository.save(comment);
+        console.log(` Comment "${comment.content}" created`);
+      }
+    }
 
-    const recipe3 = this.recipeRepository.create({
-      name: 'Grilled Chicken',
-      ingredients: ['Chicken', 'Garlic', 'Herbs'],
-      instructions: ['Marinate chicken', 'Grill until cooked', 'Serve with herbs'],
-      category: RecipeType.DINNER,
-      status: RecipeStatus.ON_HOLD,
-      createdBy: user3,
-    });
-
-    await this.recipeRepository.save([recipe1, recipe2, recipe3]);
-
-    // Créer des commentaires
-    const comment1 = this.commentRepository.create({
-      content: 'This recipe is amazing!',
-      author: user1,
-    });
-
-    const comment2 = this.commentRepository.create({
-      content: 'I loved this dish, very tasty.',
-      author: user2,
-    });
-
-    const comment3 = this.commentRepository.create({
-      content: 'The chicken was cooked perfectly!',
-      author: user3,
-    });
-
-    await this.commentRepository.save([comment1, comment2, comment3]);
-
-    console.log('Seed data inserted successfully.');
+    console.log('Database seeding completed successfully.');
   }
 }

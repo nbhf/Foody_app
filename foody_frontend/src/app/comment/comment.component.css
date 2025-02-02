@@ -7,18 +7,8 @@
   
 }
 
-.report-btn {
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}
 
-.report-btn:hover {
-  background-color: darkred;
-}
+
 
 .loading {
   font-weight: bold;
@@ -28,4 +18,73 @@
 .error {
   color: red;
   text-align: center;
+}
+
+/* Style général des commentaires */
+.comment-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 10px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Style de chargement et erreurs */
+.loading,
+.error {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.loading {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.error {
+  background: #ffdddd;
+  color: #d9534f;
+}
+
+/* Style d'un commentaire */
+.comment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.comment:last-child {
+  border-bottom: none;
+}
+
+/* Style du texte du commentaire */
+.comment-text {
+  flex-grow: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Nom de l'utilisateur */
+.comment strong {
+  color: #2d3c4c;
+}
+
+/* Bouton de signalement */
+.report-btn {
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.report-btn:hover {
+  background: #dc4848;
 }
