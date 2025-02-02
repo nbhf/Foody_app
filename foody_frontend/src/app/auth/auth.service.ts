@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { tap } from 'rxjs/operators'; // Importation de l'opérateur tap
 import { APP_API } from '../config/app-api.config';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { APP_API } from '../config/app-api.config';
 export class AuthService {
   private username: string | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
 
  // Fonction de connexion pour envoyer les données et récupérer le token
@@ -57,6 +58,9 @@ signup(userData: any): Observable<any> {
   logout(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('username');
+    localStorage.removeItem('role');
+    
+    this.router.navigate(['/']);
   }
 
   isAuthenticated(): boolean {
