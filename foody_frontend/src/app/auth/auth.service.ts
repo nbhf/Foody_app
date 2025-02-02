@@ -42,6 +42,16 @@ signup(userData: any): Observable<any> {
     return localStorage.getItem('username') || this.username;
   }
 
+   getCurrentUser(): any {
+    const token = this.getToken();
+    if (!token) return null; 
+    const split = token.split('.')[1];  // Le payload est la deuxième partie du JWT
+    const decoded = atob(split); // Décoder la partie en base64
+    const payload =  JSON.parse(decoded);
+    return payload; 
+  }
+
+
   logout(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('username');

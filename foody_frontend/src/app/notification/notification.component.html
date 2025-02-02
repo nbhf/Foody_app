@@ -1,0 +1,58 @@
+
+<!-- <div class="notification-bell" (click)="fetchNotifications()">
+    🔔 <span *ngIf="unreadCount">{{ unreadCount }}</span>
+  </div>
+  
+ -->
+  
+  <div *ngIf="isAdmin && adminNotifications.length">
+    <h3>Admin Notifications</h3>
+    <ul>
+      <li *ngFor="let notification of adminNotifications" 
+          [ngClass]="{ 'unread': !notification.isRead }" 
+          [style.background-color]="notification.isRead ? '#d4edda' : '#f8d7da'"
+          [style.color]="notification.isRead ? '#155724' : '#721c24'"
+          [style.padding]="'10px'"
+          [style.border-bottom]="'1px solid #ddd'">
+        <p>{{ notification.message }}</p>
+        <small>{{ notification.createdAt }}</small>
+        <button (click)="markAsRead(notification)" 
+                [style.background-color]="'#007bff'" 
+                [style.color]="'white'" 
+                [style.border]="'none'" 
+                [style.padding]="'5px 10px'" 
+                [style.cursor]="'pointer'" 
+                [style.border-radius]="'3px'">
+          Mark as Read
+        </button>
+      </li>
+    </ul>
+  </div>
+  
+  <div *ngIf="!isAdmin && userNotifications.length">
+    <h3>User Notifications</h3>
+    <ul>
+      <li *ngFor="let notification of userNotifications" 
+          [ngClass]="{ 'unread': !notification.isRead }" 
+          [style.background-color]="notification.isRead ? '#d4edda' : '#f8d7da'"
+          [style.color]="notification.isRead ? '#155724' : '#721c24'"
+          [style.padding]="'10px'"
+          [style.border-bottom]="'1px solid #ddd'">
+        <p>{{ notification.message }}</p>
+        <small>{{ notification.createdAt }}</small>
+        <button (click)="markAsRead(notification)" 
+                [style.background-color]="'#007bff'" 
+                [style.color]="'white'" 
+                [style.border]="'none'" 
+                [style.padding]="'5px 10px'" 
+                [style.cursor]="'pointer'" 
+                [style.border-radius]="'3px'">
+          Mark as Read
+        </button>
+      </li>
+    </ul>
+  </div>
+  
+  
+  
+  

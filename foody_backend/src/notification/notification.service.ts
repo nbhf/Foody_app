@@ -7,6 +7,7 @@ import { Admin } from 'src/admin/entities/admin.entity';
 
 @Injectable()
 export class NotificationService {
+  
   constructor(
     @InjectRepository(Notification)
     private notificationRepository: Repository<Notification>,
@@ -49,7 +50,13 @@ export class NotificationService {
   }
 
 
-  async markAsRead(notificationId: number) {
-    await this.notificationRepository.update(notificationId, { isRead: true });
+  async markAsRead(notificationId: number): Promise<void> {
+    const notification = await this.notificationRepository.findOne({ where: { id: notificationId } });
+    if (!notification) {
+      throw new Error('Notification not found');
+    }
+    notification.isRead = true;
+    await this.notificationRepository.save(notification);
   }
+  
 }

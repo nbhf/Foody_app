@@ -30,14 +30,14 @@
       <li class="nav-item ">
         <a
           class="nav-link "
-          href="#"
+          routerLink="/notifications" routerLinkActive="active"
           id="navbarDropdownMenuLink"
           role="button"
           mdbDropdownToggle
           aria-expanded="false"
         >
           <i class="fas fa-bell" style="font-size: 1.5rem;"></i>
-          <span class="badge rounded-pill badge-notification bg-danger">1</span>
+          <span class="badge rounded-pill badge-notification bg-danger">{{ isAdmin ? adminUnreadCount : userUnreadCount }}</span>
         </a>
         
       </li>

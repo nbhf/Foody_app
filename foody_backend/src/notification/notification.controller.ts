@@ -18,7 +18,7 @@ export class NotificationController {
   }
 
   @Patch(':id/read')
-  async markAsRead(@Param('id') id: number) {
+  async markAsRead(@Param('id') id: number){
     await this.notificationService.markAsRead(id);
     return { message: 'Notification marked as read.' };
   }

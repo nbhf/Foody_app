@@ -19,6 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './shared/components/home/home.component';
 import { AllrecipesComponent } from './allrecipes/allrecipes.component';
 import { DefaultImagePipe } from './shared/pipes/default-image.pipe';
+import { NotificationComponent } from './notification/notification.component';
+import { AuthGuard } from './auth/guards/auth.guard';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +33,8 @@ import { DefaultImagePipe } from './shared/pipes/default-image.pipe';
     FooterComponent,
     HomeComponent,
     AllrecipesComponent,
-    DefaultImagePipe
+    DefaultImagePipe,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,7 @@ import { DefaultImagePipe } from './shared/pipes/default-image.pipe';
     BrowserAnimationsModule  
 
   ],
-  providers: [CommentService , authInterceptorProvider],
+  providers: [CommentService ,AuthGuard, authInterceptorProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
