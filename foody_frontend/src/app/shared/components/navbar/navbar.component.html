@@ -27,7 +27,7 @@
       
       <ul class="navbar-nav ms-auto">
       <!-- Notification-->
-      <li *ngIf="currentUser" class="nav-item ">
+      <li *ngIf="isAthentificated" class="nav-item ">
         <a
           class="nav-link "
           routerLink="/notifications" routerLinkActive="active"
@@ -44,7 +44,7 @@
       <!-- Notification -->
 
       <!-- Show username -->
-      <li class="nav-item" *ngIf="username">
+      <li class="nav-item" *ngIf="isAthentificated">
         <span class="nav-link fw-bold" style="font-size: 15px;">{{ username }}</span>
       </li>
 
@@ -62,10 +62,10 @@
           </a>
           <!-- Added dropdown-menu-end to align to the right -->
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a *ngIf="currentUser" class="dropdown-item" href="#">Profile</a></li>
+            <li><a *ngIf="isAthentificated" class="dropdown-item" href="#">Profile</a></li>
             <li><a class="dropdown-item" routerLink="/login" routerLinkActive="active">Login</a></li>
             <li><a class="dropdown-item" routerLink="/signup" routerLinkActive="active">Signup</a></li>
-            <li><a *ngIf="currentUser" class="dropdown-item" (click)="logout()">Logout</a></li>
+            <li><a *ngIf="isAthentificated" class="dropdown-item" (click)="logout()">Logout</a></li>
           </ul>
         </li>
       </ul>

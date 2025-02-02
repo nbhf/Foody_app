@@ -11,12 +11,14 @@ export class NavbarComponent {
   username: string | null = null;
   currentUser: any;
   isAdmin: boolean = false;
+  isAthentificated: boolean = false;
   userUnreadCount: number = 0;
   adminUnreadCount: number = 0;
 
   constructor(private authService: AuthService, private notificationService: NotificationService) {}
 
   ngOnInit(): void {
+    this.isAthentificated=this.authService.isAuthenticated();
     this.username = this.authService.getUser(); 
     this.currentUser = this.authService.getCurrentUser(); 
     if (this.currentUser) {this.isAdmin = this.currentUser.role === 'admin'; }
@@ -32,6 +34,12 @@ export class NavbarComponent {
 
   logout() {
     this.authService.logout();
-    this.username = null; 
+    this.username = null;
+    this.isAdmin=false;
+    this.isAthentificated=false;
+    this.currentUser=null;
+    this.userUnreadCount=0;
+    this.adminUnreadCount=0;
+
   }
 }

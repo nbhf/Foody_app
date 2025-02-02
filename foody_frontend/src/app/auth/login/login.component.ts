@@ -24,16 +24,16 @@ export class LoginComponent {
 
     this.authService.login(this.formData.username, this.formData.password).subscribe({
       next: (response) => {
-        // Assurez-vous que la réponse contient bien un champ `token`
         const token = response.access_token;
         if (token) {
           this.authService.setToken(token);
           console.log('Connexion réussie ! Token:', token);
           alert('Connexion réussie !');
 
-          // Récupérer le returnUrl ou rediriger vers '/'
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-          this.router.navigateByUrl(returnUrl);
+          this.router.navigateByUrl(returnUrl, { skipLocationChange: false}).then(() => {
+            window.location.reload();  
+          });
 
         } else {
           console.error('Le token n\'a pas été reçu dans la réponse.');
