@@ -6,6 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserRoleEnum } from './enums/user-role.enum';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class UserService {
@@ -14,6 +15,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Recipe)
     private readonly recipeRepository: Repository<Recipe>,
+    private notificationService: NotificationService,
   ) {}
 
   
@@ -92,6 +94,7 @@ export class UserService {
     }
 
     user.savedRecipes.push(recipe);
+    await this.notificationService.createUserNotification(`You saved ${recipe.name}`,userId);
     return this.userRepository.save(user);
   }
 
