@@ -21,6 +21,7 @@ export class CommentComponent implements OnInit {
   error: string | null = null;
   isExpanded:boolean= false;  
   comment:string='';
+  
 
   constructor(private commentService: CommentService,private http: HttpClient,private route: ActivatedRoute ) {}
 
@@ -74,6 +75,8 @@ export class CommentComponent implements OnInit {
           }
         }
         this.loadComments();
+        this.comments = this.comments.filter(comment => comment.id !== id);
+
       },
       error:(error) => {
         console.error('Error reporting comment', error);

@@ -5,6 +5,7 @@ import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from 'src/decorators/user.decorator';
 import { Recipe } from './entities/recipe.entity';
+import { RecipeStatus } from './enums/recipe.enum';
 
 
 @Controller('recipe')
@@ -17,9 +18,9 @@ export class RecipeController {
     return this.recipeService.create(createRecipeDto,user);
   }
 
-  @Get('validated')
-  async getValidatedRecipes(): Promise<Recipe[]> {
-    return this.recipeService.findValidated();
+  @Get(':status')
+  async getValidatedRecipes(@Param('status')Recipestatus:RecipeStatus): Promise<Recipe[]> {
+    return this.recipeService.findByStatus(Recipestatus);
   }
 
   @Get()
@@ -28,7 +29,7 @@ export class RecipeController {
     return this.recipeService.findAll(user);
   }
 
-  @Get(':id')
+  @Get('details/:id')
   @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.recipeService.findOne(+id);
