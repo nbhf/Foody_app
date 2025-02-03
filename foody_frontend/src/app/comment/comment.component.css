@@ -1,30 +1,145 @@
+/* Style général des commentaires */
+.comment-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Style d'un commentaire */
 .comment-card {
-  border: 1px solid #ddd;
   padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
-  background-color: #f9f9f9;
 }
 
+/* Style du texte du commentaire */
+.comment {
+  display: flex;
+  flex-direction: column; /* Changer pour une colonne */
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.comment:last-child {
+  border-bottom: none;
+}
+
+/* Détails de l'auteur (nom et date) */
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.comment strong {
+  color: #2d3c4c;
+  font-weight: bold;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #777;
+  text-align: center;
+  flex-grow: 1; /* Centre la date */
+}
+
+/* Contenu du commentaire */
+.comment-text {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Bouton de signalement aligné à droite */
 .report-btn {
-  background-color: red;
+  align-self: flex-end; /* Le bouton à droite */
   color: white;
   border: none;
   padding: 5px 10px;
-  cursor: pointer;
   border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  background-color: #ddd;
 }
 
 .report-btn:hover {
-  background-color: darkred;
+  background: #dc4848;
+}
+
+/* Style de chargement et erreurs */
+.loading,
+.error {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .loading {
-  font-weight: bold;
-  text-align: center;
+  background: #e0e0e0;
+  color: #333;
 }
 
 .error {
-  color: red;
-  text-align: center;
+  background: #ffdddd;
+  color: #d9534f;
+}
+
+.recipe-details-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  align-items: flex-start;
+}
+
+.recipe-section {
+  flex: 3; /* Partie gauche (recette) plus large */
+  border-right: 2px solid #ddd;
+  padding-right: 20px;
+}
+
+.comments-section {
+  flex: 1; /* Partie droite (commentaires) plus petite */
+  width: 350px;
+  padding-left: 20px;
+  flex-shrink: 0; /* Empêche la réduction excessive */
+}
+
+.comment-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.comment-list {
+  /* Style pour la liste de commentaires */
+  margin-bottom: 20px;
+}
+
+/* Zone de texte pour écrire un commentaire sous la liste des commentaires */
+textarea {
+  width: 100%;
+  height: 80px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
 }

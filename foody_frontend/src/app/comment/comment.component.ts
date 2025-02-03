@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { CommentService , Comment } from './comment.service';
-import { UserService } from '../user/user.service';
-import { AuthService } from '../auth/auth.service';
-import { forkJoin } from 'rxjs';
+import { Component, OnInit,Input } from '@angular/core';
+import { CommentService  } from './comment.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+
+
+
+
 
 @Component({
   selector: 'app-comment',
@@ -10,39 +14,75 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./comment.component.css']
 })
 export class CommentComponent implements OnInit {
-  comments: any[] = [];
+  comments: {id: number;  content: string; username: string ,reportCount:number}[] = [];
+  comments$!: Observable<any>;
+  recipeId!: number;
   loading = true;
-  error = '';
-
-  constructor(private commentService: CommentService, private userService:UserService,private authService:AuthService ) {}
-
-  ngOnInit(): void {
-    this.loadComments();
-    }
-
-    loadComments() {
-      this.commentService.getComments().subscribe({
-        next: (observables) => {
-          // Utilisation de forkJoin pour récupérer tous les utilisateurs en parallèle
-          forkJoin(observables).subscribe(commentsWithAuthors => {
-            this.comments = commentsWithAuthors;
-            this.loading = false;
-          });
-        },
-        error: (err) => {
-          this.error = "Erreur lors du chargement des commentaires.";
-          console.error(err);
-          this.loading = false;
-        }
-      });
-    }
-
-    reportComment(commentId: number) {
-      this.commentService.reportComment(commentId).subscribe({
-        next: () => alert('Commentaire signalé avec succès !'),
-        error: (err) => alert('Erreur lors du signalement du commentaire.')
-      });
-    }
-  }
+  error: string | null = null;
+  isExpanded:boolean= false;  
+  comment:string='';
   
 
+  constructor(private commentService: CommentService,private http: HttpClient,private route: ActivatedRoute ) {}
+
+  ngOnInit(): void {
+      this.route.params.subscribe(params => {
+      this.recipeId = +params['id'];  // Convertir l'ID en nombre
+      this.loadComments();  // Charger les commentaires de la recette
+    });
+    }
+
+    
+
+    // Méthode pour charger les commentaires
+   loadComments(): void {
+    this.comments$ = this.commentService.getCommentsByRecipe(this.recipeId);
+  }
+
+  saveComment() {
+    if (!this.comment.trim()) {
+      alert('Veuillez entrer un commentaire.');
+      return;
+    }
+
+    this.commentService.saveComment(this.comment, this.recipeId).subscribe({
+       next: (response) => {
+        console.log('Commentaire sauvegardé avec succès', response);
+        console.log("recette id :",this.recipeId),
+        alert('Commentaire sauvegardé !');
+        this.comment = ''; 
+        this.loadComments(); // Recharger la liste des commentaires
+      },
+      error: (error) => {
+        console.error('Erreur lors de la sauvegarde du commentaire', error);
+        alert('Erreur lors de la sauvegarde du commentaire.');
+      }
+    });
+
+}
+
+  report(id: number) {
+    this.commentService.reportComment(id).subscribe(
+{     next:  (updatedComment) => {
+        if (updatedComment === null) {
+          // Le commentaire a été supprimé
+          this.comments = this.comments.filter(comment => comment.id !== id);
+        } else {
+          // Le compteur de signalements a été mis à jour
+          const updatedIndex = this.comments.findIndex(comment => comment.id === id);
+          if (updatedIndex !== -1) {
+            this.comments[updatedIndex].reportCount = updatedComment.report;
+          }
+        }
+        this.loadComments();
+        this.comments = this.comments.filter(comment => comment.id !== id);
+
+      },
+      error:(error) => {
+        console.error('Error reporting comment', error);
+      }}
+    );
+  }
+         
+  
+}

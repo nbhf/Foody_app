@@ -1,18 +1,11 @@
 <div class="recipe-details-container">
-    <!-- Partie gauche : Détails de la recette -->
-    <div class="recipe-section">
-      <app-recipe></app-recipe>
-    </div>
+  <!-- Partie gauche : Détails de la recette -->
+  <div class="recipe-section">
+    <app-recipe ></app-recipe>
+  </div>
 
-    <div class="comments-section">
-      <app-comment></app-comment>
-    </div>
+  <!-- Partie droite : Commentaires -->
+  <div class="comments-section">
+    <app-comment></app-comment>
     
-    <!-- Partie droite : Commentaires -->
-    <div class="comment-box">
-      <textarea [(ngModel)]="comment" placeholder="write your comment here..."></textarea>
-      <button (click)="saveComment()">send</button>
-    </div>
-    
-      
-  
+   

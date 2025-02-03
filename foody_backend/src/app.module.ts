@@ -10,6 +10,10 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentModule } from './comment/comment.module';
 import { DatabaseSeederService } from './common/database-seeder.service';
+import { NotificationController } from './notification/notification.controller';
+import { NotificationService } from './notification/notification.service';
+import { NotificationModule } from './notification/notification.module';
+import { UploadController } from './upload/upload.controller';
 // variables de configuration
 import * as dotenv from 'dotenv';
 import appConfig from './config/app.config';
@@ -33,8 +37,8 @@ dotenv.config();
       entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
     }),
-    AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule,CommentModule],
-  controllers: [AppController],
-  providers: [AppService,DatabaseSeederService],
+    AuthModule, UserModule, AdminModule, RecipeModule, CommonModule, ConfigModule,CommentModule, NotificationModule],
+  controllers: [AppController, NotificationController, UploadController],
+  providers: [AppService,DatabaseSeederService, NotificationService],
 })
 export class AppModule {}

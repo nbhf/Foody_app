@@ -1,0 +1,76 @@
+<form (ngSubmit)="onSubmit()" #recipeForm="ngForm">
+  <div class="form-group">
+    <label for="name">Recipe Name</label>
+    <input 
+      type="text" 
+      id="name" 
+      class="form-control" 
+      required 
+      [(ngModel)]="recipe.name" 
+      name="name" 
+      #name="ngModel"
+      [ngClass]="{'is-invalid': name.invalid && name.touched}"
+    >
+    <div *ngIf="name.invalid && name.touched" class="text-danger">
+      Recipe name is required.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea 
+      id="description" 
+      class="form-control" 
+      [(ngModel)]="recipe.description" 
+      name="description"
+    ></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="ingredients">Ingredients (separated by new lines)</label>
+    <textarea 
+      id="ingredients" 
+      class="form-control" 
+      required 
+      [(ngModel)]="recipe.ingredients" 
+      name="ingredients" 
+      #ingredients="ngModel"
+      [ngClass]="{'is-invalid': ingredients.invalid && ingredients.touched}"
+    ></textarea>
+    <div *ngIf="ingredients.invalid && ingredients.touched" class="text-danger">
+      Ingredients are required.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="instructions">Instructions (separated by new lines)</label>
+    <textarea 
+      id="instructions" 
+      class="form-control" 
+      required 
+      [(ngModel)]="recipe.instructions" 
+      name="instructions" 
+      #instructions="ngModel"
+      [ngClass]="{'is-invalid': instructions.invalid && instructions.touched}"
+    ></textarea>
+    <div *ngIf="instructions.invalid && instructions.touched" class="text-danger">
+      Instructions are required.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="category">Category</label>
+    <select 
+      id="category" 
+      class="form-control" 
+      [(ngModel)]="recipe.category" 
+      name="category"
+    >
+      <option value="breackfast">Breakfast</option>
+      <option value="lunch">Lunch</option>
+      <option value="dinner">Dinner</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="!recipeForm.valid">Create Recipe</button>
+</form>

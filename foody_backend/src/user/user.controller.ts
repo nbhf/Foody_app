@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete, Param, Body, UseGuards, ParseIntPipe, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Patch, Delete,Post, Param, Body, UseGuards, ParseIntPipe, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -41,6 +41,8 @@ export class UserController {
   }
   
 
+
+
   @Delete(':id')
   @UseGuards(RolesGuard)
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
@@ -60,4 +62,33 @@ export class UserController {
 
     return this.userService.delete(id);
   }
+
+
+
+  // Route pour sauvegarder une recette
+@Post(':userId/save-recipe/:recipeId')
+@UseGuards(JwtAuthGuard)  // Assurez-vous que l'utilisateur est authentifié
+saveRecipe(@Param('userId') userId: number, @Param('recipeId') recipeId: number): Promise<any> {
+// Obtention de l'utilisateur connecté via le JWT
+  return this.userService.saveRecipe(userId, recipeId);
 }
+
+// Endpoint pour récupérer les recettes sauvegardées par un utilisateur
+@Get(':userId/saved-recipes')
+@UseGuards(JwtAuthGuard)  // Assurez-vous que l'utilisateur est authentifié
+async getSavedRecipes(@Param('userId') userId: number) {
+const savedRecipes = await this.userService.getSavedRecipes(userId);
+return savedRecipes;
+}
+
+
+@Get('findAll')
+@UseGuards(RolesGuard)
+@Roles(UserRoleEnum.ADMIN)
+async findAllUsers(){
+  const allUsers = await this.userService.findAllUsers();
+  return allUsers;
+}
+
+}
+

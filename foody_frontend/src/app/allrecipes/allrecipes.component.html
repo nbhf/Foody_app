@@ -1,4 +1,6 @@
-<div class="recettes-container">
+<div>
+  
+  <div class="recettes-container">
     <!-- Liste des recettes -->
     <div class="recette-card"  *ngFor="let recipe of recipes" >
       <img [src]=" recipe.imgUrl | defaultImage:'assets/default_recipe.png'" alt="{{ recipe.name }}" class="recette-photo" />
@@ -7,5 +9,20 @@
       <p>{{ recipe.description }}</p>
       <button (click)="viewDetails(recipe.id)" >Details</button>
     </div>
+
+</div>
+<h2>Recipes On Hold</h2>
+<div class="recettes-container">
+          <!-- Liste des recettes ON HOLD for admin -->
+          <div class="recette-card"  *ngFor="let adminRecipe of adminRecipes" >
+            <img [src]=" adminRecipe .imgUrl | defaultImage:'assets/default_recipe.png'" alt="{{ adminRecipe .name }}" class="recette-photo" />
+            <h3>{{ adminRecipe .name }}</h3>
+            <p>{{ adminRecipe .category}}</p>
+            <p>{{ adminRecipe .description }}</p>
+            <button (click)="viewDetails(adminRecipe .id)" >Details</button>
+            
+          </div>
+</div>
+
 </div>
   

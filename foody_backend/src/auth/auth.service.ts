@@ -73,14 +73,14 @@ export class AuthService {
           if (!isUserPasswordValid) {
             throw new UnauthorizedException('Invalid user credentials');
           }
-          return this.generateToken(user, 'USER');
+          return this.generateToken(user, UserRoleEnum.USER);
         } else if (admin) {
           // Admin login logic
           const isAdminPasswordValid = await this.verifyAdminPassword(admin, password);
           if (!isAdminPasswordValid) {
             throw new UnauthorizedException('Invalid admin credentials');
           }
-          return this.generateToken(admin, 'ADMIN');
+          return this.generateToken(admin, UserRoleEnum.ADMIN);
         }
       }
       
@@ -95,7 +95,7 @@ export class AuthService {
         return hashedPassword === admin.password;
       }
       
-      private async generateToken(entity: User | Admin, role: 'USER' | 'ADMIN') {
+      private async generateToken(entity: User | Admin, role: UserRoleEnum.USER| UserRoleEnum.ADMIN) {
         const payload = {
           id: entity.id,
           username: entity.username,

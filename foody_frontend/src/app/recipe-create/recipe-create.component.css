@@ -1,0 +1,91 @@
+/* Style général du formulaire */
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style des groupes de champs */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Label des champs */
+.form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #2c3e50;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Champs de texte et de sélection */
+.form-control {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+/* Focus sur les champs */
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Style des boutons */
+.btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+
+/* Style pour les messages d'erreur */
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+/* Style pour le bouton désactivé */
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Ajout d'un cadre rouge pour les champs invalides */
+.is-invalid {
+  border: 1px solid red;
+}
+
+/* Texte d'erreur sous chaque champ */
+.text-danger {
+  font-size: 0.875rem;
+  color: red;
+  margin-top: 5px;
+}
+
+/* Ajouter un peu d'espace pour les champs invalides */
+.form-group input.is-invalid,
+.form-group textarea.is-invalid {
+  margin-bottom: 5px;
+}
+
+/* Ajustement du bouton "Créer la recette" pour qu'il soit plus petit si nécessaire */
+button[type="submit"] {
+  width: auto;
+  margin-top: 15px;
+}

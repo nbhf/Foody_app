@@ -1,61 +1,86 @@
-.loading {
-    text-align: center;
-    font-size: 20px;
-    color: #f39c12;
-  }
-  
-  .error {
-    text-align: center;
-    font-size: 18px;
-    color: #e74c3c;
-  }
-  
-  .recipe-card {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  
-  .recipe-card h2 {
-    color: #2c3e50;
-  }
-  
-  .ingredients ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .ingredients li {
-    background-color: #ecf0f1;
-    margin: 5px 0;
-    padding: 5px;
-    border-radius: 4px;
-  }
-  
-  .instructions p {
-    font-size: 16px;
-    line-height: 1.5;
-  }
-  
-  .save-btn {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-top: 10px;
-  }
-  
-  .save-btn:hover {
-    background-color: #218838;
-  }
-  
-  .recipe-image {
-    width:300px;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 15px;
-  }
-  
+.container {
+  display: flex;
+  gap: 20px; /* Espace entre la recette et les commentaires */
+}
+
+.recipe-section {
+  flex: 2; /* Partie gauche (recette) plus large */
+}
+
+.comment-section {
+  flex: 1; /* Partie droite (commentaires) plus petite */
+}
+
+.recipe-card {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.recipe-card h2 {
+  color: #2c3e50;
+}
+
+.ingredients ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ingredients li {
+  background-color: #ecf0f1;
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.instructions p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
+.recipe-image {
+  width: 300px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* Zone des commentaires */
+.comment-section {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.comment-section h3 {
+  color: #2c3e50;
+}
+
+/* Zone de saisie de commentaire */
+.comment-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 15px;
+  border: 1px solid #ccc;
+}
+
+.comment-input:focus {
+  outline-color: #f39c12;
+}

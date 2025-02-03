@@ -4,11 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
+import { Recipe } from 'src/recipe/entities/recipe.entity';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])], // Enregistre l'entité avec TypeORM
+  imports: [TypeOrmModule.forFeature([User , Recipe]),NotificationModule], 
   providers: [UserService],
   controllers: [UserController],
-  exports: [TypeOrmModule, UserService], // Exporte l'entité pour que d'autres modules puissent l'utiliser
+  exports: [TypeOrmModule, UserService], 
 })
 export class UserModule {}

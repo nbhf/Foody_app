@@ -20,6 +20,10 @@ import { HomeComponent } from './shared/components/home/home.component';
 import { AllrecipesComponent } from './allrecipes/allrecipes.component';
 import { DefaultImagePipe } from './shared/pipes/default-image.pipe';
 import { UserComponent } from './user/user.component';
+import { NotificationComponent } from './notification/notification.component';
+import { AuthGuard } from './auth/guards/auth.guard';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { RecipeCreateComponent } from './recipe-create/recipe-create.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,10 +32,14 @@ import { UserComponent } from './user/user.component';
     RecipeDetailsComponent,
     LoginComponent,
     SignupComponent,
+    RecipeCreateComponent,
     NavbarComponent,
     FooterComponent,
     HomeComponent,
     AllrecipesComponent,
+    DefaultImagePipe,
+    NotificationComponent,
+    AdminDashboardComponent
     DefaultImagePipe,
     UserComponent,
   ],
@@ -44,7 +52,7 @@ import { UserComponent } from './user/user.component';
     BrowserAnimationsModule  
 
   ],
-  providers: [CommentService , authInterceptorProvider],
+  providers: [CommentService ,AuthGuard, authInterceptorProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

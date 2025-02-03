@@ -1,17 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable  } from '@angular/core';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { Observable  } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
-import { map } from 'rxjs/operators';
+import { map} from 'rxjs/operators';
 import { APP_API } from '../config/app-api.config';
+import { Comment } from '../shared/models/comment.model';
 
-export interface Comment {
-  id: number;
-  content: string;
-  authorId: 1;
-  createdAt: Date;
-
-}
 
 @Injectable({
   providedIn: 'root'
@@ -20,33 +14,27 @@ export interface Comment {
 export class CommentService {
   constructor(private http: HttpClient, private authService:AuthService) {}
 
-  
-  // Récupérer tous les commentaires avec les auteurs
-  getComments(): Observable<any[]> {
-    return this.http.get<any[]>(APP_API.comment).pipe(
-      map(comments =>
-        comments.map(comment =>
-          this.http.get<any>(`${APP_API.user}/${comment.authorId}`).pipe(
-            map(user => ({ ...comment, authorName: user.username }))
-          )
-        )
-      )
-    );
+
+  // Méthode pour récupérer les commentaires d'une recette
+  getCommentsByRecipe(recipeId: number): Observable<any> {
+    return this.http.get(`${APP_API.comment}/recipe/${recipeId}`);
   }
 
-  // Signaler un commentaire
-  reportComment(commentId: number): Observable<any> {
-    return this.http.post(`${APP_API.comment}/${commentId}/report`, {});
-  }
-   
+ // Signaler un commentaire
+ reportComment(commentId: number): Observable<Comment | null> {
+  return this.http.patch<Comment | null>(`${APP_API.comment}/${commentId}/report`, {});
+}
   // Fonction pour sauvegarder un commentaire
-  saveComment(commentaire: string): Observable<any> {
+  saveComment(commentaire: string,recipeId:number): Observable<any> {   
 
     const payload = {
-      content: commentaire
+      content: commentaire,
+      recipeid:recipeId
     };
+    console.log("recetteid:",payload);
 
-    return this.http.post<any>(APP_API.comment, payload);
+    return this.http.post<any>(`${APP_API.comment}/${recipeId}`, payload);
   }
- 
+
+  
 }

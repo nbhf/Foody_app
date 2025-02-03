@@ -11,12 +11,12 @@ export class AllRecipeService {
 
   constructor(private http: HttpClient) {}
 
-  getRecipes(): Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(APP_API.allvalidatesrecipes);
+  getRecipes(status:string): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${APP_API.recipe}/${status}`);
   }
 
   getRecipeById(id: number): Observable<Recipe> {
-    return this.http.get<Recipe>(`${APP_API.recipe}/${id}`);
+    return this.http.get<Recipe>(`${APP_API.recipe}/details/${id}`);
   }
 
 }

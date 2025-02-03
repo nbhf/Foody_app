@@ -6,13 +6,14 @@
 }
 
 .recipe-section {
-  flex: 1;
+  flex: 3; /* Partie gauche (recette) plus large */
   border-right: 2px solid #ddd;
   padding-right: 20px;
 }
 
 .comments-section {
-  width: 350px; /* Définir une largeur fixe pour éviter qu'elle soit trop large */
+  flex: 1; /* Partie droite (commentaires) plus petite */
+  width: 350px;
   padding-left: 20px;
   flex-shrink: 0; /* Empêche la réduction excessive */
 }
@@ -22,9 +23,14 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  max-width: 400px;
 }
 
+.comment-list {
+  /* Style pour la liste de commentaires */
+  margin-bottom: 20px;
+}
+
+/* Zone de texte pour écrire un commentaire sous la liste des commentaires */
 textarea {
   width: 100%;
   height: 80px;

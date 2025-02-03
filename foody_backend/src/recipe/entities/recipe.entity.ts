@@ -3,7 +3,8 @@ import { Admin } from "src/admin/entities/admin.entity";
 import {  RecipeStatus, RecipeType } from "../enums/recipe.enum";
 import { User } from "src/user/entities/user.entity";
 import { TimestampEntites } from "src/common/timestamp.entites.";
-
+import { trace } from "node:console";
+import { Comment } from "src/comment/entities/comment.entity";
 @Entity('recipe')
 export class Recipe extends TimestampEntites{
     @PrimaryGeneratedColumn()
@@ -20,7 +21,7 @@ export class Recipe extends TimestampEntites{
     @Column("simple-array")
     instructions: string[];
 
-    @Column({ type: 'text' })
+    @Column({ type: 'text',nullable:true })
     description: string;  
   
     @Column({nullable: true })
@@ -49,4 +50,7 @@ export class Recipe extends TimestampEntites{
 
     @ManyToMany(() => User, user => user.savedRecipes) 
     savedBy: User;
+
+    @OneToMany(() => Comment, (comment) => comment.recipe)
+    comments: Comment[]
 }

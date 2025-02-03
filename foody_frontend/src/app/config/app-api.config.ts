@@ -7,5 +7,8 @@ export const APP_API = {
     recipe:'http://localhost:3000/recipe',
     comment:'http://localhost:3000/comments',
     allvalidatesrecipes: 'http://localhost:3000/recipe/validated',
+    notifications: 'http://localhost:3000/notifications',
+    validate: 'http://localhost:3000/admin/validate-recipe',
+    refuse:'http://localhost:3000/admin/refuse-recipe',
   
   }

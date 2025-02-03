@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { APP_API } from '../config/app-api.config';
 import { APP_ROUTES } from '../config/app-routes.config';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-allrecipes',
@@ -14,15 +15,25 @@ import { Router } from '@angular/router';
 })
 export class AllrecipesComponent implements OnInit {
   recipes: Recipe[] = [];
-  private readonly pollInterval = 30000; // Polling every 5 seconds
+  adminRecipes: Recipe[] = [];
+  private readonly pollInterval = 30000; 
+  isAdmin: boolean = false;
+  currentUser: any;
 
   constructor(
     private recipeService: AllRecipeService,
-    private router: Router) {}
+    private router: Router,
+    private authService: AuthService ) {}
+    
 
   ngOnInit() {
+
+    this.currentUser = this.authService.getCurrentUser(); 
+    if(this.currentUser )
+    {this.isAdmin = this.currentUser.role === 'admin';  }
+
     // Immediately fetch the data when the component is loaded
-    this.recipeService.getRecipes().subscribe({
+    this.recipeService.getRecipes('Validated').subscribe({
       next: (data) => this.recipes = data,
       error: (error) => console.error('Error fetching recipes', error),
       complete: () => console.log('Request completed')
@@ -30,11 +41,29 @@ export class AllrecipesComponent implements OnInit {
      
 
     interval(this.pollInterval)
-    .pipe(switchMap(() => this.recipeService.getRecipes()))
+    .pipe(switchMap(() => this.recipeService.getRecipes('Validated')))
     .subscribe({
       next: (data) => this.recipes = data,
       error: (error) => console.error('Erreur lors de la récupération des recettes', error)
     });
+
+    if(this.isAdmin){
+      this.recipeService.getRecipes('on_hold').subscribe({
+        next: (data) => this.adminRecipes = data,
+        error: (error) => console.error('Error fetching recipes', error),
+        complete: () => console.log('Request completed')
+      });
+
+      interval(this.pollInterval)
+      .pipe(switchMap(() => this.recipeService.getRecipes('on_hold')))
+      .subscribe({
+        next: (data) => this.adminRecipes = data,
+        error: (error) => console.error('Erreur lors de la récupération des recettes', error)
+      });
+       
+
+    }
+
   
   }
 
