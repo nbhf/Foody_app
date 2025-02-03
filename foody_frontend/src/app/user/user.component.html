@@ -1,0 +1,64 @@
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+      <div class="text-center">
+        <!-- Avatar -->
+        <img [src]="user.avatar || 'https://via.placeholder.com/150'" alt="Avatar" class="rounded-circle" width="120" height="120">
+        <h3 class="mt-3">{{ user.username }}</h3>
+        <p class="text-muted">{{ user.email }}</p>
+      </div>
+  
+      <div class="text-center mt-3">
+        <button class="btn btn-primary" (click)="editMode = true">Modifier le Profil</button>
+        <button class="btn btn-outline-danger ms-2" (click)="confirmDelete()">Supprimer le Compte</button>
+      </div>
+  
+      <!-- Formulaire de modification -->
+      <div *ngIf="editMode" class="mt-4">
+        <h5>Modifier le Profil</h5>
+        <div class="form-group">
+          <label>Nom d'utilisateur</label>
+          <input type="text" [(ngModel)]="user.username" class="form-control">
+        </div>
+        <div class="form-group mt-2">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="user.email" class="form-control">
+        </div>
+  
+        <div class="text-center mt-3">
+          <button class="btn btn-success" (click)="updateProfile()">Enregistrer</button>
+          <button class="btn btn-secondary ms-2" (click)="editMode = false">Annuler</button>
+        </div>
+      </div>
+  
+      <!-- Bouton pour changer le mot de passe -->
+      <div class="text-center mt-4">
+        <button class="btn btn-warning" (click)="openChangePasswordModal()">Changer le Mot de Passe</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal pour changer le mot de passe -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changePasswordModalLabel">Changer le Mot de Passe</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Nouveau Mot de Passe</label>
+            <input type="password" [(ngModel)]="newPassword" class="form-control">
+          </div>
+          <div class="form-group mt-2">
+            <label>Confirmer le Mot de Passe</label>
+            <input type="password" [(ngModel)]="confirmPassword" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-success" (click)="changePassword()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>

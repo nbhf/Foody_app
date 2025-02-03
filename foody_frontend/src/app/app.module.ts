@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './shared/components/home/home.component';
 import { AllrecipesComponent } from './allrecipes/allrecipes.component';
 import { DefaultImagePipe } from './shared/pipes/default-image.pipe';
+import { UserComponent } from './user/user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,8 @@ import { DefaultImagePipe } from './shared/pipes/default-image.pipe';
     FooterComponent,
     HomeComponent,
     AllrecipesComponent,
-    DefaultImagePipe
+    DefaultImagePipe,
+    UserComponent,
   ],
   imports: [
     BrowserModule,
