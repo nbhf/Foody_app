@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,EventEmitter,Input,Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RecipeService } from './recipe.service';
 import { AuthService } from '../auth/auth.service';
@@ -16,13 +16,16 @@ export class RecipeComponent implements OnInit {
   error: string = '';  // Message d'erreur en cas de problème
   userId: number | null = null;  // ID de l'utilisateur connecté
   savedRecipes: any[] = [];
-
+  @Input() recipeId!: number; // L'ID de la recette
+  @Output() recipeIdChange = new EventEmitter<number>();
 
   constructor(private recipesService: RecipeService ,private authService: AuthService ,private route: ActivatedRoute,
     private recipeService: AllRecipeService ) { }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+     this.recipeId=id;
+     this.recipeIdChange.emit(this.recipeId);
 
     this.recipeService.getRecipeById(id).subscribe({
       next: (data) => {

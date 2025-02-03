@@ -12,17 +12,20 @@ export class CommentsController {
 
   // Créer un commentaire
   @UseGuards (JwtAuthGuard)
-  @Post()
+  @Post(':recipeId')
   create(@Body() createCommentDto: CreateCommentDto
-     ,@User() user): Promise<Comment> {
-    return this.commentsService.create(createCommentDto,user);
+     ,@User() user,@Param('recipeId') recipeId:number): Promise<Comment> {
+    return this.commentsService.create(createCommentDto,user,recipeId);
   }
 
-  @Get()
+  @Get('recipe/:id')
   @UseGuards(JwtAuthGuard)
-  findAll(): Promise<Comment[]> {
-    return this.commentsService.findAll();
+  async getCommentsByRecipe(@Param('id') recipeId: number): Promise<Comment[]> {
+    return this.commentsService.getCommentsForRecipe(recipeId);
   }
+  // findAll(): Promise<Comment[]> {
+  //   return this.commentsService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: number): Promise<Comment> {

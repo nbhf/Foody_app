@@ -4,14 +4,8 @@ import { Observable  } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { map} from 'rxjs/operators';
 import { APP_API } from '../config/app-api.config';
+import { Comment } from '../shared/models/comment.model';
 
-export interface Comment {
-  id:number;
-  content: string;
-  username: string;
-  report:any;
-  
-}
 
 @Injectable({
   providedIn: 'root'
@@ -20,18 +14,10 @@ export interface Comment {
 export class CommentService {
   constructor(private http: HttpClient, private authService:AuthService) {}
 
-  
-  // Récupérer tous les commentaires avec les auteurs
-  getComments(): Observable<Comment[]> {
-   return this.http.get<any[]>(APP_API.comment).pipe(
-      map(comments => comments.map(comment => ({
-        id:comment.id,
-        content: comment.content,
-        username: comment.author.username,
-        report: comment.report // Ajoute un compteur de signalement par défaut
 
-      })))
-    );
+  // Méthode pour récupérer les commentaires d'une recette
+  getCommentsByRecipe(recipeId: number): Observable<any> {
+    return this.http.get(`${APP_API.comment}/recipe/${recipeId}`);
   }
 
  // Signaler un commentaire
@@ -39,20 +25,15 @@ export class CommentService {
   return this.http.patch<Comment | null>(`${APP_API.comment}/${commentId}/report`, {});
 }
   // Fonction pour sauvegarder un commentaire
-  saveComment(commentaire: string): Observable<any> {
-    const token = this.authService.getToken();
-    if (!token) {
-      throw new Error('Token non trouvé');
-    }
-
-    // Ajouter le token dans l'en-tête de la requête
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  saveComment(commentaire: string,recipeId:number): Observable<any> {   
 
     const payload = {
-      content: commentaire
+      content: commentaire,
+      recipeid:recipeId
     };
+    console.log("recetteid:",payload);
 
-    return this.http.post<any>(APP_API.comment, payload, { headers });
+    return this.http.post<any>(`${APP_API.comment}/${recipeId}`, payload);
   }
 
   

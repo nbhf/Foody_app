@@ -1,6 +1,7 @@
-import { ManyToOne } from "typeorm";
+import { JoinColumn, ManyToOne } from "typeorm";
 import { Entity, PrimaryGeneratedColumn, Column ,CreateDateColumn ,BeforeUpdate } from 'typeorm';
 import { User } from "src/user/entities/user.entity";
+import { Recipe } from "src/recipe/entities/recipe.entity";
 
 @Entity()
 export class Comment {
@@ -12,17 +13,24 @@ export class Comment {
 
  @CreateDateColumn()
     createdAt: Date;
+
+   @Column({ default: 0 }) // Ajout du compteur de reports
+    report: number;
   
   @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
     author: User;
 
-    @Column({ default: 0 }) // Ajout du compteur de reports
-  report: number;
-
+ 
   @BeforeUpdate()
     async checkReportThreshold() {
       if (this.report >= 4) {
         throw new Error('Ce commentaire a été signalé trop de fois et sera supprimé.');
       }
     }
+
+  @ManyToOne(() => Recipe, (recipe) => recipe.comments)  
+  @JoinColumn({ name: 'recipeId' }) 
+   recipe: Recipe;
+
+
 }
