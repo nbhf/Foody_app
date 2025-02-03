@@ -16,11 +16,11 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/me`, { headers });
   }
 
-  // Modifier le profil de l'utilisateur
-  updateProfile(updatedData: any): Observable<any> {
+  /* Modifier le profil de l'utilisateur
+  updateProfile( updatedData: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
-    return this.http.patch(`${this.apiUrl}/me`, updatedData, { headers });
-  }
+    return this.http.patch(`${this.apiUrl}/7`, updatedData, { headers });
+  }*/
   
 
   // Supprimer le compte utilisateur

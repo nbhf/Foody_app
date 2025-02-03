@@ -1,0 +1,31 @@
+button {
+    transition: all 0.3s ease;
+  }
+  
+  button:hover {
+    transform: scale(1.1);
+  }
+  
+  .card {
+    border-radius: 15px;
+  }
+  
+  .rounded-circle {
+    border: 3px solid #f8f9fa;
+    transition: all 0.3s ease;
+  }
+  
+  .rounded-circle:hover {
+    border-color: #007bff;
+  }
+  
+  .btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: white;
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+  
