@@ -10,6 +10,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { RecipeComponent } from './recipe/recipe.component';
 import { RecipeCreateComponent } from './recipe-create/recipe-create.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
   { path: APP_ROUTES.home, component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: APP_ROUTES.allrecipes, component: AllrecipesComponent },
   { path: APP_ROUTES.notifications, component: NotificationComponent ,canActivate: [AuthGuard] },
   { path: APP_ROUTES.recipedetails, component: RecipeComponent ,canActivate: [AuthGuard] },
+  { path: APP_ROUTES.adminDashboard, component: AdminDashboardComponent,canActivate: [AuthGuard] }
 ];
 
 @NgModule({

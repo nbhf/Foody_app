@@ -52,6 +52,13 @@ export class UserService {
     return user;
   }
 
+  async findAllUsers(): Promise<User[]> {
+    const users = await this.userRepository.find({
+      select: ['id','username', 'email'],
+    });
+    return users;
+  }
+
   // Supprime un utilisateur par ID
   async delete(id: number): Promise<void> {
     const user = await this.findOne(id);

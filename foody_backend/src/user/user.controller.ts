@@ -70,5 +70,14 @@ const savedRecipes = await this.userService.getSavedRecipes(userId);
 return savedRecipes;
 }
 
+
+@Get('findAll')
+@UseGuards(RolesGuard)
+@Roles(UserRoleEnum.ADMIN)
+async findAllUsers(){
+  const allUsers = await this.userService.findAllUsers();
+  return allUsers;
+}
+
 }
 

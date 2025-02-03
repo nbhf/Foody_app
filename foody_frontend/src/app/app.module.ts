@@ -21,6 +21,7 @@ import { AllrecipesComponent } from './allrecipes/allrecipes.component';
 import { DefaultImagePipe } from './shared/pipes/default-image.pipe';
 import { NotificationComponent } from './notification/notification.component';
 import { AuthGuard } from './auth/guards/auth.guard';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { RecipeCreateComponent } from './recipe-create/recipe-create.component';
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { RecipeCreateComponent } from './recipe-create/recipe-create.component';
     HomeComponent,
     AllrecipesComponent,
     DefaultImagePipe,
-    NotificationComponent
+    NotificationComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
