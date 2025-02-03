@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { Admin } from 'src/admin/entities/admin.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
@@ -31,6 +31,7 @@ export class DatabaseSeederService {
     for (const adminData of adminsData) {
       let admin = await this.adminRepository.findOne({ where: { email: adminData.email } });
       if (!admin) {
+        const bcrypt = require('bcryptjs');
         const salt = await bcrypt.genSalt();
         admin = this.adminRepository.create({
           ...adminData,
@@ -55,6 +56,7 @@ export class DatabaseSeederService {
     for (const userData of usersData) {
       let user = await this.userRepository.findOne({ where: { email: userData.email } });
       if (!user) {
+        const bcrypt = require('bcryptjs');
         const salt = await bcrypt.genSalt();
         user = this.userRepository.create({
           ...userData,

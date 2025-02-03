@@ -26,6 +26,8 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
     @UserDecorator() user: User
   ) {
+    console.log("Utilisateur connecté :", user);
+    console.log("ID fourni dans l'URL :", id);
     if (user.id !== id) {
       throw new Error("Vous ne pouvez modifier que votre propre compte.");
     }

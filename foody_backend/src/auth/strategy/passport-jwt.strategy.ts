@@ -25,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: PayloadInterface) {
     // j'ai récupéré mon user
-    //console.log(payload);
+    console.log("Payload du JWT :", payload);
     const user = await this.userRepository.findOne({where: {username: payload.username},} );
     // Si le user exste je le retourne et la automatiquement ce que je retourne dans validate
     // est mis dans le request

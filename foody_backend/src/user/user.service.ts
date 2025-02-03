@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { UserRoleEnum } from './enums/user-role.enum';
 
 @Injectable()
@@ -14,29 +14,30 @@ export class UserService {
   ) {}
 
   
-// Met à jour un utilisateur existant avec validation
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findOne(id);
+/// Met à jour un utilisateur existant avec validation
+async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  const user = await this.findOne(id);
 
 
-    // Vérification et mise à jour de l'email
-    if (updateUserDto.email && updateUserDto.email !== user.email) {
-      await this.checkEmailUniqueness(updateUserDto.email);
-      user.email = updateUserDto.email;
-    }
-
-    // Mise à jour du mot de passe avec hachage si fourni
-    if (updateUserDto.password) {
-      const salt = bcrypt.genSaltSync(); // ✅ `genSaltSync` remplace `await bcrypt.genSalt()`
-      user.password = await bcrypt.hash(updateUserDto.password, salt); // ✅ Correction ici
-    }
-
-    if (updateUserDto.username) {
-      user.username = updateUserDto.username;
-    }
-
-    return this.userRepository.save(user);
+  // Vérification et mise à jour de l'email
+  if (updateUserDto.email && updateUserDto.email !== user.email) {
+    await this.checkEmailUniqueness(updateUserDto.email);
+    user.email = updateUserDto.email;
   }
+
+  // Mise à jour du mot de passe avec hachage si fourni
+  if (updateUserDto.password) {
+    const bcrypt = require('bcryptjs');
+    const salt = bcrypt.genSaltSync(); // ✅ genSaltSync remplace await bcrypt.genSalt()
+    user.password = await bcrypt.hash(updateUserDto.password, salt); // ✅ Correction ici
+  }
+
+  if (updateUserDto.username) {
+    user.username = updateUserDto.username;
+  }
+
+  return this.userRepository.save(user);
+}
 
   // Récupère un utilisateur par son ID
   async findOne(id: number): Promise<User> {
