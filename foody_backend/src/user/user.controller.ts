@@ -49,4 +49,11 @@ export class UserController {
 
     return this.userService.delete(id);
   }
+
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
+  @Get('findall')
+  findAllUsers() {
+    return this.userService.findAllUsers();
+  }
 }
