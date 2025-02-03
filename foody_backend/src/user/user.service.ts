@@ -56,10 +56,6 @@ export class UserService {
     const users = await this.userRepository.find({
       select: ['id','username', 'email'],
     });
-
-    //if (users.length === 0) {
-    //  throw new NotFoundException('Aucun utilisateur trouvé.');
-    //}
     return users;
   }
 

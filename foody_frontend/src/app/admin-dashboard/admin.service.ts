@@ -6,13 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AdminService {
-  private apiUrl = 'http://localhost:3000/admin';
+  private apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/users`);
-  }
+  // getAllUsers(): Observable<any[]> {
+  //   return this.http.get<any[]>(`$(this.apiUrl)/users/findAll`);
+  // }
 
   getRecipesOnHold(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/recipes/on-hold`);
