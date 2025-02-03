@@ -3,7 +3,7 @@ import { UserSubscribeDto } from './dto/signup-credentials.dto';
 import { User } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {  QueryFailedError, Repository } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import { LoginCredentialsDto } from './dto/login-credentials.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserRoleEnum } from 'src/user/enums/user-role.enum';
@@ -25,7 +25,7 @@ export class AuthService {
         const user = this.userRepository.create({
           ...userData
         });
-        const bcrypt = require('bcryptjs');
+        //const bcrypt = require('bcryptjs');
         user.salt = await bcrypt.genSalt();
         user.password = await bcrypt.hash(user.password, user.salt);
         try {
@@ -85,7 +85,7 @@ export class AuthService {
       }
       
       private async verifyUserPassword(user: User, password: string): Promise<boolean> {
-        const bcrypt = require('bcryptjs');
+       // const bcrypt = require('bcryptjs');
         const hashedPassword = await bcrypt.hash(password, user.salt);
         return hashedPassword === user.password;
       }
@@ -102,7 +102,9 @@ export class AuthService {
           role: role
         };
         const jwt = await this.jwtService.sign(payload);
+        console.log("JWT généré apartir de auth.service:", jwt); // Vérifie le token généré
         return {
+          
           "access_token": jwt
         };
       }

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import { UserRoleEnum } from './enums/user-role.enum';
 
 @Injectable()
@@ -27,7 +27,7 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
 
   // Mise à jour du mot de passe avec hachage si fourni
   if (updateUserDto.password) {
-    const bcrypt = require('bcryptjs');
+    //const bcrypt = require('bcryptjs');
     const salt = bcrypt.genSaltSync(); // ✅ genSaltSync remplace await bcrypt.genSalt()
     user.password = await bcrypt.hash(updateUserDto.password, salt); // ✅ Correction ici
   }
