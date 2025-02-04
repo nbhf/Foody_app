@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError} from 'rxjs';
 import { tap } from 'rxjs/operators'; // Importation de l'opérateur tap
@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private username: string | null = null;
+  authStatusChanged = new EventEmitter<boolean>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -32,6 +33,7 @@ export class AuthService {
         localStorage.setItem('username', username);  
         localStorage.setItem('role',this.getCurrentUser().role );  
         console.log(this.getCurrentUser());
+        this.authStatusChanged.emit(true);
       }
     })
   );
@@ -96,7 +98,7 @@ isTokenExpired(token: string): boolean {
     localStorage.removeItem('access_token');
     localStorage.removeItem('username');
     localStorage.removeItem('role');
-    
+    this.authStatusChanged.emit(false); // Notifie la navbar
     this.router.navigate(['/']);
   }
 
