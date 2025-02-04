@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
 import { Router } from '@angular/router';
 import { User } from '../shared/models/user.model';
+import { AuthService } from '../auth/auth.service';
+import { RecipeService } from '../recipe/recipe.service';
 
 declare var bootstrap: any; // Pour gérer le modal Bootstrap
 
@@ -15,8 +17,9 @@ export class UserComponent implements OnInit {
   editMode = false;
   newPassword = '';
   confirmPassword = '';
+  savedRecipes: any[] = [];
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router, private authService: AuthService, private recipesService: RecipeService) {}
 
   ngOnInit(): void {
     this.userService.getProfile().subscribe(
@@ -71,4 +74,21 @@ export class UserComponent implements OnInit {
       );
     }
   }
+  getSavedRecipes(): void {
+    if (this.user.id) {
+      this.recipesService.getSavedRecipes(this.user.id).subscribe(
+        (recipes) => {
+          this.savedRecipes = recipes;
+          console.log(this.savedRecipes)
+        },
+        (error) => {
+          console.error("Error fetching saved recipes", error);
+        }
+      );
+    } else {
+      console.error("Cannot fetch recipes: User ID is undefined");
+    }
+  }
+  
+
 }
