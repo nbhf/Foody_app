@@ -1,16 +1,17 @@
 <div *ngIf="comments$ | async as comments; else loading">
   <h2>Commentaires</h2>
-  <div *ngIf="comments.length > 0; else noComments">
-    <div *ngFor="let comment of comments" class="comment-card">
+  <ng-container *ngFor="let comment of comments">
+    <div *ngIf="!isReported(comment.id)" class="comment-card">
       <div class="comment-header">
-        <strong>{{ comment.author.username }}</strong> 
+        <strong>{{ comment.username }}</strong>
         <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
       </div>
       <p class="comment-text">{{ comment.content }}</p>
-      <button  class="report-btn" (click)="report(comment.id)" title="Signaler">🚨 </button>
+      <button class="report-btn" (click)="report(comment.id)" title="Signaler">🚨</button>
       <hr>
     </div>
-  </div>
+  </ng-container>
+  
   <ng-template #noComments>
     <p>Aucun commentaire pour cette recette.</p>
   </ng-template>
@@ -20,8 +21,8 @@
   <p>Chargement des commentaires...</p>
 </ng-template>
 
-   <!-- Zone pour écrire un nouveau commentaire sous les commentaires existants -->
-   <div class="comment-box">
-    <textarea [(ngModel)]="comment" placeholder="write your comment here..."></textarea>
-    <button (click)="saveComment()">Envoyer</button>
-  </div>
+<!-- Formulaire d'ajout de commentaire -->
+<div class="comment-box">
+  <textarea [(ngModel)]="comment" placeholder="write your comment here..."></textarea>
+  <button (click)="saveComment()">Envoyer</button>
+</div>
