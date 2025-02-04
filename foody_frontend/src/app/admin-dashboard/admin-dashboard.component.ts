@@ -9,7 +9,7 @@ import { User, UserService } from '../user/user.service';
 })
 export class AdminDashboardComponent implements OnInit{
   
-  users: any[] = [];
+  users: User[] = [];
   //recipesOnHold: any[] = [];
 
   constructor(private adminService: AdminService,
@@ -23,9 +23,14 @@ export class AdminDashboardComponent implements OnInit{
 
   loadUsers() {
     this.userService.getAllUsers().subscribe(
-      data => this.users = data,
-      error => console.error('Error fetching users:', error)
+      (data) => {
+        console.log('Fetched users:', data); // Check if 'username' exists here
+        this.users = data;
+      },
+      error => console.error('Error fetching users:', error),
+      
     );
+   
   }
 
 }

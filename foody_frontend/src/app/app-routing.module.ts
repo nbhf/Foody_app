@@ -6,6 +6,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { APP_ROUTES } from './config/app-routes.config';
 import { AllrecipesComponent } from './allrecipes/allrecipes.component';
+import { UserComponent } from './user/user.component';
 import { NotificationComponent } from './notification/notification.component';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { RecipeComponent } from './recipe/recipe.component';
@@ -21,7 +22,9 @@ const routes: Routes = [
   { path: APP_ROUTES.allrecipes, component: AllrecipesComponent },
   { path: APP_ROUTES.notifications, component: NotificationComponent ,canActivate: [AuthGuard] },
   { path: APP_ROUTES.recipedetails, component: RecipeComponent ,canActivate: [AuthGuard] },
-  { path: APP_ROUTES.adminDashboard, component: AdminDashboardComponent,canActivate: [AuthGuard] }
+  { path: APP_ROUTES.adminDashboard, component: AdminDashboardComponent,canActivate: [AuthGuard] },
+  { path: APP_ROUTES.allrecipes, component: AllrecipesComponent },
+  { path: APP_ROUTES.profile, component: UserComponent  },
 ];
 
 @NgModule({

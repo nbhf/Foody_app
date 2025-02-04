@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -28,7 +30,14 @@ export class LoginComponent {
         if (token) {
           this.authService.setToken(token);
           console.log('Connexion réussie ! Token:', token);
-          alert('Connexion réussie !');
+          Swal.fire({
+            icon: 'success',
+            title: 'Succesful connection !',
+            text: 'You are logged in.',
+            showConfirmButton: true,
+            confirmButtonColor: '#3085d6',
+            timer: 5000,
+          });
 
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
           this.router.navigateByUrl(returnUrl, { skipLocationChange: false}).then(() => {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError} from 'rxjs';
 import { tap } from 'rxjs/operators'; // Importation de l'opérateur tap
-import {jwtDecode} from 'jwt-decode';  // Importation par défaut
+import {jwtDecode} from 'jwt-decode';  
 
 
 export interface PayloadInterface {

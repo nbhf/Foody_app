@@ -58,6 +58,8 @@ export class AdminService {
     return await this.adminRepository.findOneBy({ id });
   }
 
+  
+
   async update(id: number, updateAdminDto: UpdateAdminDto): Promise<Admin> {
     await this.adminRepository.update(id, updateAdminDto);
     return await this.adminRepository.findOneBy({ id });

@@ -14,23 +14,32 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('me')
+
   async getProfile(@UserDecorator() user: User) {
+    console.log(user.id);
     return this.userService.findOne(user.id);
   }
 
   @Patch(':id')
   @UseGuards(RolesGuard)
-  @Roles(UserRoleEnum.USER)// Seul un utilisateur peut modifier son compte
+  @Roles(UserRoleEnum.USER)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
     @UserDecorator() user: User
   ) {
+    console.log("Utilisateur connecté :", user);
+    console.log("ID fourni dans l'URL :", id);
+  
+    // Vérification pour s'assurer que l'utilisateur ne met à jour que son propre profil
     if (user.id !== id) {
       throw new Error("Vous ne pouvez modifier que votre propre compte.");
     }
+  
+    // Mise à jour de l'utilisateur
     return this.userService.update(id, updateUserDto);
   }
+  
 
 
 
@@ -39,6 +48,8 @@ export class UserController {
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
   async delete(@Param('id', ParseIntPipe) id: number, @UserDecorator() user: User) {
     if (user.role === UserRoleEnum.USER) {
+      console.log("Utilisateur connecté :", user);
+      console.log("ID fourni dans l'URL :", id);
       if (user.id !== id) {
         throw new ForbiddenException("Vous ne pouvez supprimer que votre propre compte.");
       }
