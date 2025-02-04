@@ -39,7 +39,7 @@ import { RecipeCreateComponent } from './recipe-create/recipe-create.component';
     AllrecipesComponent,
     DefaultImagePipe,
     NotificationComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
     DefaultImagePipe,
     UserComponent,
   ],

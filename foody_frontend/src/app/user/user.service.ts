@@ -35,4 +35,10 @@ export class UserService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     return this.http.delete(`${this.apiUrl}/${userId}`, { headers });
   }
+
+getAllUsers(): Observable<any> {
+  const users = this.http.get(`${this.apiUrl}/findAll`);
+  return users;
+}
+
 }

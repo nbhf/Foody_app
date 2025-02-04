@@ -23,9 +23,14 @@ export class AdminDashboardComponent implements OnInit{
 
   loadUsers() {
     this.userService.getAllUsers().subscribe(
-      data => this.users = data,
-      error => console.error('Error fetching users:', error)
+      (data) => {
+        console.log('Fetched users:', data); // Check if 'username' exists here
+        this.users = data;
+      },
+      error => console.error('Error fetching users:', error),
+      
     );
+   
   }
 
 }
