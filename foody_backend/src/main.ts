@@ -11,8 +11,8 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   await app.listen(configService.get('APP_PORT'));
 
-  const databaseSeederService = app.get(DatabaseSeederService);
-  await databaseSeederService.seed();
+  // const databaseSeederService = app.get(DatabaseSeederService);
+  // await databaseSeederService.seed();
 
 }
 bootstrap();

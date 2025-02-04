@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException ,ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException ,ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -78,7 +78,6 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
   isOwnerOrAdmin(objet, user) {
     return user.role === UserRoleEnum.ADMIN || (objet.createdBy && objet.createdBy.id === user.id);
   }
-
   isAdmin (user){
     return user.role === UserRoleEnum.ADMIN
   }
@@ -110,5 +109,7 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     }
     return  user.savedRecipes ;
   }
+
+
 
 }

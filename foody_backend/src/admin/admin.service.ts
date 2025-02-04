@@ -1,15 +1,16 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFailedError, Repository } from 'typeorm';
+import { IsNull, QueryFailedError, Repository, Not } from 'typeorm';
 import { Admin } from './entities/admin.entity';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
 import { RecipeStatus } from 'src/recipe/enums/recipe.enum';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/entities/user.entity';
 import { NotificationService } from 'src/notification/notification.service';
+import { UserService } from 'src/user/user.service';
+import { UserRoleEnum } from 'src/user/enums/user-role.enum';
 
 @Injectable()
 export class AdminService {
@@ -18,8 +19,9 @@ export class AdminService {
     private readonly adminRepository: Repository<Admin>,
     @InjectRepository(Recipe)
     private readonly recipeRepository: Repository<Recipe>,
-    //@InjectRepository(User) private repository: Repository<User>
+    @InjectRepository(User) private userRepository: Repository<User>,
     private notificationService: NotificationService,
+    private readonly UserService: UserService
   ) {}
 
 
@@ -105,5 +107,29 @@ export class AdminService {
     return await this.recipeRepository.save(recipe);
   }
 
+  private isAdmin(admin): boolean {
+    return admin.role === UserRoleEnum.ADMIN
+  }
+
+  async softDeleteUser(userId: number): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      withDeleted: true, // Includes soft-deleted entities
+    });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found.`);
+    }
+    await this.userRepository.softDelete(userId);
+  }
+
+  async restoreUser(userId: number): Promise<void> {
+    const user = await this.userRepository.query( 'SELECT * FROM "user" WHERE id = $1',[userId] );
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found.`);
+    }
+  
+    await this.userRepository.restore(userId);
+  }
   
 }
