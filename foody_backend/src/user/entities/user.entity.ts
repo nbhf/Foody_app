@@ -61,4 +61,8 @@ export class User extends TimestampEntites {
   @OneToMany(() => Notification, notification => notification.user)
   notifications: Notification[];
 
+  @ManyToMany(() => Comment)
+  @JoinTable()
+  reportedComments: Comment[];
+
 }

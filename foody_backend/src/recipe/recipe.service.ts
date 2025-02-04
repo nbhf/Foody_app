@@ -19,12 +19,14 @@ export class RecipeService {
 
   async create(createRecipeDto: CreateRecipeDto, user): Promise<Recipe> {
     try {
+      console.log("first recipe:",createRecipeDto);
+
       const newRecipe = this.recipeRepository.create(createRecipeDto);
-      newRecipe.status = RecipeStatus.ON_HOLD;
+      console.log("nex recipe:",newRecipe);
+      // newRecipe.status = RecipeStatus.ON_HOLD;
       newRecipe.createdBy = user;
 
       const userId= user.id;
-      const adminId= 7;
       await this.notificationService.createNotificationForAllAdmins('A new recipe has been submitted!');
       await this.notificationService.createUserNotification('Your recipe has been submitted!', userId);
 
