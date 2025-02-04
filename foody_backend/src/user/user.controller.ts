@@ -45,8 +45,7 @@ export class UserController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RolesGuard)
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
+  //@Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
   async delete(@Param('id', ParseIntPipe) id: number, @UserDecorator() user: User) {
     if (user.role === UserRoleEnum.USER) {
       console.log("Utilisateur connecté :", user);
