@@ -14,7 +14,6 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('me')
-
   async getProfile(@UserDecorator() user: User) {
     console.log(user.id);
     return this.userService.findOne(user.id);

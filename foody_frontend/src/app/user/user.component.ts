@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
 import { Router } from '@angular/router';
+import { User } from '../shared/models/user.model';
 
 declare var bootstrap: any; // Pour gérer le modal Bootstrap
 

@@ -23,7 +23,6 @@ export class UserService {
 async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
   const user = await this.findOne(id);
 
-
   // Vérification et mise à jour de l'email
   if (updateUserDto.email && updateUserDto.email !== user.email) {
     await this.checkEmailUniqueness(updateUserDto.email);
@@ -48,7 +47,7 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
-      select: ['id', 'username', 'email', 'role'],
+      select: ['id', 'username', 'email', 'role', 'imgUrl'],
     });
 
     if (!user) throw new NotFoundException(`Utilisateur avec l'ID ${id} introuvable.`);
