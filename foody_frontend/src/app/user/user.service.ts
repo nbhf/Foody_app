@@ -2,12 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-}
-
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +17,11 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/me`, { headers });
   }
 
-  /* Modifier le profil de l'utilisateur
+   //Modifier le profil de l'utilisateur
   updateProfile( updatedData: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
-    return this.http.patch(`${this.apiUrl}/7`, updatedData, { headers });
-  }*/
+    return this.http.patch(`${this.apiUrl}/${updatedData.id}`, updatedData, { headers });
+  }
   
 
   // Supprimer le compte utilisateur

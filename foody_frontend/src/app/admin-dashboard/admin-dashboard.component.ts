@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from './admin.service';
-import { User, UserService } from '../user/user.service';
+import {  UserService } from '../user/user.service';
+import { User } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -24,7 +25,7 @@ export class AdminDashboardComponent implements OnInit{
   loadUsers() {
     this.userService.getAllUsers().subscribe(
       (data) => {
-        console.log('Fetched users:', data); // Check if 'username' exists here
+        console.log('Fetched users:', data); 
         this.users = data;
       },
       error => console.error('Error fetching users:', error),

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ParseIntPipe, Put } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -12,52 +12,40 @@ import { UserService } from 'src/user/user.service';
 
 
 @Controller('admin')
-
+@UseGuards(JwtAuthGuard,RolesGuard)
+@Roles(UserRoleEnum.ADMIN)
 export class AdminController {
   constructor(private readonly adminService: AdminService,
               private readonly userService: UserService,
               private readonly recipeService: RecipeService
   ) {}
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(UserRoleEnum.ADMIN)
+ 
   @Post()
   create(@Body() createAdminDto: CreateAdminDto) {
     return this.adminService.create(createAdminDto);
   }
 
-
-
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(UserRoleEnum.ADMIN)
   @Get()
   findAll() {
     return this.adminService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(UserRoleEnum.ADMIN)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.adminService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(UserRoleEnum.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
     return this.adminService.update(+id, updateAdminDto);
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(UserRoleEnum.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.adminService.remove(+id);
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(UserRoleEnum.ADMIN)
   @Post('validate-recipe/:id')
   async validateRecipe(
   @Param('id') id: number, // Recipe ID
@@ -65,14 +53,26 @@ export class AdminController {
   return this.adminService.validateRecipe(id);
 }
 
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(UserRoleEnum.ADMIN)
+
   @Post('refuse-recipe/:id')
   async refuseRecipe(
     @Param('id') id: number,
   ) {
     return this.adminService.refuseRecipe(id);
   }
+
+  @Delete('softDelete/:id')
+  async softDelete(
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.adminService.softDeleteUser(id);
+  }
+
+  @Put('restore/:id')
+  async softRestore(
+    @Param('id') userId: number
+  )
+  {return this.adminService.restoreUser(userId)}
 }
 
     

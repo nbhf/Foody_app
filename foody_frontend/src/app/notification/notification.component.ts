@@ -29,18 +29,26 @@ export class NotificationComponent implements OnInit {
     } else {
       this.loadUserNotifications();
     }
+      // Rafraîchir les notifications toutes les 3 secondes (3000 ms)
+  setInterval(() => {
+    if (this.isAdmin) {
+      this.loadAdminNotifications();
+    } else {
+      this.loadUserNotifications();
+    }
+  }, 3000);
   }
 
   loadUserNotifications(): void {
     this.notificationService.getUserNotifications(this.currentUser.id).subscribe(
-      (notifications) => {
+   {   next: (notifications) => {
         this.userNotifications = notifications;
         this.unreadCount = notifications.filter(n => !n.isRead).length;
         this.notificationService.setUserUnreadCount(this.unreadCount ); 
       },
-      (error) => {
+      error :(error) => {
         console.error('Error loading user notifications', error);
-      }
+      }}
     );
   }
 

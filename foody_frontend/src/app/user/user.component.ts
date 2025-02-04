@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
 import { Router } from '@angular/router';
+import { User } from '../shared/models/user.model';
 
 declare var bootstrap: any; // Pour gérer le modal Bootstrap
 
@@ -25,7 +26,7 @@ export class UserComponent implements OnInit {
   }
 
   updateProfile() {
-    /*
+    
     this.userService.updateProfile(this.user).subscribe(
       (response) => { 
         console.log('Profile updated:', this.user);
@@ -34,7 +35,7 @@ export class UserComponent implements OnInit {
       (error) => { 
         console.error('Erreur de mise à jour du profil', error); 
       }
-    );*/
+    );
   }
   
   // Ouvrir le modal pour changer le mot de passe
@@ -44,13 +45,13 @@ export class UserComponent implements OnInit {
   }
 
   // Changer le mot de passe
-  changePassword() {/*
+  changePassword() {
     if (this.newPassword !== this.confirmPassword) {
       alert("Les mots de passe ne correspondent pas !");
       return;
     }
 
-    this.userService.updateProfile({ password: this.newPassword }).subscribe(
+    this.userService.updateProfile({id: this.user.id, password: this.newPassword }).subscribe(
       () => {
         alert("Mot de passe mis à jour !");
         this.newPassword = '';
@@ -58,7 +59,7 @@ export class UserComponent implements OnInit {
         bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
       },
       (error) => { console.error('Erreur de modification du mot de passe', error); }
-    );*/
+    );
   }
 
   // Confirmer la suppression du compte

@@ -40,7 +40,8 @@ export class Admin extends TimestampEntites{
     @Exclude()
     salt: string;
 
-    @OneToMany(() => Notification, notification => notification.admin)
+
+    @OneToMany(() => Notification, notification => notification.admin, {cascade: true})
     notifications: Notification[];
 
 }

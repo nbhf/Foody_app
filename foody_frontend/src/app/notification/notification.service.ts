@@ -31,13 +31,13 @@ export class NotificationService {
     return this.http.patch<void>(`${APP_API.notifications}/${notificationId}/read`, {});
   }
 
-    // Méthode pour mettre à jour le nombre de notifications non lues pour un utilisateur
     setUserUnreadCount(count: number): void {
       this.userUnreadCountSubject.next(count);
     }
   
-    // Méthode pour mettre à jour le nombre de notifications non lues pour un admin
     setAdminUnreadCount(count: number): void {
       this.adminUnreadCountSubject.next(count);
     }
+
+    
 } 

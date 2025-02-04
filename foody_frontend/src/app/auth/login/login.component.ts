@@ -37,12 +37,15 @@ export class LoginComponent {
             showConfirmButton: true,
             confirmButtonColor: '#3085d6',
             timer: 5000,
+            didClose: () => { // Cette fonction s'exécute après la fermeture du Swal (automatique ou clic)
+              const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+              this.router.navigateByUrl(returnUrl, { skipLocationChange: false }).then(() => {
+                window.location.reload();  
+              });
+            }
           });
 
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-          this.router.navigateByUrl(returnUrl, { skipLocationChange: false}).then(() => {
-            window.location.reload();  
-          });
+          
 
         } else {
           console.error('Le token n\'a pas été reçu dans la réponse.');
