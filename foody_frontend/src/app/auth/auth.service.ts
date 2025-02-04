@@ -59,18 +59,20 @@ getUserId(): number | null {
 
 
 
-// getUser(): Observable<any> {
-//   const token = localStorage.getItem('token'); 
-//   if (!token) return throwError(() => new Error("No token found"));
-
-//   const decodedToken: PayloadInterface = jwtDecode<PayloadInterface>(token);
-//   return of(decodedToken);}
-
-
-  // Fonction pour récupérer le token depuis le localStorage
-  getToken(): string | null {
-    return localStorage.getItem('access_token');
+getToken(): string | null {
+  const token = localStorage.getItem('access_token');
+  if (token && this.isTokenExpired(token)) {
+    this.logout(); 
+    return null;
   }
+  return token;
+}
+
+isTokenExpired(token: string): boolean {
+  const decoded: any = jwtDecode(token);
+  const currentTime = Math.floor(Date.now() / 1000); 
+  return decoded.exp < currentTime; 
+}
 
   setToken(token: string): void {
     localStorage.setItem('access_token', token);
