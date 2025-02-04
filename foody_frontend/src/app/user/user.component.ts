@@ -18,6 +18,7 @@ export class UserComponent implements OnInit {
   newPassword = '';
   confirmPassword = '';
   savedRecipes: any[] = [];
+  createdRecipes: any[] = [];
 
   constructor(private userService: UserService, private router: Router, private authService: AuthService, private recipesService: RecipeService) {}
 
@@ -83,6 +84,21 @@ export class UserComponent implements OnInit {
         },
         (error) => {
           console.error("Error fetching saved recipes", error);
+        }
+      );
+    } else {
+      console.error("Cannot fetch recipes: User ID is undefined");
+    }
+  }
+  getCreatedRecipes(): void {
+    if (this.user.id) {
+      this.recipesService.getCreatedRecipes(this.user.id).subscribe(
+        (recipes) => {
+          this.createdRecipes = recipes;
+          console.log(this.createdRecipes)
+        },
+        (error) => {
+          console.error("Error fetching created recipes", error);
         }
       );
     } else {
