@@ -36,23 +36,25 @@ export class RecipeService {
     }
   }
 
-  async findValidated(): Promise<Recipe[]> {
+  async findByStatus(status: RecipeStatus): Promise<Recipe[]> {
     try {
       const recipes = await this.recipeRepository.find({
-        where: { status: RecipeStatus.VALIDATED }, 
+        where: { status }, 
         relations: ['createdBy'], 
       });
-
+  
       if (recipes.length === 0) {
-        throw new NotFoundException(`Aucune recette validee trouvée `);
+        throw new NotFoundException(`Aucune recette trouvée avec le statut ${status}`);
       }
+      
       return recipes;
       
     } catch (error) {
-      console.error('Error fetching validated recipes:', error.message);
+      console.error(`Error fetching recipes with status ${status}:`, error.message);
       throw error;
     }
   }
+  
 
   async findAll(user): Promise<Recipe[]> {
     try { 

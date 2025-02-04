@@ -1,5 +1,4 @@
 import { Component, OnInit ,EventEmitter,Input,Output } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { RecipeService } from './recipe.service';
 import { AuthService } from '../auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
@@ -11,21 +10,18 @@ import { AllRecipeService } from '../allrecipes/allrecipes.service';
   styleUrls: ['./recipe.component.css']
 })
 export class RecipeComponent implements OnInit {
-  recipe: any;  // Déclaration pour stocker les données de la recette
-  loading: boolean = true;  // Indicateur pour savoir si les données sont en train de se charger
-  error: string = '';  // Message d'erreur en cas de problème
-  userId: number | null = null;  // ID de l'utilisateur connecté
+  recipe: any; 
+  loading: boolean = true;  
+  error: string = '';  
+  userId: number | null = null;  
   savedRecipes: any[] = [];
-  @Input() recipeId!: number; // L'ID de la recette
-  @Output() recipeIdChange = new EventEmitter<number>();
+  isAdmin= this.authService.getCurrentUser().role =='admin';
 
   constructor(private recipesService: RecipeService ,private authService: AuthService ,private route: ActivatedRoute,
     private recipeService: AllRecipeService ) { }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-     this.recipeId=id;
-     this.recipeIdChange.emit(this.recipeId);
 
     this.recipeService.getRecipeById(id).subscribe({
       next: (data) => {
@@ -38,16 +34,6 @@ export class RecipeComponent implements OnInit {
       }
     });
 
-    
-    const token = this.authService.getToken();
-    if (token) {
-      const decodedToken: any = this.authService.getUserId();  // Décoder le token pour obtenir l'ID de l'utilisateur
-      this.userId = decodedToken;  // Assigner l'ID utilisateur à userId
-    } 
-  }
-
-  getUsername(): string {
-    return this.recipe?.createdBy?.username || 'Unknown User';
   }
 
 
@@ -66,7 +52,7 @@ export class RecipeComponent implements OnInit {
     }
   }
 
-  // Méthode pour sauvegarder la recette
+
   saveRecipe(recipeId: number): void {
     const user : any = this.authService.getCurrentUser()
     if (user.id ) {
@@ -88,6 +74,36 @@ export class RecipeComponent implements OnInit {
   }
 
 
+  approveRecipe(recipeId:number){
+    this.recipesService.approveRecipe(recipeId).subscribe(
+      (response) => {
+        alert('Recipe  approved successfully');
+        console.log('Recette sauvegardée !', response);
 
+      },
+      (error) => {
+        console.error('Error  approving recipe:', error);
+        alert('Failed to  approve recipe');
+      },
+      
+    );
+
+  }
+
+  
+  refuseRecipe(recipeId:number){
+    this.recipesService.refuseRecipe(recipeId).subscribe(
+      (response) => {
+        alert('Recipe refused successfully');
+        console.log('Recipe refused !', response);
+
+      },
+      (error) => {
+        console.error('Error saving recipe:', error);
+        alert('Failed to refuse recipe');
+      },
+      
+    );
+  }
  
 }

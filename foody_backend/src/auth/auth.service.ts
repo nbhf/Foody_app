@@ -25,10 +25,13 @@ export class AuthService {
         const user = this.userRepository.create({
           ...userData
         });
+        //const bcrypt = require('bcryptjs');
         user.salt = await bcrypt.genSalt();
         user.password = await bcrypt.hash(user.password, user.salt);
         try {
           await this.userRepository.save(user);
+          console.log("Utilisateur avant sauvegarde :", user);
+
         } catch (e) {
           console.error(" Erreur détectée :", e); //pour voir l'erreur exacte
   
@@ -82,6 +85,7 @@ export class AuthService {
       }
       
       private async verifyUserPassword(user: User, password: string): Promise<boolean> {
+       // const bcrypt = require('bcryptjs');
         const hashedPassword = await bcrypt.hash(password, user.salt);
         return hashedPassword === user.password;
       }
@@ -98,7 +102,9 @@ export class AuthService {
           role: role
         };
         const jwt = await this.jwtService.sign(payload);
+        console.log("JWT généré apartir de auth.service:", jwt); // Vérifie le token généré
         return {
+          
           "access_token": jwt
         };
       }

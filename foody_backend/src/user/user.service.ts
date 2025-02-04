@@ -6,6 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserRoleEnum } from './enums/user-role.enum';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class UserService {
@@ -14,32 +15,34 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Recipe)
     private readonly recipeRepository: Repository<Recipe>,
+    private notificationService: NotificationService,
   ) {}
 
   
-// Met à jour un utilisateur existant avec validation
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findOne(id);
+/// Met à jour un utilisateur existant avec validation
+async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  const user = await this.findOne(id);
 
 
-    // Vérification et mise à jour de l'email
-    if (updateUserDto.email && updateUserDto.email !== user.email) {
-      await this.checkEmailUniqueness(updateUserDto.email);
-      user.email = updateUserDto.email;
-    }
-
-    // Mise à jour du mot de passe avec hachage si fourni
-    if (updateUserDto.password) {
-      const salt = bcrypt.genSaltSync(); // ✅ `genSaltSync` remplace `await bcrypt.genSalt()`
-      user.password = await bcrypt.hash(updateUserDto.password, salt); // ✅ Correction ici
-    }
-
-    if (updateUserDto.username) {
-      user.username = updateUserDto.username;
-    }
-
-    return this.userRepository.save(user);
+  // Vérification et mise à jour de l'email
+  if (updateUserDto.email && updateUserDto.email !== user.email) {
+    await this.checkEmailUniqueness(updateUserDto.email);
+    user.email = updateUserDto.email;
   }
+
+  // Mise à jour du mot de passe avec hachage si fourni
+  if (updateUserDto.password) {
+    //const bcrypt = require('bcryptjs');
+    const salt = bcrypt.genSaltSync(); // ✅ genSaltSync remplace await bcrypt.genSalt()
+    user.password = await bcrypt.hash(updateUserDto.password, salt); // ✅ Correction ici
+  }
+
+  if (updateUserDto.username) {
+    user.username = updateUserDto.username;
+  }
+
+  return this.userRepository.save(user);
+}
 
   // Récupère un utilisateur par son ID
   async findOne(id: number): Promise<User> {
@@ -92,6 +95,7 @@ export class UserService {
     }
 
     user.savedRecipes.push(recipe);
+    await this.notificationService.createUserNotification(`You saved ${recipe.name}`,userId);
     return this.userRepository.save(user);
   }
 
