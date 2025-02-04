@@ -9,19 +9,19 @@ import { UserRoleEnum } from './enums/user-role.enum';
 import { User } from './entities/user.entity';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
+  
   @Get('me')
+  @UseGuards(JwtAuthGuard)
   async getProfile(@UserDecorator() user: User) {
     console.log(user.id);
     return this.userService.findOne(user.id);
   }
 
   @Patch(':id')
-  @UseGuards(RolesGuard)
-  @Roles(UserRoleEnum.USER)
+  @UseGuards(JwtAuthGuard)
+  
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -43,6 +43,7 @@ export class UserController {
 
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @UseGuards(RolesGuard)
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
   async delete(@Param('id', ParseIntPipe) id: number, @UserDecorator() user: User) {

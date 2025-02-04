@@ -32,8 +32,8 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
   // Mise à jour du mot de passe avec hachage si fourni
   if (updateUserDto.password) {
     //const bcrypt = require('bcryptjs');
-    const salt = bcrypt.genSaltSync(); // ✅ genSaltSync remplace await bcrypt.genSalt()
-    user.password = await bcrypt.hash(updateUserDto.password, salt); // ✅ Correction ici
+    user.salt = bcrypt.genSaltSync(); // ✅ genSaltSync remplace await bcrypt.genSalt()
+    user.password = await bcrypt.hash(updateUserDto.password, user.salt); // ✅ Correction ici
   }
 
   if (updateUserDto.username) {
