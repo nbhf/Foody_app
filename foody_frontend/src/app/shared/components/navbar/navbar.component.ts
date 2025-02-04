@@ -33,14 +33,16 @@ export class NavbarComponent implements OnInit {
     this.notificationService.adminUnreadCount$.subscribe(count => {
       this.adminUnreadCount = count;
     });
+    
   }
 
+
+  
   updateUserStatus(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
     this.username = this.authService.getUser();
     this.currentUser = this.authService.getCurrentUser();
     this.isAdmin = this.currentUser?.role === 'admin';
-    
     
   }
 

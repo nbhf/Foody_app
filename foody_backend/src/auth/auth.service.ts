@@ -85,7 +85,6 @@ export class AuthService {
       }
       
       private async verifyUserPassword(user: User, password: string): Promise<boolean> {
-       // const bcrypt = require('bcryptjs');
         const hashedPassword = await bcrypt.hash(password, user.salt);
         return hashedPassword === user.password;
       }
