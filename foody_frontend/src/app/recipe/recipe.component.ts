@@ -37,43 +37,6 @@ export class RecipeComponent implements OnInit {
   }
 
 
-  getSavedRecipes(): void {
-    if (this.userId) {
-      this.recipesService.getSavedRecipes(this.userId).subscribe(
-        (recipes) => {
-          this.savedRecipes = recipes;
-        },
-        (error) => {
-          console.error("Error fetching saved recipes", error);
-        }
-      );
-    } else {
-      console.error("Cannot fetch recipes: User ID is undefined");
-    }
-  }
-
-
-  saveRecipe(recipeId: number): void {
-    const user : any = this.authService.getCurrentUser()
-    if (user.id ) {
-      this.recipesService.saveRecipe(user.id, recipeId).subscribe(
-        (response) => {
-          alert('Recipe saved successfully');
-          console.log('Recette sauvegardée !', response);
-
-        },
-        (error) => {
-          console.error('Error saving recipe:', error);
-          alert('Failed to save recipe');
-        },
-        
-      );
-    } else {
-      alert('User not authenticated');
-    }
-  }
-
-
   approveRecipe(recipeId:number){
     this.recipesService.approveRecipe(recipeId).subscribe(
       (response) => {
@@ -88,6 +51,26 @@ export class RecipeComponent implements OnInit {
       
     );
 
+  }
+    
+  saveRecipe(recipeId: number): void {
+    const user : any = this.authService.getCurrentUser()
+    if (user.id ) {
+      this.recipesService.saveRecipe(user.id, recipeId).subscribe(
+        (response) => {
+          alert('Recipe saved successfully');
+          console.log('Recette sauvegardée !', response);
+  
+        },
+        (error) => {
+          console.error('Error saving recipe:', error);
+          alert('Failed to save recipe');
+        },
+        
+      );
+    } else {
+      alert('User not authenticated');
+    }
   }
 
   

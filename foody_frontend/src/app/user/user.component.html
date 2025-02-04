@@ -21,6 +21,59 @@
             <h3 class="mt-3">{{ user.username }}</h3>
             <p class="text-muted">{{ user.email }}</p>
         </div>
+     <!--Recipes-->   
+ <div>
+
+  <button (click)="getSavedRecipes()">Recettes sauvegardées</button>
+  <div >
+    <h2>Recettes sauvegardées</h2>
+    <div class="recettes-container">
+        <!-- Liste des recettes -->
+     <!--    <div class="recette-card"  *ngFor="let savedRecipe of savedRecipes" >
+            <img  [src]="savedRecipe.imgUrl | defaultImage:'assets/default_recipe.png'" alt="{{ savedRecipe.name }}" class="recipe-image"/>
+  
+            <p><strong>Description:</strong> {{ savedRecipe.description }}</p>
+            <p><strong>Category:</strong> {{ savedRecipe.category }}</p>
+                  <div class="ingredients">
+                    <h3>Ingredients:</h3>
+                    <ul>
+                      <li *ngFor="let ingredient of savedRecipe.ingredients">{{ ingredient }}</li>
+                    </ul>
+                  </div>
+                
+                  <div class="instructions">
+                    <h3>Instructions:</h3>
+                    <ul>
+                      <li *ngFor="let instruction of savedRecipe.instructions">{{ instruction }}</li>
+                    </ul>    
+                  </div>
+        </div> -->
+
+        
+        <ul>
+      <li *ngFor="let savedRecipe of savedRecipes">
+        <h2>{{savedRecipe.name }}</h2>
+ <img  [src]="savedRecipe.imgUrl | defaultImage:'assets/default_recipe.png'" alt="{{ savedRecipe.name }}" class="recipe-image"/>
+  
+  <p><strong>Description:</strong> {{ savedRecipe.description }}</p>
+  <p><strong>Category:</strong> {{ savedRecipe.category }}</p>
+        <div class="ingredients">
+          <h3>Ingredients:</h3>
+          <ul>
+            <li *ngFor="let ingredient of savedRecipe.ingredients">{{ ingredient }}</li>
+          </ul>
+        </div>
+      
+        <div class="instructions">
+          <h3>Instructions:</h3>
+          <ul>
+            <li *ngFor="let instruction of savedRecipe.instructions">{{ instruction }}</li>
+          </ul>    
+        </div>
+            </li>
+    </ul>
+  </div>
+</div>  
 
         <!-- Edit Profile Form -->
         <div *ngIf="editMode" class="mt-4">

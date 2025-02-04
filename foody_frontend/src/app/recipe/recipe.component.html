@@ -39,32 +39,3 @@
 
 
 
-<!-- <div>
-
-  <button (click)="getSavedRecipes()">Recettes sauvegardées</button>
-  <div >
-    <h2>Recettes sauvegardées</h2>
-    <ul>
-      <li *ngFor="let savedRecipe of savedRecipes">
-        <h2>{{savedRecipe.name }}</h2>
- <img  [src]="recipe.imgUrl | defaultImage:'assets/default_recipe.png'" alt="{{ recipe.name }}" class="recipe-image"/>
-  <p><strong>Published by:</strong> {{ getUsername() }}</p>
-  <p><strong>Description:</strong> {{ recipe.description }}</p>
-  <p><strong>Category:</strong> {{ recipe.category }}</p>
-        <div class="ingredients">
-          <h3>Ingredients:</h3>
-          <ul>
-            <li *ngFor="let ingredient of savedRecipe.ingredients">{{ ingredient }}</li>
-          </ul>
-        </div>
-      
-        <div class="instructions">
-          <h3>Instructions:</h3>
-          <ul>
-            <li *ngFor="let instruction of savedRecipe.instructions">{{ instruction }}</li>
-          </ul>    
-        </div>
-            </li>
-    </ul>
-  </div>
-</div> -->
