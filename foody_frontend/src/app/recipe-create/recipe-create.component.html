@@ -1,76 +1,60 @@
-<form (ngSubmit)="onSubmit()" #recipeForm="ngForm">
-  <div class="form-group">
-    <label for="name">Recipe Name</label>
-    <input 
-      type="text" 
-      id="name" 
-      class="form-control" 
-      required 
-      [(ngModel)]="recipe.name" 
-      name="name" 
-      #name="ngModel"
-      [ngClass]="{'is-invalid': name.invalid && name.touched}"
-    >
-    <div *ngIf="name.invalid && name.touched" class="text-danger">
-      Recipe name is required.
+<div class="recipe-form-container">
+  <h2>Create a Recipe</h2>
+
+  <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label>Recipe Name</label>
+      <input type="text" formControlName="name" placeholder="Enter the recipe name">
+      <p *ngIf="recipeForm.controls['name'].invalid && recipeForm.controls['name'].touched">
+        The recipe name is required (min 3 characters).
+      </p>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label for="description">Description</label>
-    <textarea 
-      id="description" 
-      class="form-control" 
-      [(ngModel)]="recipe.description" 
-      name="description"
-    ></textarea>
-  </div>
-
-  <div class="form-group">
-    <label for="ingredients">Ingredients (separated by new lines)</label>
-    <textarea 
-      id="ingredients" 
-      class="form-control" 
-      required 
-      [(ngModel)]="recipe.ingredients" 
-      name="ingredients" 
-      #ingredients="ngModel"
-      [ngClass]="{'is-invalid': ingredients.invalid && ingredients.touched}"
-    ></textarea>
-    <div *ngIf="ingredients.invalid && ingredients.touched" class="text-danger">
-      Ingredients are required.
+    <div>
+      <label>Description</label>
+      <textarea formControlName="description" placeholder="Enter the description "></textarea>
+      <p *ngIf="recipeForm.controls['description'].invalid && recipeForm.controls['description'].touched">
+        The description is required (min 10 characters).
+      </p>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label for="instructions">Instructions (separated by new lines)</label>
-    <textarea 
-      id="instructions" 
-      class="form-control" 
-      required 
-      [(ngModel)]="recipe.instructions" 
-      name="instructions" 
-      #instructions="ngModel"
-      [ngClass]="{'is-invalid': instructions.invalid && instructions.touched}"
-    ></textarea>
-    <div *ngIf="instructions.invalid && instructions.touched" class="text-danger">
-      Instructions are required.
+    <div>
+      <label>Ingredients</label>
+      <textarea formControlName="ingredients" placeholder="List the ingredients (separated by new lines)"></textarea>
+      <p *ngIf="recipeForm.controls['ingredients'].invalid && recipeForm.controls['ingredients'].touched">
+        Ingredients are required (min 10 characters).
+      </p>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label for="category">Category</label>
-    <select 
-      id="category" 
-      class="form-control" 
-      [(ngModel)]="recipe.category" 
-      name="category"
-    >
-      <option value="breakfast">Breakfast</option>
-      <option value="lunch">Lunch</option>
-      <option value="dinner">Dinner</option>
-    </select>
-  </div>
+    <div>
+      <label>Instructions</label>
+      <textarea formControlName="instructions" placeholder="Describe the steps (separated by new lines)"></textarea>
+      <p *ngIf="recipeForm.controls['instructions'].invalid && recipeForm.controls['instructions'].touched">
+        Instructions are required (min 10 characters).
+      </p>
+    </div>
 
-  <button type="submit" class="btn btn-primary" [disabled]="!recipeForm.valid">Create Recipe</button>
-</form>
+    <div>
+      <label>Category</label>
+      <select formControlName="category">
+        <option value="">Select a category</option>
+        <option value="breakfast">Breakfast</option>
+        <option value="lunch">Lunch</option>
+        <option value="dinner">Dinner</option>
+      </select>
+      <p *ngIf="recipeForm.controls['category'].invalid && recipeForm.controls['category'].touched">
+        The category is required.
+      </p>
+    </div>
+
+    <div class="image-upload-container">
+      <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*">
+      <label for="file-upload" class="image-label">
+        <img [src]="previewImageUrl || 'assets/default_recipe.png'" class="img-preview" alt="Click to upload">
+      </label>
+    </div>
+    
+
+    <button type="submit" [disabled]="recipeForm.invalid">Create Recipe</button>
+  </form>
+</div>

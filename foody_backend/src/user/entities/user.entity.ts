@@ -58,7 +58,11 @@ export class User extends TimestampEntites {
   savedRecipes: Recipe[];
 
 
-  @OneToMany(() => Notification, notification => notification.user)
+  @OneToMany(() => Notification, notification => notification.user, {cascade: true})
   notifications: Notification[];
+
+  @ManyToMany(() => Comment)
+  @JoinTable()
+  reportedComments: Comment[];
 
 }
