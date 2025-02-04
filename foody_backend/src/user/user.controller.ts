@@ -35,8 +35,9 @@ export class UserController {
       throw new Error("Vous ne pouvez modifier que votre propre compte.");
     }
   
-    // Mise à jour de l'utilisateur
-    return this.userService.update(id, updateUserDto);
+    const result = await this.userService.update(id, updateUserDto);
+
+    return result; // Renvoie { user, access_token }
   }
   
 
