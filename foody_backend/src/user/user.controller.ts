@@ -35,8 +35,9 @@ export class UserController {
       throw new Error("Vous ne pouvez modifier que votre propre compte.");
     }
   
-    // Mise à jour de l'utilisateur
-    return this.userService.update(id, updateUserDto);
+    const result = await this.userService.update(id, updateUserDto);
+
+    return result; // Renvoie { user, access_token }
   }
   
 
@@ -44,8 +45,7 @@ export class UserController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RolesGuard)
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
+  //@Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
   async delete(@Param('id', ParseIntPipe) id: number, @UserDecorator() user: User) {
     if (user.role === UserRoleEnum.USER) {
       console.log("Utilisateur connecté :", user);

@@ -94,7 +94,7 @@ export class AuthService {
         return hashedPassword === admin.password;
       }
       
-      private async generateToken(entity: User | Admin, role: UserRoleEnum.USER| UserRoleEnum.ADMIN) {
+       async generateToken(entity: User | Admin, role: UserRoleEnum.USER| UserRoleEnum.ADMIN) {
         const payload = {
           id: entity.id,
           username: entity.username,

@@ -1,91 +1,112 @@
-/* Style général du formulaire */
-form {
-  max-width: 600px;
-  margin: 0 auto;
+/* Conteneur principal */
+.recipe-form-container {
+  max-width: 500px;
+  margin: auto;
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Style des groupes de champs */
-.form-group {
-  margin-bottom: 20px;
+/* Titre */
+h2 {
+  text-align: center;
+  color: #2d4a6c;
 }
 
-/* Label des champs */
-.form-group label {
-  font-size: 16px;
+/* Champs du formulaire */
+form div {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
   font-weight: bold;
-  color: #2c3e50;
-  display: block;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
+  color: #555;
 }
 
-/* Champs de texte et de sélection */
-.form-control {
+input[type="text"],
+textarea,
+select {
   width: 100%;
-  padding: 12px;
-  font-size: 14px;
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-}
-
-/* Focus sur les champs */
-.form-control:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-/* Style des boutons */
-.btn {
-  background-color: #007bff;
-  color: white;
-  padding: 12px 20px;
   font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
 }
 
+textarea {
+  resize: vertical;
+}
 
-/* Style pour les messages d'erreur */
-.error-message {
+/* Message d'erreur */
+p {
   color: red;
-  font-size: 0.9em;
+  font-size: 14px;
   margin-top: 5px;
 }
 
-/* Style pour le bouton désactivé */
+/* Catégorie */
+select {
+  cursor: pointer;
+}
+
+/* Bouton de soumission */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
-/* Ajout d'un cadre rouge pour les champs invalides */
-.is-invalid {
-  border: 1px solid red;
+button:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 
-/* Texte d'erreur sous chaque champ */
-.text-danger {
-  font-size: 0.875rem;
-  color: red;
-  margin-top: 5px;
+.image-upload-container {
+  text-align: center;
+  position: relative;
+  cursor: pointer;
 }
 
-/* Ajouter un peu d'espace pour les champs invalides */
-.form-group input.is-invalid,
-.form-group textarea.is-invalid {
-  margin-bottom: 5px;
+/* Caché l'input file */
+input[type="file"] {
+  display: none;
 }
 
-/* Ajustement du bouton "Créer la recette" pour qu'il soit plus petit si nécessaire */
-button[type="submit"] {
-  width: auto;
-  margin-top: 15px;
+/* Style du label (fait office de bouton) */
+.image-label {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border: 2px dashed #7e652c;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.3s;
 }
+
+.image-label:hover {
+  border-color: #2571dc;
+}
+
+/* Image prévisualisée */
+.img-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+

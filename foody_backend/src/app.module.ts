@@ -14,14 +14,22 @@ import { NotificationController } from './notification/notification.controller';
 import { NotificationService } from './notification/notification.service';
 import { NotificationModule } from './notification/notification.module';
 import { UploadController } from './upload/upload.controller';
+import { ServeStaticModule } from '@nestjs/serve-static'; 
+import { join } from 'path';
+
 // variables de configuration
 import * as dotenv from 'dotenv';
 import appConfig from './config/app.config';
+
 dotenv.config();
 
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'), // Dossier où sont stockées les images
+      serveRoot: '/uploads', // URL accessible (ex: http://localhost:3000/uploads/image.png)
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfig],
