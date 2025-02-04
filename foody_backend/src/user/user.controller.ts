@@ -9,19 +9,19 @@ import { UserRoleEnum } from './enums/user-role.enum';
 import { User } from './entities/user.entity';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
+  
   @Get('me')
+  @UseGuards(JwtAuthGuard)
   async getProfile(@UserDecorator() user: User) {
     console.log(user.id);
     return this.userService.findOne(user.id);
   }
 
   @Patch(':id')
-  @UseGuards(RolesGuard)
-  @Roles(UserRoleEnum.USER)
+  @UseGuards(JwtAuthGuard)
+  
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -35,16 +35,17 @@ export class UserController {
       throw new Error("Vous ne pouvez modifier que votre propre compte.");
     }
   
-    // Mise à jour de l'utilisateur
-    return this.userService.update(id, updateUserDto);
+    const result = await this.userService.update(id, updateUserDto);
+
+    return result; // Renvoie { user, access_token }
   }
   
 
 
 
   @Delete(':id')
-  @UseGuards(RolesGuard)
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
+  @UseGuards(JwtAuthGuard)
+  //@Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
   async delete(@Param('id', ParseIntPipe) id: number, @UserDecorator() user: User) {
     if (user.role === UserRoleEnum.USER) {
       console.log("Utilisateur connecté :", user);

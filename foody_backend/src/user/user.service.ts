@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { UserRoleEnum } from './enums/user-role.enum';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
 import { NotificationService } from 'src/notification/notification.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
@@ -16,11 +17,12 @@ export class UserService {
     @InjectRepository(Recipe)
     private readonly recipeRepository: Repository<Recipe>,
     private notificationService: NotificationService,
+    private authService: AuthService,
   ) {}
 
   
 /// Met à jour un utilisateur existant avec validation
-async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+async update(id: number, updateUserDto: UpdateUserDto): Promise<{ user: User; access_token?: any }> {
   const user = await this.findOne(id);
 
   // Vérification et mise à jour de l'email
@@ -32,16 +34,29 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
   // Mise à jour du mot de passe avec hachage si fourni
   if (updateUserDto.password) {
     //const bcrypt = require('bcryptjs');
-    const salt = bcrypt.genSaltSync(); // ✅ genSaltSync remplace await bcrypt.genSalt()
-    user.password = await bcrypt.hash(updateUserDto.password, salt); // ✅ Correction ici
+    user.salt = bcrypt.genSaltSync(); // ✅ genSaltSync remplace await bcrypt.genSalt()
+    user.password = await bcrypt.hash(updateUserDto.password, user.salt); // ✅ Correction ici
   }
 
-  if (updateUserDto.username) {
+  if (updateUserDto.username && updateUserDto.username !== user.username) {
+    const existingUser = await this.userRepository.findOne({ where: { username: updateUserDto.username } });
+    if (existingUser) {
+      throw new ConflictException("Ce nom d'utilisateur est déjà utilisé.");
+    }
     user.username = updateUserDto.username;
   }
+  await this.userRepository.save(user);
+    if (updateUserDto.username) {
+     const newToken = await this.authService.generateToken(user ,UserRoleEnum.USER);
+     
+    return {
+      user,
+      access_token: newToken.access_token
+    };
+    }
+    return {user};
+  }
 
-  return this.userRepository.save(user);
-}
 
   // Récupère un utilisateur par son ID
   async findOne(id: number): Promise<User> {

@@ -17,6 +17,7 @@ import { UploadController } from './upload/upload.controller';
 // variables de configuration
 import * as dotenv from 'dotenv';
 import appConfig from './config/app.config';
+
 dotenv.config();
 
 

@@ -85,7 +85,6 @@ export class AuthService {
       }
       
       private async verifyUserPassword(user: User, password: string): Promise<boolean> {
-       // const bcrypt = require('bcryptjs');
         const hashedPassword = await bcrypt.hash(password, user.salt);
         return hashedPassword === user.password;
       }
@@ -95,7 +94,7 @@ export class AuthService {
         return hashedPassword === admin.password;
       }
       
-      private async generateToken(entity: User | Admin, role: UserRoleEnum.USER| UserRoleEnum.ADMIN) {
+       async generateToken(entity: User | Admin, role: UserRoleEnum.USER| UserRoleEnum.ADMIN) {
         const payload = {
           id: entity.id,
           username: entity.username,
