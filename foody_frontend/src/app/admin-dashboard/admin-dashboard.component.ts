@@ -9,7 +9,7 @@ import { User, UserService } from '../user/user.service';
 })
 export class AdminDashboardComponent implements OnInit{
   
-  users: any[] = [];
+  users: User[] = [];
   //recipesOnHold: any[] = [];
 
   constructor(private adminService: AdminService,
