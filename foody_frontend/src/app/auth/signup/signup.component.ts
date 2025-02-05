@@ -53,10 +53,10 @@ export class SignupComponent {
           alert('Inscription réussie !!');
           this.signupForm.reset();
           this.previewImageUrl = null;
+          this.router.navigateByUrl('/login');
         }, error => {
           console.error('Erreur lors de l\'inscription', error);
           this.errorMessage = 'Échec de l\'inscription. Veuillez réessayer.';
-          alert('Erreur lors de l\'inscription !');
         });
       };
   
@@ -72,9 +72,7 @@ export class SignupComponent {
         // ✅ Pas d'image fournie → continue sans image
         handleSignup();
       }
-  
-      this.router.navigateByUrl('/login');
-    }
+      }
   }
   
 

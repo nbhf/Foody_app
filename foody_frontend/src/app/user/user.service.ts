@@ -54,4 +54,10 @@ getSavedRecipes(userId: number): Observable<any> {
   return this.http.get(`${APP_API.user}/${userId}/saved-recipes`);
 }
 
+  // Vérifier le mot de passe actuel
+  verifyCurrentPassword(userId: number,enteredPassword: string): Observable<any> {
+    return this.http.post(`${APP_API.user}/${userId}/verify-password`, { enteredPassword });
+  }
+
+
 }

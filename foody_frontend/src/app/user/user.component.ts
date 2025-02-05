@@ -23,10 +23,16 @@ export class UserComponent implements OnInit {
   newPhotoUrl = '';
   showButton=true; recipesLoaded=false;
   showButton2=true;  recipesLoaded2=false;
-  enteredPassword='';
-  currentAction: 'changePassword' | 'deleteAccount' | null = null;
+  selectedFile: File | null = null; // Fichier sélectionné
+  previewUrl: string | ArrayBuffer | null = null; // Aperçu de l'image
+
   
  
+  enteredPassword='';
+  currentAction: 'changePassword' | 'deleteAccount' | null = null;
+
+
+
   constructor(private userService: UserService, private router: Router, private authService: AuthService, private recipesService: RecipeService) {}
 
   ngOnInit(): void {
@@ -71,6 +77,13 @@ export class UserComponent implements OnInit {
       },
       (error) => { console.error('Erreur de modification du mot de passe', error); }
     );
+  }
+
+   // Prépare l'action et ouvre le modal de vérification du mot de passe
+   prepareAction(action: 'changePassword' | 'deleteAccount') {
+    this.currentAction = action;
+    const modal = new bootstrap.Modal(document.getElementById('verifyCurrentPasswordModal'));
+    modal.show();
   }
 
   // Confirmer la suppression du compte
@@ -118,23 +131,75 @@ export class UserComponent implements OnInit {
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
   }
+  openVerifyPasswordModal() {
+    const modal = new bootstrap.Modal(document.getElementById('verifyCurrentPasswordModal'));
+    modal.show();
+  }
+
+  // Vérifier le mot de passe actuel
+  verifyPassword() {
+    this.userService.verifyCurrentPassword(this.user.id, this.enteredPassword).subscribe(
+      () => {
+        // Si le mot de passe est correct, on ferme le modal de vérification
+        bootstrap.Modal.getInstance(document.getElementById('verifyCurrentPasswordModal')).hide();
+        
+        if (this.currentAction === 'changePassword') {
+          // Ouvre le modal pour changer le mot de passe
+          const modal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+          modal.show();
+        } else if (this.currentAction === 'deleteAccount') {
+          // Appelle la méthode pour confirmer la suppression du compte
+          this.confirmDelete();
+        }
+      },
+      (error) => {
+        alert('Current password is incorrect');
+        console.error('Erreur de vérification du mot de passe', error);
+        this.enteredPassword = '';
+      }
+    );
+  }
   // Ouvrir le modal de changement de photo
 openChangePhotoModal() {
   this.showDropdown = false; // Fermer le dropdown
   const modal = new bootstrap.Modal(document.getElementById('changePhotoModal'));
   modal.show();
 }
-// Sauvegarder la nouvelle photo
-saveNewPhoto() {
-  if (this.newPhotoUrl.trim()) {
-    this.user.imgUrl = this.newPhotoUrl; // Mise à jour locale
-    console.log(this.user.imgUrl)
-    console.log("jdrbfu")
-    this.updateProfile(); // Appel de la méthode qui met à jour le backend
-    const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
-    modal.hide(); // Fermer le modal
+onFileSelected(event: any) {
+  const file: File = event.target.files[0]; // Récupère le premier fichier sélectionné
+  if (file) {
+    this.selectedFile = file;
+    // Si tu veux afficher un aperçu de l'image avant de la sauvegarder :
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      // Tu peux utiliser cette donnée pour afficher un aperçu, par exemple :
+      console.log('Aperçu de l\'image:', e.target.result);
+    };
+    reader.readAsDataURL(file);
   }
 }
-  
+
+
+saveNewPhoto() {
+  if (this.selectedFile) {
+    // Traitement de l'image (par exemple, envoyer à l'API)
+    const formData = new FormData();
+    formData.append('photo', this.selectedFile);
+
+    // Met à jour l'URL de la photo avec une version locale si nécessaire
+    this.user.imgUrl = URL.createObjectURL(this.selectedFile);
+    console.log(this.user.imgUrl);
+    console.log("Image sélectionnée");
+
+    // Appelle ta méthode pour mettre à jour le backend avec l'image
+    this.updateProfile();
+    
+    // Ferme la modale après l'enregistrement
+    const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
+    modal.hide();
+  }
+}
+
+
 
 }

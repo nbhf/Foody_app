@@ -84,3 +84,21 @@ button {
     height: auto;
     border-radius: 8px;
 }
+/* Hover effect */
+.dropdown-toggle:hover {
+  background-color: #f8f9fa !important;
+  transform: scale(1.05);
+}
+
+/* Active state */
+.dropdown-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Animation for chevron */
+.bi-chevron-down {
+  transition: transform 0.2s;
+}
+.dropdown.show .bi-chevron-down {
+  transform: rotate(180deg);
+}

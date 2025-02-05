@@ -50,7 +50,6 @@ import { RecipeCreateComponent } from './recipe-create/recipe-create.component';
     FormsModule ,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatSelectModule, 
     BrowserAnimationsModule
 
   ],
