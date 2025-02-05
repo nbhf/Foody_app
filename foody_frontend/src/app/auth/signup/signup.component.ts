@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class SignupComponent {
   signupForm: FormGroup;
   errorMessage: string = '';
+  previewImageUrl: string | null = null;
 
   constructor(private fb: FormBuilder, private authService: AuthService,private router: Router) {
     this.signupForm = this.fb.group({
@@ -44,5 +45,17 @@ export class SignupComponent {
       }
     });
     this.router.navigateByUrl('/login');
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.signupForm.patchValue({ photo: file }); // Met à jour le formulaire avec l'image
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImageUrl = reader.result as string; // Définit l'URL de prévisualisation de l'image
+      };
+      reader.readAsDataURL(file);
+    }
   }
 }

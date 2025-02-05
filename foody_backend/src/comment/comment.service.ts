@@ -5,6 +5,7 @@ import { Not, Repository } from 'typeorm';
 import { Comment } from './entities/comment.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
+import { NotificationService } from 'src/notification/notification.service';
 import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
@@ -14,6 +15,8 @@ export class CommentsService {
     private commentsRepository: Repository<Comment>,
     @InjectRepository(Recipe)
     private readonly recipeRepository: Repository<Recipe>,
+    private notificationService: NotificationService,
+    
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
@@ -22,10 +25,11 @@ export class CommentsService {
   async create(createCommentDto: CreateCommentDto,user,recipeId: number,): Promise<Comment> {
     const newComment = this.commentsRepository.create(createCommentDto);
     console.log("id de recette",recipeId)
-    const recipe = await this.recipeRepository.findOne({ where: { id: recipeId } });
+    const recipe = await this.recipeRepository.findOne({ where: { id: recipeId },relations:['createdBy'] });
     newComment.author =user;
     newComment.recipe=recipe;
     console.log("recette:",recipe);
+    await this.notificationService.createUserNotification(`${user.username} commented ${newComment.content} on your ${recipe.name} recipe `, recipe.createdBy.id);
     return this.commentsRepository.save(newComment);
   }
 

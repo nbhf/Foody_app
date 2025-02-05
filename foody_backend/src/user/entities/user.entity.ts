@@ -32,10 +32,8 @@ export class User extends TimestampEntites {
   @Exclude()
   salt: string;
 
-
   @Column({ nullable: true })
   imgUrl: string;
-
 
 
   @Column({
@@ -45,15 +43,14 @@ export class User extends TimestampEntites {
   })
   role: string;  
    
-  @OneToMany(() => Recipe, recipe => recipe.createdBy)
+  @OneToMany(() => Recipe, recipe => recipe.createdBy,{ cascade: true })
   createdRecipes: Recipe[];
 
-  @OneToMany(() => Comment, (comment) => comment.author)
+  @OneToMany(() => Comment, (comment) => comment.author,{ cascade: true })
   comments: Comment[];
 
 
-  
-  @ManyToMany(() => Recipe, (recipe) => recipe.savedBy)
+  @ManyToMany(() => Recipe, (recipe) => recipe.savedBy,{ cascade: true })
   @JoinTable({name:"user_saved_recipes"})
   savedRecipes: Recipe[];
 

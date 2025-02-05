@@ -23,8 +23,7 @@ const routes: Routes = [
   { path: APP_ROUTES.notifications, component: NotificationComponent ,canActivate: [AuthGuard] },
   { path: APP_ROUTES.recipedetails, component: RecipeComponent ,canActivate: [AuthGuard] },
   { path: APP_ROUTES.adminDashboard, component: AdminDashboardComponent,canActivate: [AuthGuard] },
-  { path: APP_ROUTES.allrecipes, component: AllrecipesComponent },
-  { path: APP_ROUTES.profile, component: UserComponent  },
+  { path: APP_ROUTES.profile, component: UserComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

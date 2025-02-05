@@ -36,8 +36,6 @@ export class NavbarComponent implements OnInit {
     
   }
 
-
-  
   updateUserStatus(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
     this.username = this.authService.getUser();

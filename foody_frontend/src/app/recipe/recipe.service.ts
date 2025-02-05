@@ -45,8 +45,12 @@ saveRecipe(userId: number, recipeId: number): Observable<any> {
 }
 
 
+
 getSavedRecipes(userId: number): Observable<any> {
   return this.http.get(`${APP_API.user}/${userId}/saved-recipes`);
+}
+getCreatedRecipes(userId: number): Observable<any> {
+  return this.http.get(`${APP_API.user}/${userId}/created-recipes`);
 }
 
 
