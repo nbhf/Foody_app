@@ -14,11 +14,10 @@ export class CommentsService {
     @InjectRepository(Comment)
     private commentsRepository: Repository<Comment>,
     @InjectRepository(Recipe)
-    private readonly recipeRepository: Repository<Recipe>,
-    private notificationService: NotificationService,
-    
+    private readonly recipeRepository: Repository<Recipe>,    
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private notificationService: NotificationService,
   ) {}
 
   // Créer un commentaire
