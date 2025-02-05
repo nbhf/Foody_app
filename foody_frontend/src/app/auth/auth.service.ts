@@ -107,4 +107,11 @@ isTokenExpired(token: string): boolean {
   isAuthenticated(): boolean {
     return !!this.getToken(); 
   }
+
+  uploadImage(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', file);
+  
+    return this.http.post<any>(`${APP_API.upload}/image`, formData);
+  }
 }
