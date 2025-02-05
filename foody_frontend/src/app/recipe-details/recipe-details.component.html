@@ -5,7 +5,7 @@
   </div>
 
   <!-- Partie droite : Commentaires -->
-  <div class="comments-section">
+  <div *ngIf="!isAdmin" class="comments-section">
     <app-comment></app-comment>
-    
+   </div> 
    
