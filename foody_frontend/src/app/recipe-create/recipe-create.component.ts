@@ -82,6 +82,8 @@ export class RecipeCreateComponent implements OnInit {
             payload.imgUrl
           ).subscribe(() => {
             alert('Recipe created successfully!');
+            this.recipeForm.reset();
+            this.previewImageUrl=null;
           }, error => {
             console.error('Error creating recipe:', error);
             alert('Error creating recipe!');

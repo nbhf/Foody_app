@@ -1,0 +1,10 @@
+.navbar a {
+    font-size: 20px; /* Increase text size */
+    color: #462202; /* Change text color */
+    font-family: Georgia;
+  }
+  
+  .navbar a:hover {
+    color: #000000; /* Change color on hover */
+  }
+  

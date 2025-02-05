@@ -29,7 +29,7 @@ export class NotificationComponent implements OnInit {
     } else {
       this.loadUserNotifications();
     }
-      // Rafraîchir les notifications toutes les 3 secondes (3000 ms)
+    
   setInterval(() => {
     if (this.isAdmin) {
       this.loadAdminNotifications();

@@ -21,8 +21,10 @@ export class UserComponent implements OnInit {
   createdRecipes: any[] = [];
   showDropdown = false;
   newPhotoUrl = '';
-
-
+  showButton=true; recipesLoaded=false;
+  showButton2=true;  recipesLoaded2=false;
+  
+ 
   constructor(private userService: UserService, private router: Router, private authService: AuthService, private recipesService: RecipeService) {}
 
   ngOnInit(): void {

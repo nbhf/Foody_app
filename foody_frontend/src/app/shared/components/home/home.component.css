@@ -1,10 +1,9 @@
-body {
+.home-container {
     background: linear-gradient(to bottom, #FEFBEF, #FEE5C1);
     color: #20180a;
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    padding: 0;
-
+    padding-bottom: 20px;
     color: #20180a;
     font-family: 'Roboto', sans-serif;
   }
@@ -13,14 +12,14 @@ body {
 /* Header */
 .header {
     text-align: center;
-    margin-top: 50px;
     animation: fadeIn 1s ease-in-out;
+    padding-top: 50px;
   }
   
   .header h1 {
     font-size: 48px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   }
   
@@ -83,8 +82,10 @@ body {
   }
   
   .cta-section h2 {
-    font-size: 32px;
-    margin-bottom: 20px;
+    font-size: 40px;
+    font-weight: bold;   
+    margin-top: 40px; 
+    margin-bottom: 30px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   }
   
@@ -109,34 +110,28 @@ body {
    .derscrip {
     display: flex;
     align-items: center;
-    /* justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 20px;
-    background-color: #f6e4e4;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    width: 90%;
-    max-width: 1200px; */
+   
   } 
   
   .derscrip .imge {
-    width:40%;
+    width:30%;
     height:400px;
     border-radius: 10px;
     margin-bottom: 20px;
+    margin-right: 50px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color:  #FEE1B5;
   }
   
   .derscrip h3 {
-    font-size: 1.2rem;
     color: #333;
     line-height: 1.6;
     font-weight: 400;
     max-width: 900px;
     margin: 0 auto;
-    text-align: center;
+    text-align: justify;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 25px;
   }
   
   .derscrip h3:hover {
