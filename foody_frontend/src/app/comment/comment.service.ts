@@ -16,13 +16,13 @@ export class CommentService {
 
 
   // Méthode pour récupérer les commentaires d'une recette
-  getCommentsByRecipe(recipeId: number): Observable<any> {
-    return this.http.get(`${APP_API.comment}/recipe/${recipeId}`);
+  getCommentsByRecipe(recipeId: number ,userId:number): Observable<any> {
+    return this.http.get(`${APP_API.comment}/${recipeId}/unreported-comments/${userId}`);
   }
 
  // Signaler un commentaire
  reportComment(commentId: number): Observable<Comment | null> {
-  return this.http.patch<Comment | null>(`${APP_API.comment}/${commentId}/report`, {});
+  return this.http.patch<any>(`${APP_API.comment}/report/${commentId}`, {});
 }
   // Fonction pour sauvegarder un commentaire
   saveComment(commentaire: string,recipeId:number): Observable<any> {   

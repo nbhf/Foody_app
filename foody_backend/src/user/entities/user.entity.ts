@@ -61,8 +61,8 @@ export class User extends TimestampEntites {
   @OneToMany(() => Notification, notification => notification.user, {cascade: true})
   notifications: Notification[];
 
-  @ManyToMany(() => Comment)
-  @JoinTable()
+  @ManyToMany(() => Comment, (comment) => comment.reportedBy, { cascade: true ,onDelete:'CASCADE' })
+  @JoinTable({name:"user_reprted_comments"})
   reportedComments: Comment[];
 
 }
