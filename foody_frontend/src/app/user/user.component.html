@@ -18,7 +18,7 @@
         <div class="text-center">
             <div class="position-relative d-inline-block">
                 <!-- Avatar cliquable -->
-                <img [src]="user.imgUrl" alt="Avatar" class="rounded-circle border" width="120" height="120" 
+                <img [src]="user.imgUrl| defaultImage:'assets/default_user.png'" alt="Avatar" class="rounded-circle border" width="120" height="120" 
                      (click)="toggleDropdown()">
                 <!-- Dropdown -->
                 <div *ngIf="showDropdown" class="dropdown-menu show position-absolute mt-2 shadow" style="display: block;">

@@ -14,9 +14,9 @@ export class Notification extends TimestampEntites {
   @Column({ default: false })
   isRead: boolean;
 
-  @ManyToOne(() => User, user => user.notifications, { nullable: true })
+  @ManyToOne(() => User, user => user.notifications, { nullable: true,onDelete: 'CASCADE' })
   user: User;
 
-  @ManyToOne(() => Admin, admin => admin.notifications, { nullable: true })
+  @ManyToOne(() => Admin, admin => admin.notifications, { nullable: true , onDelete: 'CASCADE'})
   admin: Admin;
 }

@@ -28,10 +28,10 @@ export class Comment {
       }
     }
 
-  @ManyToOne(() => Recipe, (recipe) => recipe.comments)  
+  @ManyToOne(() => Recipe, (recipe) => recipe.comments,{ onDelete: 'CASCADE' })  
   @JoinColumn({ name: 'recipeId' }) 
    recipe: Recipe;
   
-   @ManyToMany(() => User, user => user.reportedComments)
+   @ManyToMany(() => User, user => user.reportedComments,{ onDelete: 'CASCADE' })
    reportedByUsers: User[];
 }

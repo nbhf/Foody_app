@@ -33,6 +33,13 @@
           Les mots de passe ne correspondent pas
         </p>
       </div>
+
+      <div class="image-upload-container">
+        <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*">
+        <label for="file-upload" class="image-label">
+          <img [src]="previewImageUrl || 'assets/default_user.png'" class="img-preview" alt="Click to upload">
+        </label>
+      </div>
   
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
   
