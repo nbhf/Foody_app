@@ -21,7 +21,6 @@ export class UserController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -45,7 +44,7 @@ export class UserController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  //@Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
   async delete(@Param('id', ParseIntPipe) id: number, @UserDecorator() user: User) {
     if (user.role === UserRoleEnum.USER) {
       console.log("Utilisateur connecté :", user);
@@ -83,7 +82,7 @@ return savedRecipes;
 
 
 @Get('findAll')
-@UseGuards(RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRoleEnum.ADMIN)
 async findAllUsers(){
   const allUsers = await this.userService.findAllUsers();
