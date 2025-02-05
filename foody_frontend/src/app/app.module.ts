@@ -49,7 +49,8 @@ import { RecipeCreateComponent } from './recipe-create/recipe-create.component';
     HttpClientModule ,
     FormsModule ,
     ReactiveFormsModule,
-    BrowserAnimationsModule  
+    BrowserAnimationsModule,
+    BrowserAnimationsModule
 
   ],
   providers: [CommentService ,AuthGuard, authInterceptorProvider],

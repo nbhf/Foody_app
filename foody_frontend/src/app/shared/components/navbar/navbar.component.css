@@ -7,4 +7,9 @@
   .navbar a:hover {
     color: #000000; /* Change color on hover */
   }
+
+  .dropdown-menu {
+    position: absolute !important;
+  }
+  
   

@@ -8,7 +8,8 @@ import { UserRoleEnum } from 'src/user/enums/user-role.enum';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { UserService } from 'src/user/user.service';
-
+import { Admin as AdminDecorator } from 'src/decorators/admin.decorator';
+import { Admin } from './entities/admin.entity';
 
 
 @Controller('admin')
@@ -37,9 +38,23 @@ export class AdminController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.adminService.update(+id, updateAdminDto);
+  @UseGuards(JwtAuthGuard)
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateAdminDto: UpdateAdminDto,
+    @AdminDecorator() admin: Admin
+  ) {
+    console.log("Utilisateur connecté :", admin);
+    console.log("ID fourni dans l'URL :", id);
+  
+    // Vérification pour s'assurer que l'utilisateur ne met à jour que son propre profil
+    if (admin.id !== id) {
+      throw new Error("Vous ne pouvez modifier que votre propre compte.");
+    }
+    const result = await this.userService.update(id, updateAdminDto);
+    return result; // Renvoie { admin, access_token }
   }
+  
 
   @Delete(':id')
   remove(@Param('id') id: string) {
