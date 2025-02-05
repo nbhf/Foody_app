@@ -1,4 +1,8 @@
 <div class="notifications-container">
+  <div *ngIf="isAdmin && !adminNotifications.length" class="notification-section">
+    <h3 class="section-title">You have ({{ unreadCount }}) Notifications</h3>
+  </div>
+
   <div *ngIf="isAdmin && adminNotifications.length" class="notification-section">
     <h3 class="section-title">Admin Notifications ({{ unreadCount }})</h3>
     <ul class="notification-list">
@@ -16,6 +20,9 @@
     </ul>
   </div>
 
+  <div *ngIf="!isAdmin && !userNotifications.length" class="notification-section">
+    <h3 class="section-title">You have ({{ unreadCount }}) Notifications </h3>
+  </div>
   <div *ngIf="!isAdmin && userNotifications.length" class="notification-section">
     <h3 class="section-title">User Notifications ({{ unreadCount }})</h3>
     <ul class="notification-list">

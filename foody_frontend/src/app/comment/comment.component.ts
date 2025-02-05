@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommentService } from './comment.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-comment',
@@ -11,29 +12,26 @@ import { Observable } from 'rxjs';
 export class CommentComponent implements OnInit {
   comments$!: Observable<any>;
   recipeId!: number;
+  userId!:number;
   comment: string = '';
   reportedComments: number[] = []; // Stocker les commentaires signalés
 
-  constructor(private commentService: CommentService, private route: ActivatedRoute) {}
+  constructor(private commentService: CommentService, private route: ActivatedRoute,private authService : AuthService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.recipeId = +params['id']; // Convertir l'ID en nombre
-      this.loadComments();
-      this.loadReportedComments(); // Charger les commentaires signalés
+      this.loadComments(this.recipeId);
+
     });
   }
 
   // Charger les commentaires
-  loadComments(): void {
-    this.comments$ = this.commentService.getCommentsByRecipe(this.recipeId);
+  loadComments(recipeId:number): void {
+    this.userId= this.authService.getCurrentUser().id;
+    this.comments$ = this.commentService.getCommentsByRecipe(this.recipeId,this.userId);
   }
 
-  // Charger les commentaires signalés depuis le localStorage
-  loadReportedComments(): void {
-    const storedReports = localStorage.getItem('reportedComments');
-    this.reportedComments = storedReports ? JSON.parse(storedReports) : [];
-  }
 
   // Sauvegarder un commentaire
   saveComment() {
@@ -46,7 +44,7 @@ export class CommentComponent implements OnInit {
       next: (response) => {
         alert('Commentaire sauvegardé !');
         this.comment = ''; 
-        this.loadComments(); // Recharger les commentaires
+        this.loadComments(this.recipeId); // Recharger les commentaires
       },
       error: () => {
         alert('Erreur lors de la sauvegarde du commentaire.');
@@ -58,8 +56,8 @@ export class CommentComponent implements OnInit {
   report(commentId: number) {
     this.commentService.reportComment(commentId).subscribe({
       next: () => {
-        this.reportedComments.push(commentId);
-        localStorage.setItem('reportedComments', JSON.stringify(this.reportedComments));
+        console.log("comment is reported");
+        this.loadComments(this.recipeId);
       },
       error: () => {
         alert('Erreur lors du signalement.');

@@ -21,6 +21,10 @@ export class UserComponent implements OnInit {
   createdRecipes: any[] = [];
   showDropdown = false;
   newPhotoUrl = '';
+  showButton=true; recipesLoaded=false;
+  showButton2=true;  recipesLoaded2=false;
+  
+ 
   enteredPassword='';
   currentAction: 'changePassword' | 'deleteAccount' | null = null;
 
@@ -86,6 +90,8 @@ export class UserComponent implements OnInit {
         () => { this.router.navigate(['/signup']); },
         (error) => { console.error('Erreur de suppression du compte', error); }
       );
+      this.authService.logout();
+
     }
   }
   getSavedRecipes(): void {

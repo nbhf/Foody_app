@@ -1,10 +1,11 @@
 // src/comments/comments.controller.ts
-import { Controller, Get, Post, Body, Param, UseGuards,Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards,Patch, ParseIntPipe } from '@nestjs/common';
 import { CommentsService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Comment } from './entities/comment.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from 'src/decorators/user.decorator';
+import { Recipe } from 'src/recipe/entities/recipe.entity';
 
 @Controller('comments')
 export class CommentsController {
@@ -32,14 +33,25 @@ export class CommentsController {
     return this.commentsService.findOne(id);
   }
 
-  @Patch(':id/report')
+  @Patch('report/:commentId')
   @UseGuards(JwtAuthGuard)
-  async reportComment(@Param('id') id: number) {
-    const updatedComment = await this.commentsService.reportComment(id);
+  async reportComment(@User() user,@Param('commentId') commentId:number) {
+    const updatedComment = await this.commentsService.reportComment(user,commentId);
     if (!updatedComment) {
       return null; // Le commentaire a été supprimé, retourner null
     }
-    return updatedComment; // Retourner le commentaire mis à jour avec le compteur de signalements
+    return this.commentsService.reportComment( user,commentId);
   }
+
+  @Get(':recipeId/unreported-comments/:userId')
+async getUnreportedCommentsForRecipe(
+  @Param('recipeId', ParseIntPipe) recipeId: number,
+  @Param('userId', ParseIntPipe) userId: number
+): Promise<Comment[]> {
+
+  return this.commentsService.getUnreportedCommentsForRecipe(recipeId, userId);
+}
+
+
 
 }

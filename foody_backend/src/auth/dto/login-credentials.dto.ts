@@ -8,6 +8,7 @@ export class LoginCredentialsDto {
   @IsNotEmpty()
   password: string;
 
-  @IsOptional()
-  imgUrl:string;
+@IsOptional()
+imgUrl:string;
+
 }
