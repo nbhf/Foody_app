@@ -15,7 +15,6 @@ export class UserController {
   @Get('me')
   @UseGuards(JwtAuthGuard)
   async getProfile(@UserDecorator() user: User) {
-    console.log(user.id);
     return this.userService.findOne(user.id);
   }
 
@@ -47,8 +46,6 @@ export class UserController {
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) 
   async delete(@Param('id', ParseIntPipe) id: number, @UserDecorator() user: User) {
     if (user.role === UserRoleEnum.USER) {
-      console.log("Utilisateur connecté :", user);
-      console.log("ID fourni dans l'URL :", id);
       if (user.id !== id) {
         throw new ForbiddenException("Vous ne pouvez supprimer que votre propre compte.");
       }
