@@ -44,13 +44,13 @@ export class Recipe extends TimestampEntites{
     @CreateDateColumn()
     validatedAt: Date;
 
-    @ManyToOne(() => User, (user) => user.createdRecipes)
+    @ManyToOne(() => User, (user) => user.createdRecipes,  { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'createdById' }) // This defines the foreign key
     createdBy: User;
 
-    @ManyToMany(() => User, user => user.savedRecipes) 
+    @ManyToMany(() => User, user => user.savedRecipes,{ onDelete: 'CASCADE' }) 
     savedBy: User;
 
-    @OneToMany(() => Comment, (comment) => comment.recipe)
+    @OneToMany(() => Comment, (comment) => comment.recipe,{ onDelete: 'CASCADE' })
     comments: Comment[]
 }

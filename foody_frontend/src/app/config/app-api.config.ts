@@ -10,5 +10,5 @@ export const APP_API = {
     notifications: 'http://localhost:3000/notifications',
     validate: 'http://localhost:3000/admin/validate-recipe',
     refuse:'http://localhost:3000/admin/refuse-recipe',
-  
+    upload:'http://localhost:3000/upload'
   }

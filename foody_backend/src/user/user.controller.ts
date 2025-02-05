@@ -79,6 +79,14 @@ async getSavedRecipes(@Param('userId') userId: number) {
 const savedRecipes = await this.userService.getSavedRecipes(userId);
 return savedRecipes;
 }
+// Endpoint pour récupérer les recettes creés par un utilisateur
+@Get(':userId/created-recipes')
+@UseGuards(JwtAuthGuard)  // Assurez-vous que l'utilisateur est authentifié
+async getMyRecipes(@Param('userId') userId: number) {
+const CreatedRecipes = await this.userService.getUserRecipes(userId);
+console.log(CreatedRecipes);
+return CreatedRecipes;
+}
 
 
 @Get('findAll')

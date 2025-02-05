@@ -99,7 +99,9 @@ isTokenExpired(token: string): boolean {
     localStorage.removeItem('username');
     localStorage.removeItem('role');
     this.authStatusChanged.emit(false); // Notifie la navbar
-    this.router.navigate(['/']);
+    this.router.navigateByUrl('/', { skipLocationChange: false }).then(() => {
+      window.location.reload();  
+    });this.router.navigate(['/']);
   }
 
   isAuthenticated(): boolean {

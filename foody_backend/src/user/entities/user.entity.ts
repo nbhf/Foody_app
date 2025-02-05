@@ -32,10 +32,8 @@ export class User extends TimestampEntites {
   @Exclude()
   salt: string;
 
-
   @Column({ nullable: true })
   imgUrl: string;
-
 
 
   @Column({
@@ -45,20 +43,23 @@ export class User extends TimestampEntites {
   })
   role: string;  
    
-  @OneToMany(() => Recipe, recipe => recipe.createdBy)
+  @OneToMany(() => Recipe, recipe => recipe.createdBy,{ onDelete: 'CASCADE' })
   createdRecipes: Recipe[];
 
-  @OneToMany(() => Comment, (comment) => comment.author)
+  @OneToMany(() => Comment, (comment) => comment.author,{ onDelete: 'CASCADE' })
   comments: Comment[];
 
 
-  
-  @ManyToMany(() => Recipe, (recipe) => recipe.savedBy)
+  @ManyToMany(() => Recipe, (recipe) => recipe.savedBy,{ onDelete: 'CASCADE' })
   @JoinTable({name:"user_saved_recipes"})
   savedRecipes: Recipe[];
 
 
-  @OneToMany(() => Notification, notification => notification.user, {cascade: true})
+  @OneToMany(() => Notification, notification => notification.user, { onDelete: 'CASCADE' })
   notifications: Notification[];
+
+  @ManyToMany(() => Comment, (comment) => comment.reportedBy, { cascade: true ,onDelete:'CASCADE' })
+  @JoinTable({name:"user_reprted_comments"})
+  reportedComments: Comment[];
 
 }

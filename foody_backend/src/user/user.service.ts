@@ -37,6 +37,9 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<{ user: User; ac
     user.salt = bcrypt.genSaltSync(); // ✅ genSaltSync remplace await bcrypt.genSalt()
     user.password = await bcrypt.hash(updateUserDto.password, user.salt); // ✅ Correction ici
   }
+  if(updateUserDto.imgUrl){
+    user.imgUrl=updateUserDto.imgUrl;
+  }
 
   if (updateUserDto.username && updateUserDto.username !== user.username) {
     const existingUser = await this.userRepository.findOne({ where: { username: updateUserDto.username } });
@@ -124,6 +127,21 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<{ user: User; ac
     }
     return  user.savedRecipes ;
   }
+
+     // Récupérer les recettes crées par un utilisateur donné
+     async getUserRecipes(userId: number): Promise<Recipe[]> {
+      const user = await this.userRepository.findOne({
+        where: { id: userId },
+        relations: ['createdRecipes'], // Charge les recettes créées
+      });
+    
+      if (!user) {
+        throw new NotFoundException('Utilisateur non trouvé');
+      }
+    
+      return user.createdRecipes;
+    }
+    
 
 
 

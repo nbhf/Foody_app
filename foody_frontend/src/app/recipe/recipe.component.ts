@@ -1,7 +1,7 @@
 import { Component, OnInit ,EventEmitter,Input,Output } from '@angular/core';
 import { RecipeService } from './recipe.service';
 import { AuthService } from '../auth/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AllRecipeService } from '../allrecipes/allrecipes.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class RecipeComponent implements OnInit {
   savedRecipes: any[] = [];
   isAdmin= this.authService.getCurrentUser().role =='admin';
 
-  constructor(private recipesService: RecipeService ,private authService: AuthService ,private route: ActivatedRoute,
+  constructor(private recipesService: RecipeService ,private authService: AuthService ,private route: ActivatedRoute,private router: Router,
     private recipeService: AllRecipeService ) { }
 
   ngOnInit(): void {
@@ -37,22 +37,22 @@ export class RecipeComponent implements OnInit {
   }
 
 
-  getSavedRecipes(): void {
-    if (this.userId) {
-      this.recipesService.getSavedRecipes(this.userId).subscribe(
-        (recipes) => {
-          this.savedRecipes = recipes;
-        },
-        (error) => {
-          console.error("Error fetching saved recipes", error);
-        }
-      );
-    } else {
-      console.error("Cannot fetch recipes: User ID is undefined");
-    }
+  approveRecipe(recipeId:number){
+    this.recipesService.approveRecipe(recipeId).subscribe(
+      (response) => {
+        alert('Recipe  approved successfully');
+        console.log('Recette sauvegardée !', response);
+        this.router.navigateByUrl('/AllRecipes');
+      },
+      (error) => {
+        console.error('Error  approving recipe:', error);
+        alert('Failed to  approve recipe');
+      },
+      
+    );
+
   }
-
-
+    
   saveRecipe(recipeId: number): void {
     const user : any = this.authService.getCurrentUser()
     if (user.id ) {
@@ -60,7 +60,7 @@ export class RecipeComponent implements OnInit {
         (response) => {
           alert('Recipe saved successfully');
           console.log('Recette sauvegardée !', response);
-
+          this.router.navigateByUrl('/profile');
         },
         (error) => {
           console.error('Error saving recipe:', error);
@@ -73,30 +73,13 @@ export class RecipeComponent implements OnInit {
     }
   }
 
-
-  approveRecipe(recipeId:number){
-    this.recipesService.approveRecipe(recipeId).subscribe(
-      (response) => {
-        alert('Recipe  approved successfully');
-        console.log('Recette sauvegardée !', response);
-
-      },
-      (error) => {
-        console.error('Error  approving recipe:', error);
-        alert('Failed to  approve recipe');
-      },
-      
-    );
-
-  }
-
   
   refuseRecipe(recipeId:number){
     this.recipesService.refuseRecipe(recipeId).subscribe(
       (response) => {
         alert('Recipe refused successfully');
         console.log('Recipe refused !', response);
-
+        this.router.navigateByUrl('/AllRecipes');
       },
       (error) => {
         console.error('Error saving recipe:', error);

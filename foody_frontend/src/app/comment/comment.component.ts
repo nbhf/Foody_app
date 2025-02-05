@@ -1,12 +1,8 @@
-import { Component, OnInit,Input } from '@angular/core';
-import { CommentService  } from './comment.service';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { CommentService } from './comment.service';
 import { ActivatedRoute } from '@angular/router';
-
-
-
-
+import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-comment',
@@ -14,31 +10,30 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./comment.component.css']
 })
 export class CommentComponent implements OnInit {
-  comments: {id: number;  content: string; username: string ,reportCount:number}[] = [];
   comments$!: Observable<any>;
   recipeId!: number;
-  loading = true;
-  error: string | null = null;
-  isExpanded:boolean= false;  
-  comment:string='';
-  
+  userId!:number;
+  comment: string = '';
+  reportedComments: number[] = []; // Stocker les commentaires signalés
 
-  constructor(private commentService: CommentService,private http: HttpClient,private route: ActivatedRoute ) {}
+  constructor(private commentService: CommentService, private route: ActivatedRoute,private authService : AuthService) {}
 
   ngOnInit(): void {
-      this.route.params.subscribe(params => {
-      this.recipeId = +params['id'];  // Convertir l'ID en nombre
-      this.loadComments();  // Charger les commentaires de la recette
+    this.route.params.subscribe(params => {
+      this.recipeId = +params['id']; // Convertir l'ID en nombre
+      this.loadComments(this.recipeId);
+
     });
-    }
-
-    
-
-    // Méthode pour charger les commentaires
-   loadComments(): void {
-    this.comments$ = this.commentService.getCommentsByRecipe(this.recipeId);
   }
 
+  // Charger les commentaires
+  loadComments(recipeId:number): void {
+    this.userId= this.authService.getCurrentUser().id;
+    this.comments$ = this.commentService.getCommentsByRecipe(this.recipeId,this.userId);
+  }
+
+
+  // Sauvegarder un commentaire
   saveComment() {
     if (!this.comment.trim()) {
       alert('Veuillez entrer un commentaire.');
@@ -46,43 +41,32 @@ export class CommentComponent implements OnInit {
     }
 
     this.commentService.saveComment(this.comment, this.recipeId).subscribe({
-       next: (response) => {
-        console.log('Commentaire sauvegardé avec succès', response);
-        console.log("recette id :",this.recipeId),
+      next: (response) => {
         alert('Commentaire sauvegardé !');
         this.comment = ''; 
-        this.loadComments(); // Recharger la liste des commentaires
+        this.loadComments(this.recipeId); // Recharger les commentaires
       },
-      error: (error) => {
-        console.error('Erreur lors de la sauvegarde du commentaire', error);
+      error: () => {
         alert('Erreur lors de la sauvegarde du commentaire.');
       }
     });
-
-}
-
-  report(id: number) {
-    this.commentService.reportComment(id).subscribe(
-{     next:  (updatedComment) => {
-        if (updatedComment === null) {
-          // Le commentaire a été supprimé
-          this.comments = this.comments.filter(comment => comment.id !== id);
-        } else {
-          // Le compteur de signalements a été mis à jour
-          const updatedIndex = this.comments.findIndex(comment => comment.id === id);
-          if (updatedIndex !== -1) {
-            this.comments[updatedIndex].reportCount = updatedComment.report;
-          }
-        }
-        this.loadComments();
-        this.comments = this.comments.filter(comment => comment.id !== id);
-
-      },
-      error:(error) => {
-        console.error('Error reporting comment', error);
-      }}
-    );
   }
-         
-  
+
+  // Signaler un commentaire et le masquer
+  report(commentId: number) {
+    this.commentService.reportComment(commentId).subscribe({
+      next: () => {
+        console.log("comment is reported");
+        this.loadComments(this.recipeId);
+      },
+      error: () => {
+        alert('Erreur lors du signalement.');
+      }
+    });
+  }
+
+  // Vérifier si un commentaire a été signalé
+  isReported(commentId: number): boolean {
+    return this.reportedComments.includes(commentId);
+  }
 }
