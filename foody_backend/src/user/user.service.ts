@@ -104,14 +104,16 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<{ user: User; ac
    //sauvegarder une recette 
   async saveRecipe(userId: number, recipeId: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['savedRecipes'] });
-    const recipe = await this.recipeRepository.findOne({ where: { id: recipeId } });
+    const recipe = await this.recipeRepository.findOne({ where: { id: recipeId } ,relations:['createdBy']});
 
     if (!user || !recipe) {
       throw new Error('User or Recipe not found');
     }
 
     user.savedRecipes.push(recipe);
-    await this.notificationService.createUserNotification(`You saved ${recipe.name}`,userId);
+    await this.notificationService.createUserNotification(`You saved "${recipe.name}"`,userId);
+    await this.notificationService.createUserNotification(`Your "${recipe.name}" Recipe was saved by ${user.username}`,recipe.createdBy.id);
+
     return this.userRepository.save(user);
   }
 
