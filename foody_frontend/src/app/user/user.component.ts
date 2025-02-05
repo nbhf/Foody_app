@@ -165,34 +165,40 @@ openChangePhotoModal() {
   const modal = new bootstrap.Modal(document.getElementById('changePhotoModal'));
   modal.show();
 }
-  // Gérer la sélection de fichier
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.selectedFile = input.files[0];
-
-      // Affichage de l’aperçu
-      const reader = new FileReader();
-      reader.onload = (e) => this.previewUrl = e.target!.result;
-      reader.readAsDataURL(this.selectedFile);
-    }
+onFileSelected(event: any) {
+  const file: File = event.target.files[0]; // Récupère le premier fichier sélectionné
+  if (file) {
+    this.selectedFile = file;
+    // Si tu veux afficher un aperçu de l'image avant de la sauvegarder :
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      // Tu peux utiliser cette donnée pour afficher un aperçu, par exemple :
+      console.log('Aperçu de l\'image:', e.target.result);
+    };
+    reader.readAsDataURL(file);
   }
+}
 
-  // Sauvegarder la nouvelle photo
-  saveNewPhoto() {
-    if (this.selectedFile) {
-      // Convertir le fichier en URL pour affichage local
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.user.imgUrl = reader.result as string;
-        console.log("Nouvelle image :", this.user.imgUrl);
-        this.updateProfile(); // Mise à jour du backend
-        const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
-        modal.hide(); // Fermer la modale
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
+
+saveNewPhoto() {
+  if (this.selectedFile) {
+    // Traitement de l'image (par exemple, envoyer à l'API)
+    const formData = new FormData();
+    formData.append('photo', this.selectedFile);
+
+    // Met à jour l'URL de la photo avec une version locale si nécessaire
+    this.user.imgUrl = URL.createObjectURL(this.selectedFile);
+    console.log(this.user.imgUrl);
+    console.log("Image sélectionnée");
+
+    // Appelle ta méthode pour mettre à jour le backend avec l'image
+    this.updateProfile();
+    
+    // Ferme la modale après l'enregistrement
+    const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
+    modal.hide();
   }
+}
 
 
 

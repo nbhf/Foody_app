@@ -42,12 +42,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <label for="photoInput">Sélectionner une image :</label>
-          <input type="file" id="photoInput" (change)="onFileSelected($event)" class="form-control">
-          <div *ngIf="previewUrl" class="mt-3">
-            <p>Aperçu :</p>
-            <img [src]="previewUrl" alt="Aperçu" class="img-fluid rounded">
-          </div>
+          <label for="photoUpload">Sélectionnez la nouvelle photo :</label>
+          <input type="file" id="photoUpload" (change)="onFileSelected($event)" class="form-control" accept="image/*">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
@@ -56,6 +52,7 @@
       </div>
     </div>
   </div>
+  
   
       
       <h3 class="mt-3">{{ user.username }}</h3>
