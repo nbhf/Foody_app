@@ -18,7 +18,8 @@ export class SignupComponent {
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
+      confirmPassword: ['', Validators.required],
+      photo: [null]
     }, { validator: this.passwordMatchValidator });
   }
 
@@ -27,25 +28,55 @@ export class SignupComponent {
   }
 
   signup() {
+    console.log(this.signupForm);
     if (this.signupForm.invalid) {
       this.errorMessage = 'Veuillez remplir tous les champs correctement.';
-      alert("fromulaire invalide")
+      alert("Formulaire invalide");
       return;
     }
-
-    const { username, email, password } = this.signupForm.value;
-    this.authService.signup({ username, email, password }).subscribe({
-      next: (response) => {
-        alert('Inscription réussie !');
-        console.log('Réponse du serveur:', response);
-      },
-      error: (error) => {
-        console.error('Erreur lors de l\'inscription', error);
-        this.errorMessage = 'Échec de l\'inscription. Veuillez réessayer.';
+  
+    if (this.signupForm.valid) {
+      const signupData = this.signupForm.value;
+      console.log(signupData);
+  
+      const handleSignup = (imgUrl: string | null = null) => {
+        const payload = {
+          username: signupData.username,
+          email: signupData.email,
+          password: signupData.password,
+          imgUrl: imgUrl // Peut être une URL d'image ou null
+        };
+  
+        console.log("Payload envoyé à l'API :", payload);
+  
+        this.authService.signup(payload).subscribe(() => {
+          alert('Inscription réussie !!');
+          this.signupForm.reset();
+          this.previewImageUrl = null;
+        }, error => {
+          console.error('Erreur lors de l\'inscription', error);
+          this.errorMessage = 'Échec de l\'inscription. Veuillez réessayer.';
+          alert('Erreur lors de l\'inscription !');
+        });
+      };
+  
+      if (signupData.photo) {
+        this.authService.uploadImage(signupData.photo).subscribe(response => {
+          console.log("Image uploadée avec succès :", response.imageUrl);
+          handleSignup(response.imageUrl);
+        }, error => {
+          console.error('Erreur lors du téléchargement de l\'image', error);
+          alert('Erreur lors du téléchargement de l\'image !');
+        });
+      } else {
+        // ✅ Pas d'image fournie → continue sans image
+        handleSignup();
       }
-    });
-    this.router.navigateByUrl('/login');
+  
+      this.router.navigateByUrl('/login');
+    }
   }
+  
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];

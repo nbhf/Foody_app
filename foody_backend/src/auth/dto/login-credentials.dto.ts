@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class LoginCredentialsDto {
 
@@ -7,5 +7,8 @@ export class LoginCredentialsDto {
 
   @IsNotEmpty()
   password: string;
+
+@IsOptional()
+imgUrl:string;
 
 }
