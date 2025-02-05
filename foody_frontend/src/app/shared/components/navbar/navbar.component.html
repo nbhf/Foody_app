@@ -56,13 +56,13 @@
             id="navbarDropdown"
             role="button"
             data-bs-toggle="dropdown"
-            aria-expanded="true"
+            aria-expanded="false"
           >
             <img [src]="user?.imgUrl | defaultImage:'assets/default_user.png'" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px;">
           </a>
           <!-- Added dropdown-menu-end to align to the right -->
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" *ngIf="isAthentificated && isAdmin" routerLink="admindashboard">Profile</a></li>
+            <li><a class="dropdown-item" *ngIf="isAthentificated" [routerLink]="isAdmin ? '/admindashboard' : '/profile'">Profile</a></li>
             <li><a class="dropdown-item" *ngIf="!isAthentificated" routerLink="/login" >Login</a></li>
             <li><a class="dropdown-item"*ngIf="!isAthentificated"  routerLink="/signup" >Signup</a></li>
             <li><a *ngIf="isAthentificated" class="dropdown-item" (click)="logout()">Logout</a></li>
