@@ -27,11 +27,11 @@
     </ul>    
   </div>
 
-  <button *ngIf="!isAdmin" (click)="saveRecipe(recipe.id)" class="btn btn-primary me-2">Save</button>
+  <button *ngIf="!isAdmin " (click)="saveRecipe(recipe.id)" class="btn btn-primary me-2">Save</button>
 
-  <button *ngIf="isAdmin" (click)="approveRecipe(recipe.id)" class="btn btn-success me-2">Approve</button>
+  <button *ngIf="isAdmin && recipe.status !== 'Validated'"  (click)="approveRecipe(recipe.id)" class="btn btn-success me-2">Approve</button>
   
-  <button *ngIf="isAdmin" (click)="refuseRecipe(recipe.id)" class="btn btn-danger">Refuse</button>
+  <button *ngIf="isAdmin && recipe.status !== 'Validated'"  (click)="refuseRecipe(recipe.id)" class="btn btn-danger">Refuse</button>
   
   
 </div>
