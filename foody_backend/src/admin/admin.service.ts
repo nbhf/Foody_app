@@ -14,6 +14,7 @@ import { UserRoleEnum } from 'src/user/enums/user-role.enum';
 
 @Injectable()
 export class AdminService {
+  authService: any;
   constructor(
     @InjectRepository(Admin)
     private readonly adminRepository: Repository<Admin>,
@@ -60,11 +61,48 @@ export class AdminService {
     return await this.adminRepository.findOneBy({ id });
   }
 
-  
+  private async checkEmailUniqueness(email: string): Promise<void> {
+    const existingUser = await this.adminRepository.findOne({ where: { email } });
+    if (existingUser) {
+      throw new ConflictException('Cet email est déjà utilisé.');
+    }
+  }
 
-  async update(id: number, updateAdminDto: UpdateAdminDto): Promise<Admin> {
-    await this.adminRepository.update(id, updateAdminDto);
-    return await this.adminRepository.findOneBy({ id });
+  async update(id: number, updateAdminDto: UpdateAdminDto): Promise<{admin: Admin; access_token?: any}> {
+    const admin = await this.findOne(id);
+    // Vérification et mise à jour de l'email
+    if (updateAdminDto.email && updateAdminDto.email !== admin.email) {
+      await this.checkEmailUniqueness(updateAdminDto.email);
+      admin.email = updateAdminDto.email;
+    }
+  
+    // Mise à jour du mot de passe avec hachage si fourni
+    if (updateAdminDto.password) {
+      //const bcrypt = require('bcryptjs');
+      admin.salt = bcrypt.genSaltSync(); // ✅ genSaltSync remplace await bcrypt.genSalt()
+      admin.password = await bcrypt.hash(updateAdminDto.password, admin.salt); // ✅ Correction ici
+    }
+    if(updateAdminDto.imgUrl){
+      admin.imgUrl=updateAdminDto.imgUrl;
+    }
+  
+    if (updateAdminDto.username && updateAdminDto.username !== admin.username) {
+      const existingUser = await this.userRepository.findOne({ where: { username: updateAdminDto.username } });
+      if (existingUser) {
+        throw new ConflictException("Ce nom d'utilisateur est déjà utilisé.");
+      }
+      admin.username = updateAdminDto.username;
+    }
+    await this.userRepository.save(admin);
+      if (updateAdminDto.username) {
+        const newToken = await this.authService.generateToken(admin ,UserRoleEnum.USER);
+        
+      return {
+        admin,
+        access_token: newToken.access_token
+      };
+      }
+      return {admin};
   }
 
   async remove(id: number): Promise<void> {

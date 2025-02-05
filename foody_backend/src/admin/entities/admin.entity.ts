@@ -6,6 +6,7 @@ import { TimestampEntites } from "src/common/timestamp.entites.";
 import { Recipe } from "src/recipe/entities/recipe.entity";
 import { RecipeStatus } from "src/recipe/enums/recipe.enum";
 import { Notification } from "src/notification/entities/notification.entity";
+import { Optional } from "@nestjs/common";
 
 @Entity('admin')
 export class Admin extends TimestampEntites{
@@ -24,6 +25,9 @@ export class Admin extends TimestampEntites{
     unique: true
     })
     email:string
+
+    @Column({ nullable: true })
+    imgUrl:string
 
     @Column()
     @Exclude()//exclure lors de la transformation d'un objet en JSON ou lors de la désérialisation sécurité

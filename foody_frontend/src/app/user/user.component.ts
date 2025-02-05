@@ -23,6 +23,8 @@ export class UserComponent implements OnInit {
   newPhotoUrl = '';
   showButton=true; recipesLoaded=false;
   showButton2=true;  recipesLoaded2=false;
+  enteredPassword='';
+  currentAction: 'changePassword' | 'deleteAccount' | null = null;
   
  
   constructor(private userService: UserService, private router: Router, private authService: AuthService, private recipesService: RecipeService) {}
