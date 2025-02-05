@@ -53,50 +53,56 @@ export class RecipeCreateComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.recipeForm)
+    console.log(this.recipeForm);
     if (this.recipeForm.valid) {
       const recipeData = this.recipeForm.value; // Récupère les données du formulaire
-
+  
       if (recipeData.photo) {
+        // Si une image est sélectionnée, on l'upload d'abord
         this.recipeService.uploadImage(recipeData.photo).subscribe(response => {
-          const imageUrl = response.imageUrl;  // Récupère l'URL de l'image téléchargée
-
-          const payload = {
-            name: recipeData.name,
-            description: recipeData.description,
-            ingredients: recipeData.ingredients,
-            instructions: recipeData.instructions,
-            category: recipeData.category,
-            imgUrl: imageUrl
-          };
-
-          console.log("Payload envoyé à l'API :", payload);
-
-          // Une fois l'image téléchargée, on soumet la recette
-          this.recipeService.createRecipe(
-            payload.name,
-            payload.description,
-            payload.ingredients,
-            payload.instructions,
-            payload.category,
-            payload.imgUrl
-          ).subscribe(() => {
-            alert('Recipe created successfully!');
-            this.recipeForm.reset();
-            this.previewImageUrl=null;
-          }, error => {
-            console.error('Error creating recipe:', error);
-            alert('Error creating recipe!');
-          });
+          const imageUrl = response.imageUrl;
+  
+          this.createRecipeWithImage(recipeData, imageUrl);
         }, error => {
           console.error('Error uploading image:', error);
           alert('Error uploading image!');
         });
       } else {
-        alert('Please select an image!');
+        // Si aucune image n'est sélectionnée, on continue sans imgUrl
+        this.createRecipeWithImage(recipeData, null);
       }
     } else {
       alert('Please fill in all required fields correctly!');
     }
   }
+  
+  private createRecipeWithImage(recipeData: any, imageUrl: string | null) {
+    const payload = {
+      name: recipeData.name,
+      description: recipeData.description,
+      ingredients: recipeData.ingredients,
+      instructions: recipeData.instructions,
+      category: recipeData.category,
+      imgUrl: imageUrl, // Peut être null
+    };
+  
+    console.log("Payload envoyé à l'API :", payload);
+  
+    this.recipeService.createRecipe(
+      payload.name,
+      payload.description,
+      payload.ingredients,
+      payload.instructions,
+      payload.category,
+      payload.imgUrl || ''
+    ).subscribe(() => {
+      alert('Recipe created successfully!');
+      this.recipeForm.reset();
+      this.previewImageUrl = null;
+    }, error => {
+      console.error('Error creating recipe:', error);
+      alert('Error creating recipe!');
+    });
+  }
+  
 }
