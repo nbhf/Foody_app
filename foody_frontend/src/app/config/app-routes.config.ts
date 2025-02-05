@@ -7,6 +7,6 @@ export const APP_ROUTES = {
     profile:'profile',
     postrecipe: 'formRecipe',
     notifications:'notifications',
-    adminDashboard:'admindashboard/:id'
+    adminDashboard:'admindashboard'
 
   };

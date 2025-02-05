@@ -15,7 +15,7 @@ export class AdminService {
   }
 
   softDeleteUser(userId: number): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/admin/softDelete/${userId}`, {});
+    return this.http.delete<void>(`${this.apiUrl}/admin/softDelete/${userId}`, {});
   }
 
   restoreUser(userId: number): Observable<void> {
@@ -23,6 +23,7 @@ export class AdminService {
   }
 
   deleteUser(userId: number): Observable<void> {
+    console.log("User id = ", userId);
     return this.http.delete<void>(`${this.apiUrl}/users/${userId}`);
   }
 }

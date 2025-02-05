@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from './admin.service';
 import { UserService } from '../user/user.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -8,13 +9,16 @@ import { UserService } from '../user/user.service';
 })
 export class AdminDashboardComponent implements OnInit {
   users: any[] = []; // Replace with your User model
-
+  
   constructor(private adminService: AdminService,
-              private userService: UserService
+              private userService: UserService,
+              private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    const userId = this.authService.getCurrentUser().id;
     this.loadUsers(); // Load users when the component initializes
+    
   }
 
   loadUsers(): void {

@@ -63,7 +63,7 @@ export class AdminController {
 
   @Delete('softDelete/:id')
   async softDelete(
-    @Param('id', ParseIntPipe) id: number
+    @Param('id') id: number
   ) {
     return this.adminService.softDeleteUser(id);
   }

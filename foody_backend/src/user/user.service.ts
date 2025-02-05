@@ -74,7 +74,7 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<{ user: User; ac
 
   async findAllUsers(): Promise<User[]> {
     const users = await this.userRepository.find({
-      select: ['id','username', 'email'],
+      select: ['id','username', 'email', 'deletedAt'],
     });
     return users;
   }
