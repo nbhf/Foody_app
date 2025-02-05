@@ -9,20 +9,17 @@ import { APP_API } from '../config/app-api.config';
   providedIn: 'root'
 })
 export class UserService {
- // private apiUrl = 'http://localhost:3000/users';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   // Récupérer le profil de l'utilisateur connecté
   getProfile(): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
-    return this.http.get(`${APP_API.user}/me`, { headers });
+    return this.http.get(`${APP_API.user}/me`);
   }
 
   updateProfile(updatedData: any): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
   
-    return this.http.patch<{ user: any; access_token?: string }>(`${APP_API.user}/${updatedData.id}`, updatedData, { headers }).pipe(
+    return this.http.patch<{ user: any; access_token?: string }>(`${APP_API.user}/${updatedData.id}`, updatedData).pipe(
       tap((response) => {
         console.log("Response from backend:", response);
         console.log("Access Token:", response.access_token);
@@ -36,8 +33,7 @@ export class UserService {
 
   // Supprimer le compte utilisateur
   deleteProfile(userId: number): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
-     const resp = this.http.delete(`${APP_API.user}/${userId}`, { headers });
+     const resp = this.http.delete(`${APP_API.user}/${userId}`);
      this.authService.logout();
      return resp;
 
@@ -51,6 +47,9 @@ saveRecipe(userId: number, recipeId: number): Observable<any> {
   return this.http.post(`${APP_API.user}/${userId}/save-recipe/${recipeId}`, {});
 }
 
+getCreatedRecipes(userId: number): Observable<any> {
+  return this.http.get(`${APP_API.user}/${userId}/created-recipes`);
+}
 
 getSavedRecipes(userId: number): Observable<any> {
   return this.http.get(`${APP_API.user}/${userId}/saved-recipes`);

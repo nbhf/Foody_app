@@ -28,5 +28,54 @@ button {
     background-color: #dc3545;
     color: white;
   }
+  /*
+  .recipe-card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  */
+  .recipe-card h2 {
+    color: #2c3e50;
+  }
   
+  .ingredients ul {
+    list-style-type: none;
+    padding: 0;
+  }
   
+  .ingredients li {
+    background-color: #ecf0f1;
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 4px;
+  }
+  
+  .instructions p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .recettes-grid {
+    display: flex;
+    flex-wrap: wrap; /* Permet le retour à la ligne si nécessaire */
+    gap: 40px; /* Espacement entre les éléments */
+    justify-content: center; /* Centrage des éléments */
+    padding: 10px;
+}
+
+.recipe-card {
+    list-style-type: none; /* Supprime les puces des <li> */
+    width: 400px; /* Largeur fixe pour chaque carte */
+    background-color: #f9f9f9; /* Fond léger */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+}
+
+.recipe-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
