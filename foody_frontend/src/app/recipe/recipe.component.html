@@ -9,7 +9,7 @@
 <div *ngIf="!loading && recipe" class="recipe-card">
   <h2>{{ recipe.name }}</h2>
   <img  [src]="recipe.imgUrl | defaultImage:'assets/default_recipe.png'" alt="{{ recipe.name }}" class="recipe-image"/>
-  <p><strong>Published by:</strong> {{recipe.createdBy.username }}</p>
+  <p><strong>Published by:</strong> {{recipe.createdBy?.username }}</p>
   <p><strong>Description:</strong> {{ recipe.description }}</p>
   <p><strong>Category:</strong> {{ recipe.category }}</p>
 
