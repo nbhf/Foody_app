@@ -35,17 +35,19 @@ export class NavbarComponent implements OnInit {
     this.notificationService.adminUnreadCount$.subscribe(count => {
       this.adminUnreadCount = count;
     });
-
+    
+    setInterval(() => {
     if(this.isAthentificated){   this.userService.getProfile().subscribe(
       (data) => { this.user = data; console.log(this.user) },
       (error) => { console.error('Erreur de récupération du profil', error); }
     );}
+  }, 2000);
     
   }
 
   updateUserStatus(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
-    this.username = this.authService.getUser();
+    this.username = this.authService.getCurrentUser().username;
     this.currentUser = this.authService.getCurrentUser();
     this.isAdmin = this.currentUser?.role === 'admin';
     
