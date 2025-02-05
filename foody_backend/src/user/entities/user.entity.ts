@@ -43,19 +43,19 @@ export class User extends TimestampEntites {
   })
   role: string;  
    
-  @OneToMany(() => Recipe, recipe => recipe.createdBy,{ cascade: true })
+  @OneToMany(() => Recipe, recipe => recipe.createdBy,{ onDelete: 'CASCADE' })
   createdRecipes: Recipe[];
 
-  @OneToMany(() => Comment, (comment) => comment.author,{ cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.author,{ onDelete: 'CASCADE' })
   comments: Comment[];
 
 
-  @ManyToMany(() => Recipe, (recipe) => recipe.savedBy,{ cascade: true })
+  @ManyToMany(() => Recipe, (recipe) => recipe.savedBy,{ onDelete: 'CASCADE' })
   @JoinTable({name:"user_saved_recipes"})
   savedRecipes: Recipe[];
 
 
-  @OneToMany(() => Notification, notification => notification.user, {cascade: true})
+  @OneToMany(() => Notification, notification => notification.user, { onDelete: 'CASCADE' })
   notifications: Notification[];
 
   @ManyToMany(() => Comment, (comment) => comment.reportedBy, { cascade: true ,onDelete:'CASCADE' })

@@ -33,10 +33,9 @@ export class UserService {
 
   // Supprimer le compte utilisateur
   deleteProfile(userId: number): Observable<any> {
+    console.log(userId)
      const resp = this.http.delete(`${APP_API.user}/${userId}`);
-     this.authService.logout();
      return resp;
-
   }
 
 getAllUsers(): Observable<any> {

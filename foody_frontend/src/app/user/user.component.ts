@@ -78,6 +78,8 @@ export class UserComponent implements OnInit {
         () => { this.router.navigate(['/signup']); },
         (error) => { console.error('Erreur de suppression du compte', error); }
       );
+      this.authService.logout();
+
     }
   }
   getSavedRecipes(): void {
