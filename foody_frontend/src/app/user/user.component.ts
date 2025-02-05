@@ -23,6 +23,9 @@ export class UserComponent implements OnInit {
   newPhotoUrl = '';
   showButton=true; recipesLoaded=false;
   showButton2=true;  recipesLoaded2=false;
+  selectedFile: File | null = null; // Fichier sélectionné
+  previewUrl: string | ArrayBuffer | null = null; // Aperçu de l'image
+
   
  
   enteredPassword='';
@@ -162,17 +165,35 @@ openChangePhotoModal() {
   const modal = new bootstrap.Modal(document.getElementById('changePhotoModal'));
   modal.show();
 }
-// Sauvegarder la nouvelle photo
-saveNewPhoto() {
-  if (this.newPhotoUrl.trim()) {
-    this.user.imgUrl = this.newPhotoUrl; // Mise à jour locale
-    console.log(this.user.imgUrl)
-    console.log("jdrbfu")
-    this.updateProfile(); // Appel de la méthode qui met à jour le backend
-    const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
-    modal.hide(); // Fermer le modal
+  // Gérer la sélection de fichier
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+
+      // Affichage de l’aperçu
+      const reader = new FileReader();
+      reader.onload = (e) => this.previewUrl = e.target!.result;
+      reader.readAsDataURL(this.selectedFile);
+    }
   }
-}
-  
+
+  // Sauvegarder la nouvelle photo
+  saveNewPhoto() {
+    if (this.selectedFile) {
+      // Convertir le fichier en URL pour affichage local
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.user.imgUrl = reader.result as string;
+        console.log("Nouvelle image :", this.user.imgUrl);
+        this.updateProfile(); // Mise à jour du backend
+        const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
+        modal.hide(); // Fermer la modale
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+
 
 }
