@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { NotificationService } from 'src/app/notification/notification.service';
+import { UserService } from 'src/app/user/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,6 +9,7 @@ import { NotificationService } from 'src/app/notification/notification.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  user: any = null;
   username: string | null = null;
   currentUser: any;
   isAdmin: boolean = false;
@@ -16,7 +18,7 @@ export class NavbarComponent implements OnInit {
   adminUnreadCount: number = 0;
   isAthentificated: boolean = false;
 
-  constructor(private authService: AuthService, private notificationService: NotificationService) {}
+  constructor(private authService: AuthService, private notificationService: NotificationService,private userService: UserService) {}
 
   ngOnInit(): void {
     this.updateUserStatus();
@@ -33,6 +35,11 @@ export class NavbarComponent implements OnInit {
     this.notificationService.adminUnreadCount$.subscribe(count => {
       this.adminUnreadCount = count;
     });
+
+    if(this.isAthentificated){   this.userService.getProfile().subscribe(
+      (data) => { this.user = data; console.log(this.user) },
+      (error) => { console.error('Erreur de récupération du profil', error); }
+    );}
     
   }
 
