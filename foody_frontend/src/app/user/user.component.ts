@@ -25,6 +25,7 @@ export class UserComponent implements OnInit {
   showButton2=true;  recipesLoaded2=false;
   selectedFile: File | null = null; // Fichier sélectionné
   previewUrl: string | ArrayBuffer | null = null; // Aperçu de l'image
+  errorMessage='';
 
   
  
@@ -51,6 +52,7 @@ export class UserComponent implements OnInit {
       },
       (error) => { 
         console.error('Erreur de mise à jour du profil', error); 
+        this.errorMessage= 'Erreur de mise à jour du profil: username and email should be unique';
       }
     );
   }
