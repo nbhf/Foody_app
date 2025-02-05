@@ -25,6 +25,11 @@ export class UserComponent implements OnInit {
   showButton2=true;  recipesLoaded2=false;
   
  
+  enteredPassword='';
+  currentAction: 'changePassword' | 'deleteAccount' | null = null;
+
+
+
   constructor(private userService: UserService, private router: Router, private authService: AuthService, private recipesService: RecipeService) {}
 
   ngOnInit(): void {
@@ -71,6 +76,13 @@ export class UserComponent implements OnInit {
     );
   }
 
+   // Prépare l'action et ouvre le modal de vérification du mot de passe
+   prepareAction(action: 'changePassword' | 'deleteAccount') {
+    this.currentAction = action;
+    const modal = new bootstrap.Modal(document.getElementById('verifyCurrentPasswordModal'));
+    modal.show();
+  }
+
   // Confirmer la suppression du compte
   confirmDelete() {
     if (confirm("Voulez-vous vraiment supprimer votre compte ?")) {
@@ -115,6 +127,34 @@ export class UserComponent implements OnInit {
 
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
+  }
+  openVerifyPasswordModal() {
+    const modal = new bootstrap.Modal(document.getElementById('verifyCurrentPasswordModal'));
+    modal.show();
+  }
+
+  // Vérifier le mot de passe actuel
+  verifyPassword() {
+    this.userService.verifyCurrentPassword(this.user.id, this.enteredPassword).subscribe(
+      () => {
+        // Si le mot de passe est correct, on ferme le modal de vérification
+        bootstrap.Modal.getInstance(document.getElementById('verifyCurrentPasswordModal')).hide();
+        
+        if (this.currentAction === 'changePassword') {
+          // Ouvre le modal pour changer le mot de passe
+          const modal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+          modal.show();
+        } else if (this.currentAction === 'deleteAccount') {
+          // Appelle la méthode pour confirmer la suppression du compte
+          this.confirmDelete();
+        }
+      },
+      (error) => {
+        alert('Current password is incorrect');
+        console.error('Erreur de vérification du mot de passe', error);
+        this.enteredPassword = '';
+      }
+    );
   }
   // Ouvrir le modal de changement de photo
 openChangePhotoModal() {

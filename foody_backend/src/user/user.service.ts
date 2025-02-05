@@ -65,7 +65,7 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<{ user: User; ac
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
-      select: ['id', 'username', 'email', 'role', 'imgUrl'],
+      select: ['id', 'username', 'email', 'role', 'imgUrl','password','salt'],
     });
 
     if (!user) throw new NotFoundException(`Utilisateur avec l'ID ${id} introuvable.`);
@@ -142,7 +142,16 @@ async update(id: number, updateUserDto: UpdateUserDto): Promise<{ user: User; ac
       return user.createdRecipes;
     }
     
-
-
+  // Vérifier le mot de passe actuel
+  async verifyUserPassword( enteredpassword: string, userId: number): Promise<boolean> {
+    const user = await this.findOne(userId);
+    const hashedPassword = await bcrypt.hash(enteredpassword, user.salt);
+    const isMatch = hashedPassword===user.password;
+    if (!isMatch) {
+      throw new UnauthorizedException('Current password is incorrect');
+    }
+    // Si tout va bien, on renvoie true*/
+    return true;
+  }
 
 }
