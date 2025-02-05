@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete,Post, Param, Body, UseGuards, ParseIntPipe, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Patch, Delete,Post, Param, Body, UseGuards, ParseIntPipe, ForbiddenException, NotFoundException, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -97,6 +97,17 @@ async findAllUsers(){
   const allUsers = await this.userService.findAllUsers();
   return allUsers;
 }
+@Post(':userId/verify-password')
+  async verifyPassword(
+    @Param('userId') userId: number,
+    @Body() body: { enteredPassword: string }
+  ) {
+    // Appelle la méthode de vérification du mot de passe dans le service.
+    const valid = await this.userService.verifyUserPassword(body.enteredPassword, userId);
+    // Si valid, renvoie un indicateur, sinon la méthode dans le service lèvera une exception.
+    return { valid };
+  }
+
 
 }
 
