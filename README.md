@@ -1,6 +1,6 @@
 # 🍲 Foody App
 
-Foody is a **full-stack web application** built with **NestJS (backend)** and **Angular (frontend)**.  
+### Foody is a **full-stack web application** built with **NestJS (backend)** and **Angular (frontend)**.  
 It allows users to create, share, and manage recipes, while admins can moderate submissions and manage users.  
 
 ---
