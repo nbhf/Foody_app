@@ -28,7 +28,7 @@ It allows users to create, share, and manage recipes, while admins can moderate 
 
 ## 🏗️ Project Structure
 
-
+````
 Foody\_app/
 │── foody\_backend/   # NestJS backend
 │── foody\_frontend/  # Angular frontend
