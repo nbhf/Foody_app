@@ -29,6 +29,8 @@ export class CommentsService {
     newComment.recipe=recipe;
     console.log("recette:",recipe);
     await this.notificationService.createUserNotification(`${user.username} commented ${newComment.content} on your ${recipe.name} recipe `, recipe.createdBy.id);
+    await this.notificationService.createUserNotification(`You commented ${newComment.content} on  ${recipe.name} recipe Created by  ${recipe.createdBy.username} `, user.id);
+
     return this.commentsRepository.save(newComment);
   }
 

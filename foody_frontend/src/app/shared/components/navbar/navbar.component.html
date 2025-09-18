@@ -45,11 +45,11 @@
 
       <!-- Show username -->
       <li class="nav-item" *ngIf="isAthentificated">
-        <span class="nav-link fw-bold" style="font-size: 20px;font-family: Georgia;">{{ user.username }}</span>
+        <span class="nav-link fw-bold" style="font-size: 20px;font-family: Georgia;">{{ user?.username }}</span>
       </li>
 
       <!-- Dropdown menu for profile, login, logout, signup -->
-        <li class="nav-item dropdown" >
+        <li class="nav-item dropdown " >
           <a
             class="nav-link dropdown-toggle"
             href="#"
