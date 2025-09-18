@@ -107,15 +107,6 @@ The frontend will be available at: **[http://localhost:4200](http://localhost:42
 
 ---
 
-## 📚 API Documentation
-
-We use **Swagger** for API documentation.
-
-* Once the backend is running, visit:
-  👉 **[http://localhost:3000/api](http://localhost:3000/api)**
-
----
-
 ## 📂 Modules Overview (Backend)
 
 ### 🔑 AuthModule
@@ -182,6 +173,9 @@ npm run test
 
 ### Create Recipe 
 ![Create Recipe](./screenshots/createrecipe.png)
+
+### 📊 Dashboard
+![Dashboard](./screenshots/dashboard.png)
 
 
 
